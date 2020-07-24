@@ -1,0 +1,136 @@
+Bootstrap: docker
+FROM: nvcr.io/hpc/pgi-compilers:ce
+
+%environment
+    export XDG_RUNTIME_DIR=
+    export PATH="$PATH:/opt/pgi/linux86-64/19.10/bin:/usr/local/bin:/opt/anaconda3/bin:/usr/bin"
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/pgi/linux86-64-llvm/2019/cuda/10.1/lib64/:/opt/pgi/linux86-64-llvm/19.10/lib" 
+    export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib" CPATH="$CPATH:/usr/local/include"
+
+%post
+    build_tmp=$(mktemp -d) && cd ${build_tmp}
+
+    export PATH=/opt/pgi/linux86-64/19.10/bin:$PATH
+
+    apt-get -y update
+    apt-get -y dist-upgrade 
+    apt-get -y install --no-install-recommends \
+	    m4 vim-nox emacs-nox nano zip \
+ 	    python3 python3-pip python3-setuptools git-core inotify-tools \
+	    curl git-lfs \
+	    build-essential
+    rm -rf /var/lib/apt/cache/* 
+
+    pip3 install --upgrade pip
+    pip3 install jupyter netcdf4
+
+# NVIDIA Nsight Systems 2020.3.1
+    apt-get update -y 
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-transport-https ca-certificates gnupg wget
+    echo "deb https://developer.download.nvidia.com/devtools/repo-deb/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list 
+    apt-get update -y 
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.3.1
+
+    apt-get install --no-install-recommends -y build-essential
+
+##### START : netcdf installation #####
+
+    cd /usr 
+    mkdir netcdf  
+    cd netcdf  
+    mkdir WORK_DIR  
+    cd /usr/netcdf/WORK_DIR  
+    mkdir zlib hdf5 netCDF netCDF-C++ netCDF-Fortran
+
+    cd /usr/netcdf/WORK_DIR/zlib  
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/zlib-1.2.8.tar.gz  
+    tar -xvzf zlib-1.2.8.tar.gz
+
+    cd /usr/netcdf/WORK_DIR/hdf5  
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4/hdf5-1.8.12.tar.gz  
+    tar -xvzf hdf5-1.8.12.tar.gz
+
+    cd /usr/netcdf/WORK_DIR/netCDF  
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/old/netcdf-4.3.0.tar.gz  
+    tar -xvzf netcdf-4.3.0.tar.gz 
+
+    cd /usr/netcdf/WORK_DIR/netCDF-C++  
+    wget https://github.com/Unidata/netcdf-cxx4/archive/v4.2.1.tar.gz  
+    tar -xvzf v4.2.1.tar.gz
+
+    cd /usr/netcdf/WORK_DIR/netCDF-Fortran 
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/old/netcdf-fortran-4.2.tar.gz 
+    tar -xvzf netcdf-fortran-4.2.tar.gz
+
+    export CC=pgcc CFLAGS="-O tp=p7-64" CXX=pgc++ CXXFLAGS="-O tp=p7-64" FC=pgfortran FCFLAGS="-O tp=p7-64" F77=pgfortran FFLAGS="-O tp=p7-64" CPPFLAGS="-DpgiFortran" 
+
+    mkdir -p /usr/local  
+    mkdir -p /usr/local/bin  
+    mkdir -p /usr/local/include  
+    mkdir -p /usr/local/lib 
+
+    export PATH="$PATH:/usr/local/bin" LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib" LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib" CPATH="$CPATH:/usr/local/include"
+
+# zlib 
+    cd /usr/netcdf/WORK_DIR/zlib/zlib-1.2.8 
+    ./configure --prefix=/usr/local 
+    make  
+    make install 
+
+# hdf5
+    cd  /usr/netcdf/WORK_DIR/hdf5/hdf5-1.8.12 
+    unset CPP 
+    ./configure --prefix=/usr/local --enable-fortran --enable-c++ 
+    make 
+    make install 
+
+# netcdf
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib" 
+    export CFLAGS="-O tp=p7-64 -I /usr/local/include" 
+    export LDFLAGS="-L/usr/local/lib -L/usr/local/lib" 
+    cd  /usr/netcdf/WORK_DIR/netCDF/netcdf-4.3.0 
+    ./configure --prefix=/usr/local 
+    make  
+    make install  
+
+# netcdf-c++
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/hdf5/lib:/usr/local/lib" 
+    export CFLAGS="-O tp=p7-64 -I /usr/local/include -I /usr/local/include" 
+    export CPPFLAGS="-DpgiFortran -I /usr/local/include -I /usr/local/include" 
+    export LDFLAGS="-L/usr/local/lib -L/usr/local/lib" 
+    cd  /usr/netcdf/WORK_DIR/netCDF-C++/netcdf-cxx4-4.2.1 
+    ./configure --prefix=/usr/local 
+    make  
+    make install 
+
+# netcdf-fortran
+    export CFLAGS="-O tp=p7-64 -I /usr/local/include -I /usr/local/include" 
+    export FCFLAGS="-O tp=p7-64 -I /usr/local/include -I /usr/local/include" 
+    export FFLAGS="-O tp=p7-64 -I /usr/local/include -I /usr/local/include" 
+    export CPPFLAGS="-DpgiFortran -I /usr/local/include -I /usr/local/include" 
+    unset LDFLAGS 
+    cd  /usr/netcdf/WORK_DIR/netCDF-Fortran/netcdf-fortran-4.2 
+    ./configure --prefix=/usr/local 
+    make 
+    make install   
+    
+##### END : netcdf installation #####
+
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 
+    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/anaconda3 
+    rm Miniconda3-latest-Linux-x86_64.sh 
+    /opt/anaconda3/bin/conda install -y -q netcdf4
+
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/pgi/linux86-64-llvm/2019/cuda/10.1/lib64/" 
+
+    cd /
+    rm -rf ${build_tmp}
+
+%files
+    miniapps-profiler /labs
+
+%runscript
+    "$@"
+
+%labels
+    AUTHOR mozhgank

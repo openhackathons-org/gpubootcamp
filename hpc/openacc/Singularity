@@ -1,0 +1,24 @@
+Bootstrap: docker
+From: nvcr.io/hpc/pgi-compilers:ce
+
+%runscript
+ 
+    "$@"
+
+%post
+
+    apt-get -y update
+    apt-get -y install --no-install-recommends python3-pip python3-setuptools zip
+    rm -rf /var/lib/apt/lists/*
+    pip3 install --no-cache-dir jupyter
+
+%files
+
+labs /labs
+
+%environment
+XDG_RUNTIME_DIR=
+
+%labels
+
+AUTHOR dholt
