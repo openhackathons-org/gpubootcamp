@@ -1,7 +1,7 @@
 
 CC := pgcc
-ACCFLAGS_1 := -fast -ta=tesla:cc70 -Minfo=accel
-ACCFLAGS_2 := -fast -ta=tesla:cc70,managed -Minfo=accel
+ACCFLAGS_1 := -fast -ta=tesla -Minfo=accel
+ACCFLAGS_2 := -fast -ta=tesla:managed -Minfo=accel
 
 laplace_update: jacobi.c laplace2d.c
 	${CC} ${ACCFLAGS_1} -o laplace_update jacobi.c laplace2d.c

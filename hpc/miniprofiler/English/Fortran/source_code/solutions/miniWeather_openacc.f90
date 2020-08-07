@@ -83,9 +83,9 @@ program miniweather
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !The x-direction length is twice as long as the z-direction length
   !So, you'll want to have nx_glob be twice as large as nz_glob
-  nx_glob = 400        !Number of total cells in the x-dirction
-  nz_glob = 200        !Number of total cells in the z-dirction
-  sim_time = 1500 !How many seconds to run the simulation
+  nx_glob = 40        !Number of total cells in the x-dirction
+  nz_glob = 20        !Number of total cells in the z-dirction
+  sim_time = 1000 !How many seconds to run the simulation
   output_freq = 100 !How frequently to output data to file (in seconds)
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !! END USER-CONFIGURABLE PARAMETERS

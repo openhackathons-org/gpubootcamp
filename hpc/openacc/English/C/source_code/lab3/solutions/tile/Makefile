@@ -1,6 +1,6 @@
 
 CC := pgcc
-ACCFLAGS:= -fast -ta=tesla:cc70 -Minfo=accel
+ACCFLAGS:= -fast -ta=tesla -Minfo=accel
 
 laplace: jacobi.c laplace2d.c
 	${CC} ${ACCFLAGS} -o laplace jacobi.c laplace2d.c

@@ -1,7 +1,7 @@
 
 FC := pgfortran
-ACCFLAGS_1 := -fast -ta=tesla:cc70 -Minfo=accel
-ACCFLAGS_2 := -fast -ta=tesla:cc70,managed -Minfo=accel
+ACCFLAGS_1 := -fast -ta=tesla -Minfo=accel
+ACCFLAGS_2 := -fast -ta=tesla:managed -Minfo=accel
 
 laplace_update: laplace2d.f90 jacobi.f90
 	${FC} ${ACCFLAGS_1} -o laplace_update laplace2d.f90 jacobi.f90

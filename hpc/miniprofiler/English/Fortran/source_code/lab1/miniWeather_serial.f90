@@ -83,9 +83,9 @@ program miniweather
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !The x-direction length is twice as long as the z-direction length
   !So, you'll want to have nx_glob be twice as large as nz_glob
-  nx_glob = 400        !Number of total cells in the x-dirction
-  nz_glob = 200        !Number of total cells in the z-dirction
-  sim_time = 10 !How many seconds to run the simulation
+  nx_glob = 40        !Number of total cells in the x-dirction
+  nz_glob = 20        !Number of total cells in the z-dirction
+  sim_time = 1000 !How many seconds to run the simulation
   output_freq = 100 !How frequently to output data to file (in seconds)
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !! END USER-CONFIGURABLE PARAMETERS
@@ -550,102 +550,4 @@ contains
     deallocate(hy_pressure_int   )
   end subroutine finalize
 
-
-  !Output the fluid state (state) to a NetCDF file at a given elapsed model time (etime)
-  !The file I/O uses parallel-netcdf, the only external library required for this mini-app.
-  !If it's too cumbersome, you can comment the I/O out, but you'll miss out on some potentially cool graphics
-  subroutine output(state,etime)
-    implicit none
-
-    real(rp), intent(in) :: state(1-hs:nx+hs,1-hs:nz+hs,NUM_VARS)
-    real(rp), intent(in) :: etime
-    integer :: ncid, t_dimid, x_dimid, z_dimid, dens_varid, uwnd_varid, wwnd_varid, theta_varid, t_varid
-    integer :: i,k, __LINE__
-    integer, save :: num_out = 0
-    integer :: len, st1(1),ct1(1),st3(3),ct3(3)
-    !Temporary arrays to hold density, u-wind, w-wind, and potential temperature (theta)
-    real(rp), allocatable :: dens(:,:), uwnd(:,:), wwnd(:,:), theta(:,:)
-    real(rp) :: etimearr(1)
-    !Inform the user
-    write(*,*) '*** OUTPUT ***'
-    !Allocate some (big) temp arrays
-    allocate(dens (nx,nz))
-    allocate(uwnd (nx,nz))
-    allocate(wwnd (nx,nz))
-    allocate(theta(nx,nz))
-
-    !If the elapsed time is zero, create the file. Otherwise, open the file
-    if (etime == 0) then
-      !Create the file
-      call ncwrap( nf90_create('reference.nc' , nf90_clobber , ncid ) , __LINE__ )
-      !Create the dimensions
-      len=nf90_unlimited; call ncwrap( nf90_def_dim( ncid , 't' , len , t_dimid ) , __LINE__ )
-      len=nx_glob       ; call ncwrap( nf90_def_dim( ncid , 'x' , len , x_dimid ) , __LINE__ )
-      len=nz_glob       ; call ncwrap( nf90_def_dim( ncid , 'z' , len , z_dimid ) , __LINE__ )
-      !Create the variables
-      call ncwrap( nf_def_var( ncid , 't' , NF90_DOUBLE , 1 , (/ t_dimid /) , t_varid ) , __LINE__ )
-      call ncwrap( nf_def_var( ncid , 'dens'  , nf90_double , 3 , (/ x_dimid , z_dimid , t_dimid /) ,  dens_varid ) , __LINE__ )
-      call ncwrap( nf_def_var( ncid , 'uwnd'  , nf90_double , 3 , (/ x_dimid , z_dimid , t_dimid /) ,  uwnd_varid ) , __LINE__ )
-      call ncwrap( nf_def_var( ncid , 'wwnd'  , nf90_double , 3 , (/ x_dimid , z_dimid , t_dimid /) ,  wwnd_varid ) , __LINE__ )
-      call ncwrap( nf_def_var( ncid , 'theta' , nf90_double , 3 , (/ x_dimid , z_dimid , t_dimid /) , theta_varid ) , __LINE__ )
-      !End "define" mode
-      call ncwrap( nf90_enddef( ncid ) , __LINE__ )
-    else
-      !Open the file
-      call ncwrap( nf90_open( 'reference.nc' , nf90_write , ncid ) , __LINE__ )
-      !Get the variable IDs
-      call ncwrap( nf90_inq_varid( ncid , 'dens'  ,  dens_varid ) , __LINE__ )
-      call ncwrap( nf90_inq_varid( ncid , 'uwnd'  ,  uwnd_varid ) , __LINE__ )
-      call ncwrap( nf90_inq_varid( ncid , 'wwnd'  ,  wwnd_varid ) , __LINE__ )
-      call ncwrap( nf90_inq_varid( ncid , 'theta' , theta_varid ) , __LINE__ )
-      call ncwrap( nf90_inq_varid( ncid , 't'     ,     t_varid ) , __LINE__ )
-    endif
-
-    !Store perturbed values in the temp arrays for output
-    do k = 1 , nz
-      do i = 1 , nx
-        dens (i,k) = state(i,k,ID_DENS)
-        uwnd (i,k) = state(i,k,ID_UMOM) / ( hy_dens_cell(k) + state(i,k,ID_DENS) )
-        wwnd (i,k) = state(i,k,ID_WMOM) / ( hy_dens_cell(k) + state(i,k,ID_DENS) )
-        theta(i,k) = ( state(i,k,ID_RHOT) + hy_dens_theta_cell(k) ) / ( hy_dens_cell(k) + state(i,k,ID_DENS) ) - hy_dens_theta_cell(k) / hy_dens_cell(k)
-      enddo
-    enddo
-
-    !Write the grid data to file with all the processes writing collectively
-    st3=(/i_beg,k_beg,num_out+1/); ct3=(/nx,nz,1/); call ncwrap( nf_put_vara_double( ncid ,  dens_varid , st3 , ct3 , dens  ) , __LINE__ )
-    st3=(/i_beg,k_beg,num_out+1/); ct3=(/nx,nz,1/); call ncwrap( nf_put_vara_double( ncid ,  uwnd_varid , st3 , ct3 , uwnd  ) , __LINE__ )
-    st3=(/i_beg,k_beg,num_out+1/); ct3=(/nx,nz,1/); call ncwrap( nf_put_vara_double( ncid ,  wwnd_varid , st3 , ct3 , wwnd  ) , __LINE__ )
-    st3=(/i_beg,k_beg,num_out+1/); ct3=(/nx,nz,1/); call ncwrap( nf_put_vara_double( ncid , theta_varid , st3 , ct3 , theta ) , __LINE__ )
-
-    !Only the master process needs to write the elapsed time
-    !write elapsed time to file
-
-      st1=(/num_out+1/); ct1=(/1/); etimearr(1) = etime; call ncwrap( nf_put_vara_double( ncid , t_varid , st1 , ct1 , etimearr ) , __LINE__ )
-
-
-
-    !Close the file
-    call ncwrap( nf90_close(ncid) , __LINE__ )
-
-    !Increment the number of outputs
-    num_out = num_out + 1
-
-    !Deallocate the temp arrays
-    deallocate(dens )
-    deallocate(uwnd )
-    deallocate(wwnd )
-    deallocate(theta)
-  end subroutine output
-
-  !Error reporting routine for the NetCDF I/O
-  subroutine ncwrap( ierr , line )
-    implicit none
-    integer, intent(in) :: ierr
-    integer, intent(in) :: line
-    if (ierr /= nf90_noerr) then
-      write(*,*) 'NetCDF Error at line: ', line
-      write(*,*) nf90_strerror(ierr)
-      stop
-    endif
-  end subroutine ncwrap
 end program miniweather

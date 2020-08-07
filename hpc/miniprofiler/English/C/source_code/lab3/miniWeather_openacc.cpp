@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
-#include <netcdf.h>
 #include <nvtx3/nvToolsExt.h>
 
 const double pi = 3.14159265358979323846264338327;   //Pi
@@ -108,9 +107,9 @@ int main(int argc, char **argv)
   ///////////////////////////////////////////////////////////////////////////////////////
   //The x-direction length is twice as long as the z-direction length
   //So, you'll want to have nx_glob be twice as large as nz_glob
-  nx_glob = 400;     //Number of total cells in the x-dirction
-  nz_glob = 200;     //Number of total cells in the z-dirction
-  sim_time = 1500;   //How many seconds to run the simulation
+  nx_glob = 40;      //Number of total cells in the x-dirction
+  nz_glob = 20;      //Number of total cells in the z-dirction
+  sim_time = 1000;   //How many seconds to run the simulation
   output_freq = 100; //How frequently to output data to file (in seconds)
   ///////////////////////////////////////////////////////////////////////////////////////
   // END USER-CONFIGURABLE PARAMETERS
@@ -132,7 +131,7 @@ int main(int argc, char **argv)
   init();
 
   //Output the initial state
-  output(state, etime);
+  //output(state, etime);
 
   ////////////////////////////////////////////////////
   // MAIN TIME STEP LOOP
@@ -165,7 +164,7 @@ int main(int argc, char **argv)
     {
       output_counter = output_counter - output_freq;
 
-      output(state, etime);
+      //output(state, etime);
     }
   }
   nvtxRangePop();
@@ -624,132 +623,6 @@ void hydro_const_theta(double z, double &r, double &t)
   p = p0 * pow(exner, (cp / rd));            //Pressure at z
   rt = pow((p / C0), (1. / gamm));           //rho*theta at z
   r = rt / t;                                //Density at z
-}
-
-//Output the fluid state (state) to a NetCDF file at a given elapsed model time (etime)
-//The file I/O uses netcdf, the only external library required for this mini-app.
-//If it's too cumbersome, you can comment the I/O out, but you'll miss out on some potentially cool graphics
-void output(double *state, double etime)
-{
-  int ncid, t_dimid, x_dimid, z_dimid, dens_varid, uwnd_varid, wwnd_varid, theta_varid, t_varid, dimids[3];
-  int i, k, ind_r, ind_u, ind_w, ind_t;
-
-  size_t st1[1], ct1[1], st3[3], ct3[3];
-
-  //Temporary arrays to hold density, u-wind, w-wind, and potential temperature (theta)
-  double *dens, *uwnd, *wwnd, *theta;
-  double *etimearr;
-  //Inform the user
-
-  printf("*** OUTPUT ***\n");
-
-  //Allocate some (big) temp arrays
-  dens = (double *)malloc(nx * nz * sizeof(double));
-  uwnd = (double *)malloc(nx * nz * sizeof(double));
-  wwnd = (double *)malloc(nx * nz * sizeof(double));
-  theta = (double *)malloc(nx * nz * sizeof(double));
-  etimearr = (double *)malloc(1 * sizeof(double));
-
-  //If the elapsed time is zero, create the file. Otherwise, open the file
-  if (etime == 0)
-  {
-    //Create the file
-    ncwrap(nc_create("new.nc", NC_CLOBBER, &ncid), __LINE__);
-
-    //Create the dimensions
-    ncwrap(nc_def_dim(ncid, "t", NC_UNLIMITED, &t_dimid), __LINE__);
-    ncwrap(nc_def_dim(ncid, "x", nx_glob, &x_dimid), __LINE__);
-    ncwrap(nc_def_dim(ncid, "z", nz_glob, &z_dimid), __LINE__);
-
-    //Create the variables
-    dimids[0] = t_dimid;
-    ncwrap(nc_def_var(ncid, "t", NC_DOUBLE, 1, dimids, &t_varid), __LINE__);
-
-    dimids[0] = t_dimid;
-    dimids[1] = z_dimid;
-    dimids[2] = x_dimid;
-
-    ncwrap(nc_def_var(ncid, "dens", NC_DOUBLE, 3, dimids, &dens_varid), __LINE__);
-    ncwrap(nc_def_var(ncid, "uwnd", NC_DOUBLE, 3, dimids, &uwnd_varid), __LINE__);
-    ncwrap(nc_def_var(ncid, "wwnd", NC_DOUBLE, 3, dimids, &wwnd_varid), __LINE__);
-    ncwrap(nc_def_var(ncid, "theta", NC_DOUBLE, 3, dimids, &theta_varid), __LINE__);
-
-    //End "define" mode
-    ncwrap(nc_enddef(ncid), __LINE__);
-  }
-  else
-  {
-    //Open the file
-    ncwrap(nc_open("new.nc", NC_WRITE, &ncid), __LINE__);
-
-    //Get the variable IDs
-    ncwrap(nc_inq_varid(ncid, "dens", &dens_varid), __LINE__);
-    ncwrap(nc_inq_varid(ncid, "uwnd", &uwnd_varid), __LINE__);
-    ncwrap(nc_inq_varid(ncid, "wwnd", &wwnd_varid), __LINE__);
-    ncwrap(nc_inq_varid(ncid, "theta", &theta_varid), __LINE__);
-    ncwrap(nc_inq_varid(ncid, "t", &t_varid), __LINE__);
-  }
-
-  //Store perturbed values in the temp arrays for output
-  for (k = 0; k < nz; k++)
-  {
-    for (i = 0; i < nx; i++)
-    {
-      ind_r = ID_DENS * (nz + 2 * hs) * (nx + 2 * hs) + (k + hs) * (nx + 2 * hs) + i + hs;
-      ind_u = ID_UMOM * (nz + 2 * hs) * (nx + 2 * hs) + (k + hs) * (nx + 2 * hs) + i + hs;
-      ind_w = ID_WMOM * (nz + 2 * hs) * (nx + 2 * hs) + (k + hs) * (nx + 2 * hs) + i + hs;
-      ind_t = ID_RHOT * (nz + 2 * hs) * (nx + 2 * hs) + (k + hs) * (nx + 2 * hs) + i + hs;
-      dens[k * nx + i] = state[ind_r];
-      uwnd[k * nx + i] = state[ind_u] / (hy_dens_cell[k + hs] + state[ind_r]);
-      wwnd[k * nx + i] = state[ind_w] / (hy_dens_cell[k + hs] + state[ind_r]);
-      theta[k * nx + i] = (state[ind_t] + hy_dens_theta_cell[k + hs]) / (hy_dens_cell[k + hs] + state[ind_r]) - hy_dens_theta_cell[k + hs] / hy_dens_cell[k + hs];
-    }
-  }
-
-  //Write the grid data to file with all the processes writing collectively
-  st3[0] = num_out;
-  st3[1] = k_beg;
-  st3[2] = i_beg;
-  ct3[0] = 1;
-  ct3[1] = nz;
-  ct3[2] = nx;
-
-  ncwrap(nc_put_vara_double(ncid, dens_varid, st3, ct3, dens), __LINE__);
-  ncwrap(nc_put_vara_double(ncid, uwnd_varid, st3, ct3, uwnd), __LINE__);
-  ncwrap(nc_put_vara_double(ncid, wwnd_varid, st3, ct3, wwnd), __LINE__);
-  ncwrap(nc_put_vara_double(ncid, theta_varid, st3, ct3, theta), __LINE__);
-
-  //Only the master process needs to write the elapsed time
-  //write elapsed time to file
-
-  st1[0] = num_out;
-  ct1[0] = 1;
-  etimearr[0] = etime;
-  ncwrap(nc_put_vara_double(ncid, t_varid, st1, ct1, etimearr), __LINE__);
-
-  //Close the file
-  ncwrap(nc_close(ncid), __LINE__);
-
-  //Increment the number of outputs
-  num_out = num_out + 1;
-
-  //Deallocate the temp arrays
-  free(dens);
-  free(uwnd);
-  free(wwnd);
-  free(theta);
-  free(etimearr);
-}
-
-//Error reporting routine for the NetCDF I/O
-void ncwrap(int ierr, int line)
-{
-  if (ierr != NC_NOERR)
-  {
-    printf("NetCDF Error at line: %d\n", line);
-    printf("%s\n", nc_strerror(ierr));
-    exit(-1);
-  }
 }
 
 void finalize()

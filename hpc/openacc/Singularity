@@ -8,13 +8,13 @@ From: nvcr.io/hpc/pgi-compilers:ce
 %post
 
     apt-get -y update
-    apt-get -y install --no-install-recommends python3-pip python3-setuptools zip
+    apt-get -y install --no-install-recommends python3-pip python3-setuptools zip build-essential
     rm -rf /var/lib/apt/lists/*
     pip3 install --no-cache-dir jupyter
 
 %files
 
-labs /labs
+    English/ /labs
 
 %environment
 XDG_RUNTIME_DIR=
