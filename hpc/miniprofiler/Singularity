@@ -1,25 +1,24 @@
 Bootstrap: docker
-FROM: nvcr.io/nvidia/cuda:10.2-base-ubuntu18.04
+FROM: nvcr.io/hpc/pgi-compilers:ce
 
 %environment
     export XDG_RUNTIME_DIR=
     export PATH="$PATH:/opt/pgi/linux86-64/19.10/bin:/usr/local/bin:/opt/anaconda3/bin:/usr/bin"
-    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib" 
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/pgi/linux86-64-llvm/2019/cuda/10.1/lib64/:/opt/pgi/linux86-64-llvm/19.10/lib" 
     export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib" CPATH="$CPATH:/usr/local/include"
-    NVARCH=`uname -s`_`uname -m`; export NVARCH
-    NVCOMPILERS=/opt/nvidia/hpc_sdk; export NVCOMPILERS
-    MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.7/compilers/man; export MANPATH
-    PATH=$NVCOMPILERS/$NVARCH/20.7/compilers/bin:$PATH; export PATH
-    export PATH=$NVCOMPILERS/$NVARCH/20.7/comm_libs/mpi/bin:$PATH
-    export MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.7/comm_libs/mpi/man
+    export PATH=/opt/nvidia/nsight-systems/2020.2.1/bin:/opt/nvidia/nsight-compute/2020.1.1/:$PATH
+
 
 %post
     build_tmp=$(mktemp -d) && cd ${build_tmp}
+
+    export PATH=/opt/pgi/linux86-64/19.10/bin:$PATH
+
     apt-get -y update
-    DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade 
-    DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \
+    apt-get -y dist-upgrade 
+    apt-get -y install --no-install-recommends \
 	    m4 vim-nox emacs-nox nano zip \
- 	    python3 python3-pip python3-setuptools git-core inotify-tools wget\
+ 	    python3 python3-pip python3-setuptools git-core inotify-tools \
 	    curl git-lfs \
 	    build-essential
     rm -rf /var/lib/apt/cache/* 
@@ -27,12 +26,19 @@ FROM: nvcr.io/nvidia/cuda:10.2-base-ubuntu18.04
     pip3 install --upgrade pip
     pip3 install jupyter netcdf4
 
-### NVIDIA HPC SDK 20.7
-    wget https://developer.download.nvidia.com/hpc-sdk/nvhpc_2020_207_Linux_x86_64_cuda_multi.tar.gz
-    tar xpzf nvhpc_2020_207_Linux_x86_64_cuda_multi.tar.gz
+    apt-get install --no-install-recommends -y build-essential 
 
-    nvhpc_2020_207_Linux_x86_64_cuda_multi/install
-###
+# NVIDIA nsight-systems-2020.1.1 nsight-compute-2020.1.1
+    apt-get update -y 
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-transport-https ca-certificates gnupg wget
+    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list 
+    echo "deb https://developer.download.nvidia.com/devtools/repo-deb/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list 
+    apt-get update -y 
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.2.1 nsight-compute-2020.1.1
+
+    apt-get install --no-install-recommends -y build-essential
+#
+
 
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/anaconda3 

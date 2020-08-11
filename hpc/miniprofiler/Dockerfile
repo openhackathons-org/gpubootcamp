@@ -1,43 +1,58 @@
-# To build: $ sudo docker build -t myimage:1.0 .
+# To build: $ sudo docker build -t miniprofiler:latest .
+# To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 miniprofiler:latest
+# Finally, open http://127.0.0.1:8888/
 
-# To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 myimage:1.0
+FROM nvcr.io/hpc/pgi-compilers:ce
 
-# To run Jupyter inside the container: $ jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
-
-FROM nvcr.io/nvidia/cuda:10.2-base-ubuntu18.04
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && \
-    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    openssh-server m4 vim-nox emacs-nox nano zip wget python3 python3-pip python3-setuptools git-core inotify-tools curl git-lfs  build-essential && \
+RUN apt-get update -y && \
+    apt-get dist-upgrade -y && \
+    apt-get install --no-install-recommends -y \
+    openssh-server m4 vim-nox emacs-nox nano zip && \
     rm -rf /var/lib/apt/cache/* 
 
+RUN apt-get update 
+RUN apt-get install --no-install-recommends -y python3 python3-pip nginx 
 RUN pip3 install --upgrade pip
+RUN apt-get install --no-install-recommends -y python3-setuptools
+RUN apt-get install --no-install-recommends -y git-core
 RUN apt-get install --no-install-recommends -y openssh-client 
+RUN apt-get install --no-install-recommends -y inotify-tools 
 RUN pip3 install jupyter
 RUN pip3 install netcdf4
+RUN apt-get install --no-install-recommends -y curl
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt-get install --no-install-recommends -y git-lfs
+RUN git lfs install
 
-### NVIDIA HPC SDK 20.7
-RUN wget https://developer.download.nvidia.com/hpc-sdk/nvhpc_2020_207_Linux_x86_64_cuda_multi.tar.gz
-RUN tar xpzf nvhpc_2020_207_Linux_x86_64_cuda_multi.tar.gz
+# NVIDIA Nsight Systems 
+RUN apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    ca-certificates \
+    gnupg \
+    wget && \
+    echo "deb https://developer.download.nvidia.com/devtools/repo-deb/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list && \
+    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list  &&\
+    apt-get update -y
 
-RUN nvhpc_2020_207_Linux_x86_64_cuda_multi/install
-###
+RUN apt-get update -y
+
+# NVIDIA nsight-systems-2020.1.1 nsight-compute-2020.1.1
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.2.1 nsight-compute-2020.1.1
+
+RUN apt-get install --no-install-recommends -y build-essential
+
+
+ENV PATH="$PATH:/usr/local/bin:/opt/anaconda3/bin:/usr/bin" LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib" LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib" CPATH="$CPATH:/usr/local/include"
 
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/anaconda3  && \
     rm Miniconda3-latest-Linux-x86_64.sh && \
     /opt/anaconda3/bin/conda install -y -q netcdf4
 
-ENV PATH="$PATH:/opt/pgi/linux86-64/19.10/bin:/usr/local/bin:/opt/anaconda3/bin:/usr/bin" \
-    LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib" LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib" CPATH="$CPATH:/usr/local/include"
-
-ENV NVARCH=`uname -s`_`uname -m`; export NVARCH \
-    NVCOMPILERS=/opt/nvidia/hpc_sdk; export NVCOMPILERS \
-    MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.7/compilers/man; export MANPATH
-
-ENV PATH=$NVCOMPILERS/$NVARCH/20.7/compilers/bin:$PATH; export PATH \
-    PATH=$NVCOMPILERS/$NVARCH/20.7/comm_libs/mpi/bin:$PATH \
-    MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/20.7/comm_libs/mpi/man
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/pgi/linux86-64-llvm/2019/cuda/10.1/lib64/" 
+ENV PATH="$PATH:/opt/nvidia/nsight-systems/2020.2.1/bin:/opt/nvidia/nsight-compute/2020.1.1/"
 
 ADD English/ /labs
+WORKDIR /labs
+CMD service nginx start && jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs
