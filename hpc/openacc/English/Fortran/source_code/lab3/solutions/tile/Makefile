@@ -1,4 +1,4 @@
-
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 FC := pgfortran
 ACCFLAGS:= -fast -ta=tesla -Minfo=accel
 

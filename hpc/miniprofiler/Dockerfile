@@ -1,3 +1,5 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
+
 # To build: $ sudo docker build -t miniprofiler:latest .
 # To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 miniprofiler:latest
 # Finally, open http://127.0.0.1:8888/

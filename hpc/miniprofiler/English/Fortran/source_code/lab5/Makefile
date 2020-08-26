@@ -1,3 +1,4 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 FC := pgf90
 FFLAGS := -fast
 LDFLAGS := -lnvToolsExt 

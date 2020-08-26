@@ -1,4 +1,4 @@
-
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 CC := pgcc
 ACCFLAGS_1 := -fast
 ACCFLAGS_2 := -fast -ta=multicore -Minfo=accel

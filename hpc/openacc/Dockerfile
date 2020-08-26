@@ -1,3 +1,4 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 
 # To build the docker container, run: $ sudo docker build -t openacc-labs:latest .
 # To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 openacc-labs:latest

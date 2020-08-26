@@ -6,6 +6,12 @@
 !! For documentation, please see the attached documentation in the "documentation" folder
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! Copyright (c) 2018, National Center for Computational Sciences, Oak Ridge National Laboratory.  All rights reserved.
+!!
+!! Portions Copyright (c) 2020, NVIDIA Corporation.  All rights reserved.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 program miniweather
   use nvtx
   !implicit none
