@@ -1,7 +1,7 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 
-# To build: $ sudo docker build -t miniprofiler:latest .
-# To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 miniprofiler:latest
+# To build: $ sudo docker build -t nvidia_nsight_profiling_openacc:latest .
+# To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 nvidia_nsight_profiling_openacc:latest
 # Finally, open http://127.0.0.1:8888/
 
 FROM nvcr.io/hpc/pgi-compilers:ce
