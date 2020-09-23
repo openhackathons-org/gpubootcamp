@@ -39,7 +39,7 @@ RUN apt-get update -y && \
 
 RUN apt-get update -y
 
-# NVIDIA nsight-systems-2020.1.1 nsight-compute-2020.1.1
+# NVIDIA nsight-systems-2020.2.1 nsight-compute-2020.1.1
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.2.1 nsight-compute-2020.1.1
 
 RUN apt-get install --no-install-recommends -y build-essential

@@ -30,7 +30,7 @@ FROM: nvcr.io/hpc/pgi-compilers:ce
 
     apt-get install --no-install-recommends -y build-essential 
 
-# NVIDIA nsight-systems-2020.1.1 nsight-compute-2020.1.1
+# NVIDIA nsight-systems-2020.2.1 nsight-compute-2020.1.1
     apt-get update -y 
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-transport-https ca-certificates gnupg wget
     echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list 
