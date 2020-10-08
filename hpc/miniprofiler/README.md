@@ -1,11 +1,11 @@
 # Nsight Tool Tutorial
-This repository contains mini applications for GPU Bootcamps.
+This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**)
 
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
 
 - Install the [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/]).
-- Install Nvidia toolkit, [Nsight Systems (2020.1)](https://developer.nvidia.com/nsight-graphics-2020_1) and [compute (2019.5)](https://developer.nvidia.com/nsight-compute).
+- Install Nvidia toolkit, [Nsight Systems (latest version)](https://developer.nvidia.com/nsight-systems) and [compute (latest version)](https://developer.nvidia.com/nsight-compute).
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
