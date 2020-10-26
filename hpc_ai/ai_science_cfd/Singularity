@@ -8,15 +8,11 @@ FROM: nvcr.io/nvidia/tensorflow:20.01-tf2-py3
     apt-get update -y
     apt-get install -y libsm6 libxext6 libxrender-dev git
     pip3 install opencv-python==4.1.2.30 pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
-    mkdir /workspace/CFD/data
+    mkdir /workspace/python/jupyter_notebook/CFD/data
     python3 /workspace/python/source_code/dataset.py
 
 %files
-     English/ /workspace/
-#    English/python/jupyter_notebook/CFD /workspace/CFD
-#    English/python/jupyter_notebook/Intro_to_DL /workspace/Intro_to_DL
-#    English/Start_Here.ipynb /workspace/
-#    English/python/source_code/dataset.py /workspace/
+     English/* /workspace/
 
 %runscript
     "$@"

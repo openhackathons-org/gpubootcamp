@@ -4,7 +4,7 @@ Training materials provided by OpenACC.org. The objective of this lab is to give
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
 
-- Install the [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/]).
+- Install the [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/).
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
@@ -22,21 +22,20 @@ and to run the container, run:
 The container launches jupyter notebook and runs on port 8888
 `jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
-Once inside the container, start the lab by clicking on the `Start_Here.ipynb` notebook.
+Then, open the jupyter notebook in browser: http://localhost:8888
+Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ### Singularity Container
 
 To build the singularity container, run: 
-`singularity build <image_name>.simg Singularity`
+`sudo singularity build <image_name>.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
 `singularity run <image_name>.simg cp -rT /workspace ~/workspace`
 
 Then, run the container:
-`singularity run --nv <image_name>.simg jupyter notebook --notebook-dir=/workspace/python/jupyter_notebook/`
+`singularity run --nv <image_name>.simg jupyter notebook --notebook-dir=~/workspace`
 
-Once inside the container, start the lab by clicking on the `Start_Here.ipynb` notebook.
-
-## Questions?
-Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for questions.
+Then, open the jupyter notebook in browser: http://localhost:8888
+Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 

@@ -11,7 +11,7 @@ FROM: nvcr.io/nvidia/tensorflow:20.01-tf2-py3
     python3 /workspace/python/source_code/dataset.py
     
 %files
-    English/ /workspace/
+    English/* /workspace/
 
 %runscript
     "$@"
