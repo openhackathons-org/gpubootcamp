@@ -3,7 +3,7 @@
 CC := pgc++
 CFLAGS := -O3 -w -ldl
 ACCFLAGS := -Minfo=accel
-NVTXLIB := -I/opt/pgi/linux86-64-llvm/2019/cuda/10.1/include/
+NVTXLIB := -I/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/include
 
 miniWeather: miniWeather_serial.cpp
 	${CC} ${CFLAGS} ${ACCFLAGS} -o miniWeather miniWeather_serial.cpp ${NVTXLIB} 
