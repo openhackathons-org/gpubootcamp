@@ -34,7 +34,7 @@ and copy the files to your local machine to make sure changes are stored locally
 `singularity run <image_name>.simg cp -rT /workspace ~/workspace`
 
 Then, run the container:
-`singularity run --nv <image_name>.simg jupyter notebook --notebook-dir=~/workspace`
+`singularity run --nv <image_name>.simg jupyter notebook --notebook-dir=~/workspace/python/jupyter_notebook`
 
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
