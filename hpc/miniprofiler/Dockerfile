@@ -44,6 +44,7 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh &
     rm Miniconda3-latest-Linux-x86_64.sh && \
     /opt/anaconda3/bin/conda install -y -q netcdf4
 
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/lib64/"
 ENV PATH="/opt/nvidia/nsight-systems/2020.2.1/bin:$PATH"
 
 ADD English/ /labs

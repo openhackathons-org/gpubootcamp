@@ -7,6 +7,7 @@ FROM: nvcr.io/nvidia/nvhpc:20.9-devel-ubuntu20.04
     export XDG_RUNTIME_DIR=
     export PATH="$PATH:/usr/local/bin:/opt/anaconda3/bin:/usr/bin"
     export PATH=/opt/nvidia/nsight-systems/2020.2.1/bin:$PATH
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda/11.0/lib64/"
 
 %post
     build_tmp=$(mktemp -d) && cd ${build_tmp}
