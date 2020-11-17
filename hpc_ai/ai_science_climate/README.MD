@@ -40,3 +40,11 @@ Then, run the container:
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
+## Troubleshooting
+
+Q. cuDNN failed to initialize or GPU out of memory error
+A. This error occurs when the user forgot to shutdown the jupyter kernel of previously run notebooks. Please make sure that all the previous notebook jupyter kernel is shutdown. ( Go to Home Tab --> Click Running Tab--> Kill notebooks that aren’t being used )
+
+Q. Cannot write to /tmp directory
+A. Some notebooks depend on writing logs to /tmp directory. While creating container make sure /tmp director is accesible with write permission to container. Else the user can also change the tmp directory location
+
