@@ -4,7 +4,9 @@ Training materials provided by OpenACC.org. The objective of this lab is to give
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
 
-- Install the [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/).
+- Install the latest [Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) or [Singularity](https://sylabs.io/docs/).
+
+Make sure both Docker and Singularity has been installed with NVIDIA GPU support
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.

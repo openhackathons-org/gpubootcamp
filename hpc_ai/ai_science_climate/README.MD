@@ -1,10 +1,10 @@
 # openacc-training-materials
 Training materials provided by OpenACC.org. The objective of this lab is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing(HPC) Simulations ). This Bootcamp will introduce you to fundamentals of AI and how they can be applied to Climate/Weather
 
-## Prerequisites:
+## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
 
-- Install the [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/).
+- Install the latest [Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) or [Singularity](https://sylabs.io/docs/).
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
