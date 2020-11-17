@@ -6,6 +6,7 @@ To run this tutorial you will need a machine with NVIDIA GPU.
 
 - Install the [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://sylabs.io/docs/]).
 - Install Nvidia toolkit, [Nsight Systems (latest version)](https://developer.nvidia.com/nsight-systems) and [compute (latest version)](https://developer.nvidia.com/nsight-compute).
+- The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
@@ -34,7 +35,7 @@ Once inside the container, open the jupyter notebook in browser: http://localhos
 ### Singularity Container
 
 To build the singularity container, run: 
-`singularity build miniapp_profiler.simg Singularity`
+`sudo singularity build miniapp_profiler.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
 `singularity run miniapp_profiler.simg cp -rT /labs ~/labs`
