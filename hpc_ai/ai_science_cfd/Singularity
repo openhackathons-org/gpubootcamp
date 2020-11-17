@@ -1,0 +1,21 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
+
+Bootstrap: docker
+FROM: nvcr.io/nvidia/tensorflow:20.01-tf2-py3
+
+%environment
+%post
+    apt-get update -y
+    apt-get install -y libsm6 libxext6 libxrender-dev git
+    pip3 install opencv-python==4.1.2.30 pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
+    mkdir /workspace/python/jupyter_notebook/CFD/data
+    python3 /workspace/python/source_code/dataset.py
+
+%files
+     English/* /workspace/
+
+%runscript
+    "$@"
+
+%labels
+    AUTHOR bharatk
