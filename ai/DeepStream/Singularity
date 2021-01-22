@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/deepstream:5.0-20.07-triton
+
+%runscript
+ 
+    "$@"
+
+%post
+
+    apt-get -y update
+    apt-get -y install ffmpeg python3-gi
+    cd /opt/nvidia/deepstream/deepstream/lib
+    python3 /opt/nvidia/deepstream/deepstream/lib/setup.py install
+    pip3 install jupyterlab
+
+%files
+
+    English/* /opt/nvidia/deepstream/deepstream-5.0/
+
+%environment
+XDG_RUNTIME_DIR=
+
+%labels
+
+AUTHOR bharatk

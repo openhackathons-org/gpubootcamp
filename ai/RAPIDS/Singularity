@@ -1,0 +1,20 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+
+Bootstrap: docker
+FROM: rapidsai/rapidsai-nightly:cuda10.2-runtime-ubuntu18.04-py3.7
+
+%environment
+%post
+    apt-get update -y
+    apt-get install -y libsm6 libxext6 libxrender-dev git 
+    pip3 install pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
+ 
+    
+%files
+    English/* /workspace/
+
+%runscript
+    "$@"
+
+%labels
+    AUTHOR Infernolia

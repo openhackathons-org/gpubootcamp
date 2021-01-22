@@ -1,0 +1,33 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+#
+# NVIDIA Corporation and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA Corporation is strictly prohibited.
+
+[property]
+gpu-id=0
+net-scale-factor=0.0039215697906911373
+tlt-model-key=tlt_encode
+tlt-encoded-model=../../models/tlt_pretrained_models/peoplenet/resnet34_peoplenet_pruned.etlt
+labelfile-path=labels_peoplenet.txt
+model-engine-file=../../models/tlt_pretrained_models/peoplenet/resnet34_peoplenet_pruned.etlt_b1_gpu0_fp16.engine
+input-dims=3;544;960;0
+uff-input-blob-name=input_1
+batch-size=1
+process-mode=1
+model-color-format=0
+## 0=FP32, 1=INT8, 2=FP16 mode
+network-mode=2
+num-detected-classes=3
+cluster-mode=1
+interval=0
+gie-unique-id=1
+output-blob-names=output_bbox/BiasAdd;output_cov/Sigmoid
+
+[class-attrs-all]
+pre-cluster-threshold=0.4
+## Set eps=0.7 and minBoxes for cluster-mode=1(DBSCAN)
+eps=0.7
+minBoxes=1
