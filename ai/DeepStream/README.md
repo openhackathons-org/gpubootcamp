@@ -34,7 +34,7 @@ To build the singularity container, run:
 `sudo singularity build <image_name>.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
-`singularity run <image_name>.simg cp -rT /workspace ~/workspace`
+`singularity run <image_name>.simg cp -rT /opt/nvidia/deepstream/deepstream-5.0/ ~/workspace`
 
 
 Then, run the container:

@@ -7,11 +7,11 @@ FROM: rapidsai/rapidsai-nightly:cuda10.2-runtime-ubuntu18.04-py3.7
 %post
     apt-get update -y
     apt-get install -y libsm6 libxext6 libxrender-dev git 
-    pip3 install pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
- 
+    pip install gdown
+    python3 /workspace/source_code/dataset.py
     
 %files
-    English/* /workspace/
+    English/Python/* /workspace/
 
 %runscript
     "$@"
