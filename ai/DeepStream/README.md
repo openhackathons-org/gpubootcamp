@@ -31,14 +31,14 @@ Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 ### Singularity Container
 
 To build the singularity container, run:
-`sudo singularity build <image_name>.simg Singularity`
+`sudo singularity build --sandbox <image_name>.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
-`singularity run <image_name>.simg cp -rT /opt/nvidia/deepstream/deepstream-5.0/ ~/workspace`
+`singularity run --writable <image_name>.simg cp -rT /opt/nvidia/deepstream/deepstream-5.0/ ~/workspace`
 
 
 Then, run the container:
-`singularity run --nv <image_name>.simg jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=~workspace/python`
+`singularity run --nv --writable <image_name>.simg jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=~/workspace/python`
 
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.

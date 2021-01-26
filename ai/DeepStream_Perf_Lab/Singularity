@@ -1,0 +1,41 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/deepstream:5.0-20.07-triton
+
+%runscript
+
+    "$@"
+
+%post
+
+        apt-get -y update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-transport-https ca-certificates gnupg  wget 
+        rm -rf /var/lib/apt/lists/*
+
+        wget -qO - https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add -
+        echo "deb https://developer.download.nvidia.com/devtools/repo-deb/x86_64/ /" >> /etc/apt/sources.list.d/nsight.list 
+        apt-get -y update 
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.2.1 
+        rm -rf /var/lib/apt/lists/*
+
+        apt-get -y update
+        apt-get install -y ffmpeg python3-gi python3-dev python3-pip cmake unzip
+        pip3 install pybind11 jupyterlab gdown
+
+        cd /opt/nvidia/deepstream/deepstream/lib
+        python3 setup.py install
+        cd /opt/nvidia/deepstream/deepstream-5.0/python/source_code/dataset/
+        python3 /opt/nvidia/deepstream/deepstream-5.0/python/source_code/dataset/download_dataset.py
+        unzip deepstream_dataset.zip
+        cd /opt/nvidia/deepstream/deepstream/lib
+%files
+
+    English/* /opt/nvidia/deepstream/deepstream-5.0/
+
+%environment
+XDG_RUNTIME_DIR=
+
+%labels
+
+AUTHOR bharatk
+
+
