@@ -1,3 +1,4 @@
+// Copyright (c) 2021 NVIDIA Corporation.  All rights reserved. 
 #include <stdio.h>
 #include <iostream>
 #include <fstream>

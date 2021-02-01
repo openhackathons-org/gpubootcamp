@@ -1,3 +1,4 @@
+// Copyright (c) 2021 NVIDIA Corporation.  All rights reserved.
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -91,7 +92,7 @@ int main(int argc, char *argv[])
 		nvtxRangePush("Pair_Calculation");
 		pair_gpu(h_x, h_y, h_z, h_g2, numatm, nconf, xbox, ybox, zbox, nbin);
 		nvtxRangePop(); //Pop for Pair Calculation
-		//////////////////////////////////////////////////////////////////////////
+						//////////////////////////////////////////////////////////////////////////
 	}
 
 	double pi = acos(-1.0l);

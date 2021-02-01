@@ -9,8 +9,9 @@ FROM nvcr.io/nvidia/nvhpc:20.11-devel-cuda_multi-ubuntu20.04
 RUN apt-get -y update && \
         DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends python3-pip python3-setuptools nginx zip make build-essential libtbb-dev && \
         rm -rf /var/lib/apt/lists/* && \
+        pip3 install --upgrade pip &&\
         pip3 install --no-cache-dir jupyter &&\
-        mkdir -p /home/openacc/labs
+        pip3 install gdown
 
 ############################################
 # NVIDIA nsight-systems-2020.5.1 ,nsight-compute-2
@@ -25,6 +26,9 @@ RUN apt-get update -y && \
         apt-get update -y
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.5.1 nsight-compute-2020.2.1 
+
+# TO COPY the data
+COPY nways_labs/ /labs/
 
 RUN python3 /labs/nways_MD/English/C/source_code/dataset.py
 

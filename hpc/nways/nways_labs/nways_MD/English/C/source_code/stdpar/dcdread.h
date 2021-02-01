@@ -1,3 +1,4 @@
+// Copyright (c) 2021 NVIDIA Corporation.  All rights reserved. 
 using namespace std;
 
 void dcdreadhead(int *natom, int *nframes, std::istream &infile) {
