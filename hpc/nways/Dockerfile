@@ -34,7 +34,7 @@ RUN python3 /labs/nways_MD/English/C/source_code/dataset.py
 
 #################################################
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.0/lib64/"
-ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.0/include:$PATH"
+ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.0/include:/usr/local/bin:/opt/anaconda3/bin:/usr/bin:$PATH"
 #################################################
 
 ADD nways_labs/ /labs
