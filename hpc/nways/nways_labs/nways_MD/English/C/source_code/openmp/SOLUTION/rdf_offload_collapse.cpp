@@ -1,4 +1,3 @@
-// Copyright (c) 2021 NVIDIA Corporation.  All rights reserved.
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -82,10 +81,13 @@ int main(int argc, char *argv[])
     }
     nvtxRangePop(); //pop for REading file
     cout << "Reading of input file is completed" << endl;
-    //////////////////////////////////////////////////////////////////////////
-    nvtxRangePush("Pair_Calculation");
-    pair_gpu(h_x, h_y, h_z, h_g2, numatm, nconf, xbox, ybox, zbox, nbin);
-    nvtxRangePop(); //Pop for Pair Calculation
+//////////////////////////////////////////////////////////////////////////
+#pragma omp target data map(h_x [0:nconf * numatm], h_y [0:nconf * numatm], h_z [0:nconf * numatm], h_g2 [0:nbin])
+    {
+        nvtxRangePush("Pair_Calculation");
+        pair_gpu(h_x, h_y, h_z, h_g2, numatm, nconf, xbox, ybox, zbox, nbin);
+        nvtxRangePop(); //Pop for Pair Calculation
+    }
     ////////////////////////////////////////////////////////////////////////
     double pi = acos(-1.0);
     double rho = (numatm) / (xbox * ybox * zbox);
@@ -164,33 +166,30 @@ void pair_gpu(const double *d_x, const double *d_y, const double *d_z,
     cut = box * 0.5;
     int count = 0;
     printf("\n %d %d ", nconf, numatm);
-#pragma omp target data map(d_x [0:nconf * numatm], d_y [0:nconf * numatm], d_z [0:nconf * numatm], d_g2 [0:d_bin])
+    for (int frame = 0; frame < nconf; frame++)
     {
-        for (int frame = 0; frame < nconf; frame++)
-        {
-            printf("\n %d  ", frame);
+        printf("\n %d  ", frame);
 #pragma omp target teams distribute parallel for collapse(2) private(dx, dy, dz, r, ig2)
-            for (int id1 = 0; id1 < numatm; id1++)
+        for (int id1 = 0; id1 < numatm; id1++)
+        {
+            for (int id2 = 0; id2 < numatm; id2++)
             {
-                for (int id2 = 0; id2 < numatm; id2++)
+                dx = d_x[frame * numatm + id1] - d_x[frame * numatm + id2];
+                dy = d_y[frame * numatm + id1] - d_y[frame * numatm + id2];
+                dz = d_z[frame * numatm + id1] - d_z[frame * numatm + id2];
+
+                dx = dx - xbox * (round(dx / xbox));
+                dy = dy - ybox * (round(dy / ybox));
+                dz = dz - zbox * (round(dz / zbox));
+
+                r = sqrtf(dx * dx + dy * dy + dz * dz);
+                if (r < cut)
                 {
-                    dx = d_x[frame * numatm + id1] - d_x[frame * numatm + id2];
-                    dy = d_y[frame * numatm + id1] - d_y[frame * numatm + id2];
-                    dz = d_z[frame * numatm + id1] - d_z[frame * numatm + id2];
-
-                    dx = dx - xbox * (round(dx / xbox));
-                    dy = dy - ybox * (round(dy / ybox));
-                    dz = dz - zbox * (round(dz / zbox));
-
-                    r = sqrtf(dx * dx + dy * dy + dz * dz);
-                    if (r < cut)
-                    {
-                        ig2 = (int)(r / del);
+                    ig2 = (int)(r / del);
 #pragma omp atomic
-                        d_g2[ig2] = d_g2[ig2] + 1;
-                    }
+                    d_g2[ig2] = d_g2[ig2] + 1;
                 }
             }
-        } //frame ends
-    }     // end of target map
+        }
+    } //frame ends
 }
