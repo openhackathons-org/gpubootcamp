@@ -27,6 +27,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define OFFSET(x, y, m) (((x)*(m)) + (y))
 
