@@ -184,7 +184,7 @@ int main(int argc , char* argv[] )
 							s2bond=s2bond-2.0l*pi*rho*((g2[i]*lngrbond)-g2[i]+1.0l)*del*r*r;
 
 						}
-						nvtxRangePush("Entropy_Calculation");
+						nvtxRangePop(); //Pop for Entropy Calculation
 						stwo<<"s2 value is "<<s2<<endl;
 						stwo<<"s2bond value is "<<s2bond<<endl;
 
