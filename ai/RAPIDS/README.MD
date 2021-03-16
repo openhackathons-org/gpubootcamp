@@ -2,7 +2,7 @@
 
 ## GPU Bootcamp for RAPIDS AI
 
-This repository consists of gpu bootcamp material for RAPIDS AI. The RAPIDS suite of open source software libraries gives you the freedom to execute end-to-end data science and analytics pipelines entirely on GPUs. In this series you can access RAPIDS learning resources in the form of labs. The modules covered in this Bootcamp are CuDF, CuML, Dask and Challenge. 
+This repository consists of gpu bootcamp material for RAPIDS AI. The RAPIDS suite of open source software libraries gives you the freedom to execute end-to-end data science and analytics pipelines entirely on GPUs. In this series you can access RAPIDS learning resources in the form of labs. The modules covered in this Bootcamp are CuDF, CuML, Dask and Challenge.
 
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
