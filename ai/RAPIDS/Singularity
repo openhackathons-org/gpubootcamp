@@ -1,0 +1,22 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+
+Bootstrap: docker
+FROM: rapidsai/rapidsai:cuda11.0-runtime-ubuntu18.04-py3.7
+
+%environment
+%post
+    apt-get update -y
+    apt-get install -y libsm6 libxext6 libxrender-dev git
+    export PATH=/opt/conda/bin:/opt/conda/envs/rapids/bin/jupyter:$PATH
+    pip install gdown
+    python3 /workspace/source_code/dataset.py
+    chmod 777 -R /workspace
+
+%files
+    English/Python/* /workspace/
+
+%runscript
+    "$@"
+
+%labels
+    AUTHOR Infernolia
