@@ -82,131 +82,129 @@ int main(int argc , char* argv[] )
 
 	//Todo: Allocate memory on GPU.
 	HANDLE_ERROR(cudaMalloc(); //For d_x
-			HANDLE_ERROR(cudaMalloc(); //For d_y
-				HANDLE_ERROR(cudaMalloc(); //For d_z
-					HANDLE_ERROR(cudaMalloc(); //For d_g2
+	HANDLE_ERROR(cudaMalloc(); //For d_y
+	HANDLE_ERROR(cudaMalloc(); //For d_z
+	HANDLE_ERROR(cudaMalloc(); //For d_g2
 
-						HANDLE_ERROR (cudaPeekAtLastError());
+	HANDLE_ERROR (cudaPeekAtLastError());
 
-						memset(h_g2,0,sizebin);
+	memset(h_g2,0,sizebin);
 
-
-
-						/////////reading cordinates//////////////////////////////////////////////
-						nvtxRangePush("Read_File");
-						double ax[numatm],ay[numatm],az[numatm];
-						for (int i=0;i<nconf;i++) {
-						dcdreadframe(ax,ay,az,infile,numatm,xbox,ybox,zbox);
-						for (int j=0;j<numatm;j++){
-						h_x[i*numatm+j]=ax[j];
-						h_y[i*numatm+j]=ay[j];
-						h_z[i*numatm+j]=az[j];
-						}
-						}
-						nvtxRangePop(); //pop for REading file
+	/////////reading cordinates//////////////////////////////////////////////
+	nvtxRangePush("Read_File");
+	double ax[numatm],ay[numatm],az[numatm];
+	for (int i=0;i<nconf;i++) {
+	dcdreadframe(ax,ay,az,infile,numatm,xbox,ybox,zbox);
+	for (int j=0;j<numatm;j++){
+	h_x[i*numatm+j]=ax[j];
+	h_y[i*numatm+j]=ay[j];
+	h_z[i*numatm+j]=az[j];
+	}
+	}
+	nvtxRangePop(); //pop for REading file
 
 
-						nvtxRangePush("Pair_Calculation");
-						//Todo: Copy the data from Host to Device before calculation on GPU
-						HANDLE_ERROR(cudaMemcpy(dest, source, ,));
-						HANDLE_ERROR(cudaMemcpy(dest, source, , ));
-						HANDLE_ERROR(cudaMemcpy(dest, source, , ));
-						HANDLE_ERROR(cudaMemcpy(dest, source, , ));
+	nvtxRangePush("Pair_Calculation");
+	//Todo: Copy the data from Host to Device before calculation on GPU
+	HANDLE_ERROR(cudaMemcpy(dest, source, ,));
+	HANDLE_ERROR(cudaMemcpy(dest, source, , ));
+	HANDLE_ERROR(cudaMemcpy(dest, source, , ));
+	HANDLE_ERROR(cudaMemcpy(dest, source, , ));
 
-						cout<<"Reading of input file and transfer to gpu is completed"<<endl;
-						//////////////////////////////////////////////////////////////////////////
+	cout<<"Reading of input file and transfer to gpu is completed"<<endl;
+	//////////////////////////////////////////////////////////////////////////
 
-						near2=nthreads*(int(0.5*numatm*(numatm-1)/nthreads)+1);
-						unsigned long long int nblock = (near2/nthreads);
+	near2=nthreads*(int(0.5*numatm*(numatm-1)/nthreads)+1);
+	unsigned long long int nblock = (near2/nthreads);
 
-						cout<<"Initial blocks are "<<nblock<<" "<<", now changing to ";
+	cout<<"Initial blocks are "<<nblock<<" "<<", now changing to ";
 
-						int maxblock=65535;
-						int bl;
-						int blockloop= int(nblock/maxblock);
-						if (blockloop != 0) {
-							nblock=maxblock;
-						}
-						cout<<nblock<<" and will run over "<<(blockloop+1)<<" blockloops"<<endl;
+	int maxblock=65535;
+	int bl;
+	int blockloop= int(nblock/maxblock);
+	if (blockloop != 0) {
+		nblock=maxblock;
+	}
+	cout<<nblock<<" and will run over "<<(blockloop+1)<<" blockloops"<<endl;
 
-						for (bl=0;bl<(blockloop+1);bl++) {
-							//cout <<bl<<endl;
-							//Todo: Fill the number of blocks and threads and pass the right device pointers
-							pair_gpu<<< , >>> (, , , , numatm, nconf, xbox, ybox, zbox, nbin, bl);
+	for (bl=0;bl<(blockloop+1);bl++) {
+		//cout <<bl<<endl;
+		//Todo: Fill the number of blocks and threads and pass the right device pointers
+		pair_gpu<<< , >>> (, , , , numatm, nconf, xbox, ybox, zbox, nbin, bl);
 
-							HANDLE_ERROR (cudaPeekAtLastError());
-							HANDLE_ERROR(cudaDeviceSynchronize());
-						}
+		HANDLE_ERROR (cudaPeekAtLastError());
+		HANDLE_ERROR(cudaDeviceSynchronize());
+	}
 
-						//Todo: Copy d_ge back from Device to Host
-						HANDLE_ERROR(cudaMemcpy(dest, source, , ));
+	//Todo: Copy d_ge back from Device to Host
+	HANDLE_ERROR(cudaMemcpy(dest, source, , ));
 
-						nvtxRangePop(); //Pop for Pair Calculation
+	nvtxRangePop(); //Pop for Pair Calculation
 
-						double pi=acos(-1.0l);
-						double rho=(numatm)/(xbox*ybox*zbox);
-						double norm=(4.0l*pi*rho)/3.0l;
-						double rl,ru,nideal;
-						double g2[nbin];
-						double r,gr,lngr,lngrbond,s2=0.0l,s2bond=0.0l;
-						double box=min(xbox,ybox);
-						box=min(box,zbox);
-						double del=box/(2.0l*nbin);
-						nvtxRangePush("Entropy_Calculation");
-						for (int i=0;i<nbin;i++) {
-							//      cout<<i+1<<" "<<h_g2[i]<<endl;
-							rl=(i)*del;
-							ru=rl+del;
-							nideal=norm*(ru*ru*ru-rl*rl*rl);
-							g2[i]=(double)h_g2[i]/((double)nconf*(double)numatm*nideal);
-							r=(i)*del;
-							pairfile<<(i+0.5l)*del<<" "<<g2[i]<<endl;
-							if (r<2.0l) {
-								gr=0.0l;
-							}
-							else {
-								gr=g2[i];
-							}
-							if (gr<1e-5) {
-								lngr=0.0l;
-							}
-							else {
-								lngr=log(gr);
-							}
+	double pi=acos(-1.0l);
+	double rho=(numatm)/(xbox*ybox*zbox);
+	double norm=(4.0l*pi*rho)/3.0l;
+	double rl,ru,nideal;
+	double g2[nbin];
+	double r,gr,lngr,lngrbond,s2=0.0l,s2bond=0.0l;
+	double box=min(xbox,ybox);
+	box=min(box,zbox);
+	double del=box/(2.0l*nbin);
+	nvtxRangePush("Entropy_Calculation");
+	for (int i=0;i<nbin;i++) {
+		//      cout<<i+1<<" "<<h_g2[i]<<endl;
+		rl=(i)*del;
+		ru=rl+del;
+		nideal=norm*(ru*ru*ru-rl*rl*rl);
+		g2[i]=(double)h_g2[i]/((double)nconf*(double)numatm*nideal);
+		r=(i)*del;
+		pairfile<<(i+0.5l)*del<<" "<<g2[i]<<endl;
+		if (r<2.0l) {
+			gr=0.0l;
+		}
+		else {
+			gr=g2[i];
+		}
+		if (gr<1e-5) {
+			lngr=0.0l;
+		}
+		else {
+			lngr=log(gr);
+		}
 
-							if (g2[i]<1e-6) {
-								lngrbond=0.0l;
-							}
-							else {
-								lngrbond=log(g2[i]);
-							}
-							s2=s2-2.0l*pi*rho*((gr*lngr)-gr+1.0l)*del*r*r;
-							s2bond=s2bond-2.0l*pi*rho*((g2[i]*lngrbond)-g2[i]+1.0l)*del*r*r;
+		if (g2[i]<1e-6) {
+			lngrbond=0.0l;
+		}
+		else {
+			lngrbond=log(g2[i]);
+		}
+		s2=s2-2.0l*pi*rho*((gr*lngr)-gr+1.0l)*del*r*r;
+		s2bond=s2bond-2.0l*pi*rho*((g2[i]*lngrbond)-g2[i]+1.0l)*del*r*r;
 
-						}
-						nvtxRangePop(); //Pop for Entropy Calculation
-						stwo<<"s2 value is "<<s2<<endl;
-						stwo<<"s2bond value is "<<s2bond<<endl;
+	}
+	nvtxRangePop(); //Pop for Entropy Calculation
+	stwo<<"s2 value is "<<s2<<endl;
+	stwo<<"s2bond value is "<<s2bond<<endl;
 
 
 
-						//Note: Freeing up the GPU memory
-						cout<<"\n\n\n#Freeing Device memory"<<endl;
-						HANDLE_ERROR(cudaFree(d_x));
-						HANDLE_ERROR(cudaFree(d_y));
-						HANDLE_ERROR(cudaFree(d_z));
-						HANDLE_ERROR(cudaFree(d_g2));
+	//Note: Freeing up the GPU memory
+	cout<<"\n\n\n#Freeing Device memory"<<endl;
+	HANDLE_ERROR(cudaFree(d_x));
+	HANDLE_ERROR(cudaFree(d_y));
+	HANDLE_ERROR(cudaFree(d_z));
+	HANDLE_ERROR(cudaFree(d_g2));
 
-						cout<<"#Freeing Host memory"<<endl;
-						HANDLE_ERROR(cudaFreeHost ( h_x ) );
-						HANDLE_ERROR(cudaFreeHost ( h_y ) );
-						HANDLE_ERROR(cudaFreeHost ( h_z ) );
-						HANDLE_ERROR(cudaFreeHost ( h_g2 ) );
+	cout<<"#Freeing Host memory"<<endl;
+	HANDLE_ERROR(cudaFreeHost ( h_x ) );
+	HANDLE_ERROR(cudaFreeHost ( h_y ) );
+	HANDLE_ERROR(cudaFreeHost ( h_z ) );
+	HANDLE_ERROR(cudaFreeHost ( h_g2 ) );
 
-						cout<<"#Number of atoms processed: "<<numatm<<endl<<endl;
-						cout<<"#Number of confs processed: "<<nconf<<endl<<endl;
-						cout<<"#number of threads used: "<<nthreads<<endl<<endl;
-						return 0;
+	cout<<"#Number of atoms processed: "<<numatm<<endl<<endl;
+	cout<<"#Number of confs processed: "<<nconf<<endl<<endl;
+	cout<<"#number of threads used: "<<nthreads<<endl<<endl;
+	return 0;
 }
 
 //Todo: Convert the call to GPU call by adding right keyword
@@ -227,7 +225,7 @@ void pair_gpu(
 	double n;
 
 	//Todo: Write indexing logic using threads and blocks
-	int i = 
+	int i =
 
 
 		int maxi = min(int(0.5*numatm*(numatm-1)-(bl*65535*128)),(65535*128));
