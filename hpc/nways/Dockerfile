@@ -31,6 +31,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ns
 COPY nways_labs/ /labs/
 
 RUN python3 /labs/nways_MD/English/C/source_code/dataset.py
+RUN python3 /labs/nways_MD/English/Fortran/source_code/dataset.py
 
 #################################################
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.0/lib64/"
