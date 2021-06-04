@@ -1,10 +1,11 @@
 # Copyright (c) 2021 NVIDIA Corporation.  All rights reserved. 
 
-# To build the docker container, run: $ sudo docker build -t openacc-labs:latest .
-# To run: $ sudo docker run --rm -it --runtime nvidia -p 8888:8888 openacc-labs:latest
+# To build the docker container, run: $ sudo docker build -t nways-labs:latest .
+# To run: $ sudo docker run --rm -it --runtime nvidia -p 8888:8888 nways-labs:latest
 # Finally, open http://localhost:8888/
 
-FROM nvcr.io/nvidia/nvhpc:20.11-devel-cuda_multi-ubuntu20.04
+#FROM nvcr.io/nvidia/nvhpc:20.11-devel-cuda_multi-ubuntu20.04
+FROM nvcr.io/nvidia/nvhpc:21.3-devel-cuda_multi-ubuntu20.04
 
 RUN apt-get -y update && \
         DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends python3-pip python3-setuptools nginx zip make build-essential libtbb-dev && \
@@ -34,8 +35,8 @@ RUN python3 /labs/nways_MD/English/C/source_code/dataset.py
 RUN python3 /labs/nways_MD/English/Fortran/source_code/dataset.py
 
 #################################################
-ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.0/lib64/"
-ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/opt/nvidia/hpc_sdk/Linux_x86_64/20.11/cuda/11.0/include:/usr/local/bin:/opt/anaconda3/bin:/usr/bin:$PATH"
+ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.3/lib64/"
+ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/include:/usr/local/bin:/opt/anaconda3/bin:/usr/bin:$PATH"
 #################################################
 
 ADD nways_labs/ /labs
