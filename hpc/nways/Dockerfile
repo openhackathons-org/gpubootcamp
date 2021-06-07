@@ -12,6 +12,9 @@ RUN apt-get -y update && \
         pip3 install --upgrade pip &&\
         pip3 install --no-cache-dir jupyter &&\
         pip3 install gdown
+        pip3 install numpy
+        pip3 install numba
+        pip3 install cupy-cuda110
 
 ############################################
 # NVIDIA nsight-systems-2020.5.1 ,nsight-compute-2

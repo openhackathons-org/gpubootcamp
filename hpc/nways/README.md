@@ -5,6 +5,8 @@ This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA
   - PSTL
   - OpenMP
   - CUDA C
+  - Numba
+  - CuPy
 
 We showcase above ways using mini applications in MD domain and CFD.
 

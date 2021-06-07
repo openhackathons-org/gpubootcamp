@@ -24,6 +24,9 @@ FROM: nvcr.io/nvidia/nvhpc:20.11-devel-cuda_multi-ubuntu20.04
     pip3 install --upgrade pip
     pip3 install --no-cache-dir jupyter
     pip3 install gdown
+    pip3 install numpy
+    pip3 install numba
+    pip3 install cupy-cuda110
 
     apt-get install --no-install-recommends -y build-essential 
 
