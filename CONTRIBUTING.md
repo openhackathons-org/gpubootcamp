@@ -9,7 +9,7 @@ Before contributing significant changes, please begin a discussion of the desire
 
 The preferred license for source code contributed to this project is the Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0) and for documentation, including Jupyter notebooks and text documentation, is the Creative Commons Attribution 4.0 International (CC BY 4.0) (https://creativecommons.org/licenses/by/4.0/). Contributions under other, compatible licenses will be considered on a case-by-case basis.
 
-##Styling
+## Styling
 
 Please use the following style guidelines when making contributions.
 
@@ -50,14 +50,15 @@ Top level directories consist for 3 folders
 * hpc_ai: This directory contains labs related to usage of AI/ML/DL for Science/HPC Simulations
 * ai : This directory consists of labs related to traditional AI/ML/DL techniques and frameworks 
 
-
 Each lab will have following files/directories consisting of training material for the lab.
-* jupyter_notebook folder: Consists of jupyter notebooks and its corresponding images. The notebooks files are preferably named with the following style "tutorial_name-language-LabX.ipynb". 
-* source_code folder :Source codes are stored in a separate directory because some sites may not support jupyter notebooks. During such bootcamps, we should be able to use the source codes directly from this directory. Source code folder may optionally contain Makefile especially for HPC labs. 
+* jupyter_notebook folder: Consists of jupyter notebooks and its corresponding images.  
+* source_code folder :Source codes are stored in a separate directory because sometime not all clusters may support jupyter notebooks. During such bootcamps, we should be able to use the source codes directly from this directory. Source code folder may optionally contain Makefile especially for HPC labs. 
 * presentations: Consists of presentations for the labs ( pdf format is preferred )
 * Dockerfile and Singularity  : Each lab should have both Docker and Singularity recipes.
  
 The lab optionally may also add custom license in case of any deviation from the top level directory license ( Apache 2.0 ). The base of the module contains individual subdirectory containing versions of the module for languages respectively(C/C++/Fortran…). Each of these directories should contain a directory for individual language translation provided (English, for instance). Each lab translation and programming language combination should have a solutions directory containing correct solutions
+
+Additionally there are two folders "experimental" and  "archived" for labs covering features which are in early access phase ( not stable ) or deprecated features repectively.
 
 ### Git Branching
 
