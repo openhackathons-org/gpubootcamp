@@ -5,7 +5,7 @@
 # Finally, open http://127.0.0.1:8888/
 
 # Select Base Image 
-FROM nvcr.io/nvidia/tensorflow:20.01-tf2-py3
+FROM nvcr.io/nvidia/tensorflow:21.05-tf2-py3
 # Update the repo
 RUN apt-get update
 # Install required dependencies
