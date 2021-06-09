@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <vector>
 #include <atomic>
-#include <nvtx3/nvToolsExt.h>
+#include </opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/include>
 
 //Note: The addition of execution header file
 #include <execution>
