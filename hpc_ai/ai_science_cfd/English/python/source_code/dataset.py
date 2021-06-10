@@ -27,27 +27,27 @@
 import gdown
 import os
 ## CFD TRAIN DATASET
-url = 'https://drive.google.com/uc?id=0BzsbU65NgrSuZDBMOW93OWpsMHM&export=download'
+url = 'https://drive.google.com/uc?id=1VZOPUG6mHsRYG58H_l3_LOPM4N4f9LiZ&export=download'
 output = '/workspace/python/jupyter_notebook/CFD/data/train.tfrecords'
 gdown.download(url, output, quiet=False,proxy=None)
 
 ## CFD TEST DATASET
-url = 'https://drive.google.com/uc?id=1WSJLK0cOQehixJ6Tf5k0eYDcb4RJ5mXv&export=download'
+url = 'https://drive.google.com/uc?id=1fTo0L0ckqGEeZjLwefBc4S5e28psixle&export=download'
 output = '/workspace/python/jupyter_notebook/CFD/data/test.tfrecords'
 gdown.download(url, output, quiet=False,proxy=None)
 
 ## CFD CONV_SDF MODEL
-url = 'https://drive.google.com/uc?id=1pfR0io1CZKvXArGk-nt2wciUoAN_6Z08&export=download'
+url = 'https://drive.google.com/uc?id=1ObX4jjhv2wkaTfI-ai09SyoOqVP20jAU&export=download'
 output = '/workspace/python/jupyter_notebook/CFD/conv_sdf_model.h5'
 gdown.download(url, output, quiet=False,proxy=None)
 
 ## CFD CONV MODEL
-url = 'https://drive.google.com/uc?id=1rFhqlQnTkzIyZocjAxMffucmS3FDI0_j&export=download'
+url = 'https://drive.google.com/uc?id=1xfw9C7PFrd3e_ef92ZZbRuK__ak7mo0f&export=download'
 output = '/workspace/python/jupyter_notebook/CFD/conv_model.h5'
 gdown.download(url, output, quiet=False,proxy=None)
 
 
 ## CFD TEST Dataset
-url = 'https://drive.google.com/uc?id=0BzsbU65NgrSuR2NRRjBRMDVHaDQ&export=download'
+url = 'https://drive.google.com/uc?id=1VG9jCTBcERytV7w5bHoaVIZSQOa-AlmU&export=download'
 output = '/workspace/python/jupyter_notebook/CFD/data/computed_car_flow.zip'
 gdown.cached_download(url, output, quiet=False,proxy=None,postprocess=gdown.extractall)
