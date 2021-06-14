@@ -1,3 +1,5 @@
+# Copyright (c) 2021 NVIDIA Corporation. All rights reserved.
+
 import cupy as cp
 import numpy as np
 import math

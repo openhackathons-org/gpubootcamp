@@ -1,3 +1,5 @@
+# Copyright (c) 2021 NVIDIA Corporation. All rights reserved.
+
 import numpy as np
 import math
 import cupy.cuda.nvtx as nvtx
