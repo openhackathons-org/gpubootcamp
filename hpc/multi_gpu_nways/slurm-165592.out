@@ -1,0 +1,57 @@
+[I 21:04:51.121 NotebookApp] Authentication of /metrics is OFF, since other authentication is disabled.
+[W 21:04:51.412 NotebookApp] All authentication is disabled.  Anyone who can connect to this server will be able to run code.
+[I 21:04:51.414 NotebookApp] Serving notebooks from local directory: /home/anisaxena/multi_gpu_labs
+[I 21:04:51.414 NotebookApp] Jupyter Notebook 6.4.0 is running at:
+[I 21:04:51.414 NotebookApp] http://prm-dgx-05:8000/
+[I 21:04:51.414 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[I 21:05:36.430 NotebookApp] 302 GET / (10.33.12.57) 0.550000ms
+[W 21:05:53.513 NotebookApp] Notebook CFD/English/C/jupyter_notebook/jacobi/overview.ipynb is not trusted
+[I 21:05:54.029 NotebookApp] Kernel started: b7548e3a-38bd-48ee-9154-5e04bbfe6191, name: python3
+[I 21:05:56.940 NotebookApp] Kernel started: 205d247e-f2c4-466c-aa39-18b8184a3efa, name: python3
+[I 21:33:57.393 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 21:35:57.453 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 22:43:58.717 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 22:47:58.737 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:03:59.255 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:05:59.271 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:07:59.302 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:09:59.293 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:11:59.307 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:13:59.319 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:15:59.664 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:17:59.243 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:27:59.313 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:29:59.517 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:35:59.968 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:56:00.824 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 23:58:00.708 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:06:00.988 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:08:00.914 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:10:00.922 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:20:01.491 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:20:47.948 NotebookApp] New terminal with automatic name: 1
+[I 00:20:59.004 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:26:01.841 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:28:02.156 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:34:02.906 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:36:02.787 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:38:02.942 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:40:03.096 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:44:03.083 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 00:46:03.095 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:14:05.872 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:32:06.461 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:34:06.464 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:36:06.368 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:38:06.487 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:46:07.347 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:50:07.076 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 02:51:11.220 NotebookApp] Kernel interrupted: b7548e3a-38bd-48ee-9154-5e04bbfe6191
+[I 02:52:06.780 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:00:07.351 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:02:07.293 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:04:07.372 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:08:07.298 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:12:07.779 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:14:08.093 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
+[I 03:16:07.857 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/jacobi/overview.ipynb
