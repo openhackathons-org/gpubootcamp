@@ -13,17 +13,21 @@ To start with, you will have to build a Docker or Singularity container.
 ### Docker Container
 
 #### C & Fortran
-To build a docker container, run: 
+To build a docker container, run:
+
 `sudo docker build -t <imagename>:<tagnumber> .`
 
 For instance:
+
 `sudo docker build -t myimage:1.0 .`
 
 #### Python
 To build a docker container, you have to specify the dockerfile name using flag **"-f"**, hence run: 
+
 `sudo docker build -f <dockerfile name> -t <imagename>:<tagnumber> .`
 
 For example :
+
 `sudo docker build -f Dockerfile_python -t myimage:1.0 .`
 
 
@@ -45,17 +49,21 @@ Once inside the container, open the jupyter notebook in browser: http://localhos
 
 #### C & Fortran
 To build the singularity container, run: 
+
 `singularity build nways.simg Singularity`
 
 #### Python
 To build the singularity container, run: 
+
 `singularity build nways.simg Singularity_python`
 
 
 For C, Fortran, and Python, copy the files to your local machine to make sure changes are stored locally:
+
 `singularity run nways.simg cp -rT /labs ~/labs`
 
 Then, run the container:
+
 `singularity run --nv nways.simg jupyter notebook --notebook-dir=~/labs`
 
 Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `START_nways.ipynb` notebook.

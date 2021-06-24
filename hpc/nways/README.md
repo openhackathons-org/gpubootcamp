@@ -1,7 +1,7 @@
 # Nways to GPU programming
 This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**). This labs comprises Nways to GPU programming implemented with the following programning approaches:
 
-**C programming language **
+**C programming language**
   - OpenACC
   - Kokkos
   - PSTL
@@ -33,16 +33,21 @@ To run this tutorial you will need a machine with NVIDIA GPU.
 To start with, you will have to build a Docker or Singularity container.
 
 ### Docker Container
-To build a docker container for **C & Fortran**, run: 
+To build a docker container for **C & Fortran**, run:
+
 `sudo docker build -t <imagename>:<tagnumber> .`
 
 For instance :
+
+
 `sudo docker build -t myimage:1.0 .`
 
 While in the case of **Python** you have to specify the dockerfile name using flag **"-f"**, therefore run:
+
 `sudo docker build -f <dockerfile name> -t <imagename>:<tagnumber> .`
 
 For example :
+
 `sudo docker build -f Dockerfile_python -t myimage:1.0 .`
 
 
@@ -63,15 +68,19 @@ Once inside the container, open the jupyter notebook in browser: http://localhos
 ### Singularity Container
 
 To build the singularity container for **C & Fortran**, run: 
+
 `singularity build nways.simg Singularity`
 
 While in the case of **Python**, run:
+
 `singularity build nways.simg Singularity_python`
 
 Thereafter, for C, Fortran, and Python, copy the files to your local machine to make sure changes are stored locally:
+
 `singularity run nways.simg cp -rT /labs ~/labs`
 
 Then, run the container:
+
 `singularity run --nv nways.simg jupyter notebook --notebook-dir=~/labs`
 
 Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `nways_start.ipynb` notebook.
