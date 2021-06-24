@@ -46,10 +46,10 @@ def main():
     ########## Input Details ###########
     global xbox, ybox, zbox
     inconf = 10
-    nbin   =np.int(2000)
-    xbox   = np.float(0)
-    ybox   =np.float(0)
-    zbox   = np.float(0)
+    nbin   =np.int32(2000)
+    xbox   = np.float32(0)
+    ybox   =np.float32(0)
+    zbox   = np.float32(0)
 
     ########use on jupyter notebook#######
     fileDir = os.path.dirname(os.path.realpath('__file__'))
@@ -83,8 +83,8 @@ def main():
     d_x = cp.asarray(d_x)
     d_y = cp.asarray(d_y)
     d_z = cp.asarray(d_z)
-    d_g2 = cp.zeros(sizebin, dtype=cp.int64)
-
+    d_g2 = np.zeros(sizebin, dtype=np.int64)
+    d_g2 = cp.asarray(d_g2)
     ############################## RAW KERNEL #################################################
     nthreads = 128;
     near2 = nthreads * (int(0.5 * numatm * (numatm - 1) / nthreads) + 1);
@@ -106,16 +106,16 @@ def main():
     d_g2 = cp.asnumpy(d_g2)
     nvtx.RangePop()  # pop for Pair Calculation
     ######################################################################
-    pi = math.acos(np.long(-1.0))
+    pi = math.acos(np.int64(-1.0))
     rho = (numatm) / (xbox * ybox * zbox)
-    norm = (np.long(4.0) * pi * rho) / np.long(3.0)
+    norm = (np.int64(4.0) * pi * rho) / np.int64(3.0)
     g2 = np.zeros(nbin, dtype=np.float32)
-    s2 =np.long(0.0); s2bond = np.long(0.0)
-    lngrbond = np.float(0.0)
+    s2 =np.int64(0.0); s2bond = np.int64(0.0)
+    lngrbond = np.float32(0.0)
     box = min(xbox, ybox)
     box = min(box, zbox)
-    _del =box / (np.long(2.0) * nbin)
-    gr = np.float(0.0)
+    _del =box / (np.int64(2.0) * nbin)
+    gr = np.float32(0.0)
     # loop to calculate entropy
     nvtx.RangePush("Entropy_Calculation")
     for i in range(nbin):
@@ -127,20 +127,20 @@ def main():
         temp = (i + 0.5) * _del
         pairfile.write(str(temp) + " " + str(g2[i]) + "\n")
 
-        if r < np.long(2.0):
-            gr = np.long(0.0)
+        if r < np.int64(2.0):
+            gr = np.int64(0.0)
         else:
             gr = g2[i]
         if gr < 1e-5:
-            lngr = np.long(0.0)
+            lngr = np.int64(0.0)
         else:
             lngr = math.log(gr)
         if g2[i] < 1e-6:
-            lngrbond = np.long(0.0)
+            lngrbond = np.int64(0.0)
         else:
             lngrbond = math.log(g2[i])
-        s2 = s2 - (np.long(2.0) * pi * rho * ((gr * lngr) - gr + np.long(1.0)) * _del * r * r)
-        s2bond = s2bond - np.long(2.0) * pi * rho * ((g2[i] * lngrbond) - g2[i] + np.long(1.0)) * _del * r * r
+        s2 = s2 - (np.int64(2.0) * pi * rho * ((gr * lngr) - gr + np.int64(1.0)) * _del * r * r)
+        s2bond = s2bond - np.int64(2.0) * pi * rho * ((g2[i] * lngrbond) - g2[i] + np.int64(1.0)) * _del * r * r
 
     nvtx.RangePop()  # pop for entropy Calculation
     stwo.writelines("s2 value is {}\n".format(s2))

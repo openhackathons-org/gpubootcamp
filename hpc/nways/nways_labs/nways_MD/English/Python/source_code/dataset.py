@@ -5,5 +5,5 @@ import os
 
 ## alk.traj.dcd input file 
 url = 'https://drive.google.com/uc?id=1WZ0rtXZ-uMLfy7htT0gaU4EQ_Rq61QTF&export=download'
-output = '/labs/nways_MD/English/C/source_code/input/alk.traj.dcd'
-gdown.download(url, output, quiet=False,proxy=None)
+output_fortran = '/labs/nways_MD/English/Python/source_code/input/alk.traj.dcd'
+gdown.download(url, output_fortran, quiet=False,proxy=None)
