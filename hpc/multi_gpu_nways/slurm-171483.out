@@ -1,0 +1,72 @@
+[I 07:27:57.755 NotebookApp] Authentication of /metrics is OFF, since other authentication is disabled.
+[W 07:27:58.046 NotebookApp] All authentication is disabled.  Anyone who can connect to this server will be able to run code.
+[I 07:27:58.048 NotebookApp] Serving notebooks from local directory: /home/anisaxena/multi_gpu_labs
+[I 07:27:58.048 NotebookApp] Jupyter Notebook 6.4.0 is running at:
+[I 07:27:58.048 NotebookApp] http://prm-dgx-02:8000/
+[I 07:27:58.048 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 07:28:14.978 NotebookApp] Notebook CFD/English/C/jupyter_notebook/memcpy/streams.ipynb is not trusted
+[I 07:28:15.508 NotebookApp] 302 GET /notebooks/CFD/English/C/images/domain_decomposition.png (10.33.12.57) 2.790000ms
+[I 07:28:15.510 NotebookApp] 302 GET /notebooks/CFD/English/C/images/halo_exchange.png (10.33.12.57) 4.010000ms
+[I 07:28:15.792 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nvidia_smi_p2p_gpu0.png (10.33.12.57) 1.610000ms
+[I 07:28:16.049 NotebookApp] 302 GET /notebooks/CFD/English/C/images/dgx1_8x_tesla_v100_topo.png (10.33.12.57) 2.300000ms
+[I 07:28:16.050 NotebookApp] 302 GET /notebooks/CFD/English/C/images/open_terminal_session.png (10.33.12.57) 3.360000ms
+[I 07:28:16.052 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nvidia_smi_topo_output.png (10.33.12.57) 4.480000ms
+[I 07:28:16.054 NotebookApp] 302 GET /notebooks/CFD/English/C/images/intra_node_topology_map.png (10.33.12.57) 1.630000ms
+[I 07:28:16.243 NotebookApp] Kernel started: 9a33717c-ba28-4b4b-8c87-b530192bd6ac, name: python3
+[I 07:28:18.294 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpy_serialized.png (10.33.12.57) 1.630000ms
+[I 07:28:18.298 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpy_host_staging.png (10.33.12.57) 2.040000ms
+[I 07:28:18.299 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpyasync_parallel.png (10.33.12.57) 3.020000ms
+[I 07:28:18.303 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpy_p2p_overview.png (10.33.12.57) 1.690000ms
+[I 07:28:18.593 NotebookApp] 302 GET /notebooks/CFD/English/C/images/p2p_2_gpu_memcpy_nsys.png (10.33.12.57) 1.820000ms
+[I 10:10:44.123 NotebookApp] Starting buffering for 9a33717c-ba28-4b4b-8c87-b530192bd6ac:9ce4d32b6afc44b2a01b996acfd6b876
+[I 10:10:49.409 NotebookApp] 302 GET /notebooks/CFD/English/C/images/gpu_programming_process.png (10.33.12.57) 1.900000ms
+[I 10:10:49.597 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nsys_cli_sample_output.png (10.33.12.57) 1.840000ms
+[I 10:10:49.598 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nsys_overview.png (10.33.12.57) 3.060000ms
+[I 10:10:49.669 NotebookApp] Kernel started: 353ea053-bd11-497d-984d-3acf0b5fa9d9, name: python3
+[I 10:10:49.832 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nsys_single_gpu_analysis.png (10.33.12.57) 1.820000ms
+[W 10:10:55.797 NotebookApp] Notebook CFD/English/C/jupyter_notebook/memcpy/streams.ipynb is not trusted
+[I 10:10:56.047 NotebookApp] Kernel started: 693bd71d-d7bd-4ab7-a106-785f47b6815a, name: python3
+[I 10:10:56.294 NotebookApp] 302 GET /notebooks/CFD/English/C/images/domain_decomposition.png (10.33.12.57) 0.880000ms
+[I 10:10:56.298 NotebookApp] 302 GET /notebooks/CFD/English/C/images/halo_exchange.png (10.33.12.57) 0.960000ms
+[I 10:10:56.453 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nvidia_smi_p2p_gpu0.png (10.33.12.57) 0.980000ms
+[I 10:10:56.602 NotebookApp] 302 GET /notebooks/CFD/English/C/images/open_terminal_session.png (10.33.12.57) 1.370000ms
+[I 10:10:56.603 NotebookApp] 302 GET /notebooks/CFD/English/C/images/nvidia_smi_topo_output.png (10.33.12.57) 1.990000ms
+[I 10:10:56.604 NotebookApp] 302 GET /notebooks/CFD/English/C/images/intra_node_topology_map.png (10.33.12.57) 1.260000ms
+[I 10:10:56.606 NotebookApp] 302 GET /notebooks/CFD/English/C/images/dgx1_8x_tesla_v100_topo.png (10.33.12.57) 2.130000ms
+[I 10:11:00.072 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpy_serialized.png (10.33.12.57) 1.100000ms
+[I 10:11:00.076 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpyasync_parallel.png (10.33.12.57) 0.960000ms
+[I 10:11:01.089 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpy_p2p_overview.png (10.33.12.57) 1.770000ms
+[I 10:11:01.090 NotebookApp] 302 GET /notebooks/CFD/English/C/images/memcpy_host_staging.png (10.33.12.57) 2.430000ms
+[I 10:11:06.177 NotebookApp] 302 GET /notebooks/CFD/English/C/images/p2p_2_gpu_memcpy_nsys.png (10.33.12.57) 1.280000ms
+[I 10:12:57.183 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:14:05.943 NotebookApp] New terminal with automatic name: 1
+[I 10:14:57.651 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:18:58.217 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:20:58.794 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:31:00.416 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:33:00.633 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:37:00.660 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:41:00.683 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:43:00.637 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:45:00.647 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:47:01.029 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:53:01.992 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:55:02.004 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 10:59:02.238 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:01:02.352 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:03:02.263 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:05:02.282 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:07:02.488 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:09:03.016 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:11:03.133 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:13:02.939 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:15:02.546 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:17:02.454 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:19:02.570 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:21:02.281 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:23:02.287 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:24:32.755 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:24:36.811 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/single_gpu/single_gpu_overview.ipynb
+[I 11:24:38.215 NotebookApp] Saving file at /CFD/English/introduction.ipynb
+[I 11:27:02.398 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb
+[I 11:27:46.550 NotebookApp] Saving file at /CFD/English/C/jupyter_notebook/memcpy/streams.ipynb

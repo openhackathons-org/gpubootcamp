@@ -34,36 +34,10 @@
 #include <sstream>
 
 #include <omp.h>
-
-#ifdef HAVE_CUB
-#include <cub/block/block_reduce.cuh>
-#endif  // HAVE_CUB
-
-#ifdef USE_NVTX
 #include <nvToolsExt.h>
 
-const uint32_t colors[] = {0x0000ff00, 0x000000ff, 0x00ffff00, 0x00ff00ff,
-                           0x0000ffff, 0x00ff0000, 0x00ffffff};
-const int num_colors = sizeof(colors) / sizeof(uint32_t);
-
-#define PUSH_RANGE(name, cid)                              \
-    {                                                      \
-        int color_id = cid;                                \
-        color_id = color_id % num_colors;                  \
-        nvtxEventAttributes_t eventAttrib = {0};           \
-        eventAttrib.version = NVTX_VERSION;                \
-        eventAttrib.size = NVTX_EVENT_ATTRIB_STRUCT_SIZE;  \
-        eventAttrib.colorType = NVTX_COLOR_ARGB;           \
-        eventAttrib.color = colors[color_id];              \
-        eventAttrib.messageType = NVTX_MESSAGE_TYPE_ASCII; \
-        eventAttrib.message.ascii = name;                  \
-        nvtxRangePushEx(&eventAttrib);                     \
-    }
-#define POP_RANGE nvtxRangePop();
-#else
-#define PUSH_RANGE(name, cid)
-#define POP_RANGE
-#endif
+#define BLOCK_DIM_X 32
+#define BLOCK_DIM_Y 32
 
 #define CUDA_RT_CALL(call)                                                                  \
     {                                                                                       \
@@ -76,16 +50,14 @@ const int num_colors = sizeof(colors) / sizeof(uint32_t);
                     #call, __LINE__, __FILE__, cudaGetErrorString(cudaStatus), cudaStatus); \
     }
 
-typedef float real;
-constexpr real tol = 1.0e-8;
+constexpr float tol = 1.0e-8;
 
-const real PI = 2.0 * std::asin(1.0);
+const float PI = 2.0 * std::asin(1.0);
 
-__global__ void initialize_boundaries(real* __restrict__ const a_new, real* __restrict__ const a,
-                                      const real pi, const int offset, const int nx,
-                                      const int my_ny, const int ny) {
+__global__ void initialize_boundaries(float*  a_new, float*  a, const float pi, const int offset, 
+					const int nx, const int my_ny, const int ny) {
     for (int iy = blockIdx.x * blockDim.x + threadIdx.x; iy < my_ny; iy += blockDim.x * gridDim.x) {
-        const real y0 = sin(2.0 * pi * (offset + iy) / (ny - 1));
+        const float y0 = sin(2.0 * pi * (offset + iy) / (ny - 1));
         a[iy * nx + 0] = y0;
         a[iy * nx + (nx - 1)] = y0;
         a_new[iy * nx + 0] = y0;
@@ -93,41 +65,40 @@ __global__ void initialize_boundaries(real* __restrict__ const a_new, real* __re
     }
 }
 
-template <int BLOCK_DIM_X, int BLOCK_DIM_Y>
-__global__ void jacobi_kernel(real* __restrict__ const a_new, const real* __restrict__ const a,
-                              real* __restrict__ const l2_norm, const int iy_start,
-                              const int iy_end, const int nx, const bool calculate_norm) {
-#ifdef HAVE_CUB
-    typedef cub::BlockReduce<real, BLOCK_DIM_X, cub::BLOCK_REDUCE_WARP_REDUCTIONS, BLOCK_DIM_Y>
-        BlockReduce;
-    __shared__ typename BlockReduce::TempStorage temp_storage;
-#endif  // HAVE_CUB
+__global__ void jacobi_kernel(float*  a_new, const float*  a, float*  l2_norm, const int iy_start,
+                              const int iy_end, const int nx) {
     int iy = blockIdx.y * blockDim.y + threadIdx.y + iy_start;
     int ix = blockIdx.x * blockDim.x + threadIdx.x + 1;
-    real local_l2_norm = 0.0;
+    __shared__ float block_l2_sum[BLOCK_DIM_X*BLOCK_DIM_Y];
+    unsigned thread_index = threadIdx.y*BLOCK_DIM_X + threadIdx.x;
 
     if (iy < iy_end && ix < (nx - 1)) {
-        const real new_val = 0.25 * (a[iy * nx + ix + 1] + a[iy * nx + ix - 1] +
+	// Update grid point
+        const float new_val = 0.25 * (a[iy * nx + ix + 1] + a[iy * nx + ix - 1] +
                                      a[(iy + 1) * nx + ix] + a[(iy - 1) * nx + ix]);
         a_new[iy * nx + ix] = new_val;
-        if (calculate_norm) {
-            real residue = new_val - a[iy * nx + ix];
-            local_l2_norm += residue * residue;
-        }
+	float residue = new_val - a[iy * nx + ix];
+	// Set block-level L2 norm value for this grid point
+	block_l2_sum[thread_index] = residue * residue;
     }
-    if (calculate_norm) {
-#ifdef HAVE_CUB
-        real block_l2_norm = BlockReduce(temp_storage).Sum(local_l2_norm);
-        if (0 == threadIdx.y && 0 == threadIdx.x) atomicAdd(l2_norm, block_l2_norm);
-#else
-        atomicAdd(l2_norm, local_l2_norm);
-#endif  // HAVE_CUB
+    else {
+	block_l2_sum[thread_index] = 0;
+    }
+    // Reduce L2 norm for the block in parallel
+    for (unsigned stride = 1; stride < BLOCK_DIM_X*BLOCK_DIM_Y; stride *= 2) {
+	__syncthreads();
+	if ((thread_index) % (2*stride) == 0) {
+    	    block_l2_sum[thread_index] += block_l2_sum[thread_index + stride];
+	}
+    }
+    // Atomically update global L2 norm with block-reduced L2 norm
+    if (thread_index == 0) {
+	atomicAdd(l2_norm, block_l2_sum[0]);
     }
 }
 
-template <typename T>
-T get_argval(char** begin, char** end, const std::string& arg, const T default_val) {
-    T argval = default_val;
+int get_argval(char** begin, char** end, const std::string& arg, const int default_val) {
+    int argval = default_val;
     char** itr = std::find(begin, end, arg);
     if (itr != end && ++itr != end) {
         std::istringstream inbuf(*itr);
@@ -136,125 +107,92 @@ T get_argval(char** begin, char** end, const std::string& arg, const T default_v
     return argval;
 }
 
-bool get_arg(char** begin, char** end, const std::string& arg) {
-    char** itr = std::find(begin, end, arg);
-    if (itr != end) {
-        return true;
-    }
-    return false;
-}
-
-double single_gpu(const int nx, const int ny, const int iter_max, real* const a_ref_h,
-                  const int nccheck, const bool print);
+double single_gpu(const int nx, const int ny, const int iter_max, float* const a_ref_h);
 
 int main(int argc, char* argv[]) {
-    const int iter_max = get_argval<int>(argv, argv + argc, "-niter", 1000);
-    const int nccheck = get_argval<int>(argv, argv + argc, "-nccheck", 1);
-    const int nx = get_argval<int>(argv, argv + argc, "-nx", 16384);
-    const int ny = get_argval<int>(argv, argv + argc, "-ny", 16384);
-    const bool csv = get_arg(argv, argv + argc, "-csv");
-
-    if (nccheck != 1) {
-        fprintf(stderr, "Only nccheck = 1 is supported\n");
-        return -1;
-    }
+    const int iter_max = get_argval(argv, argv + argc, "-niter", 1000);
+    const int nx = get_argval(argv, argv + argc, "-nx", 16384);
+    const int ny = get_argval(argv, argv + argc, "-ny", 16384);
 
     CUDA_RT_CALL(cudaSetDevice(0));
     CUDA_RT_CALL(cudaFree(0));
 
-    real* a_ref_h;
-    CUDA_RT_CALL(cudaMallocHost(&a_ref_h, nx * ny * sizeof(real)));
+    float* a_ref_h;
+    CUDA_RT_CALL(cudaMallocHost(&a_ref_h, nx * ny * sizeof(float)));
     
-    double runtime_serial = single_gpu(nx, ny, iter_max, a_ref_h, nccheck, !csv);
+    double runtime_serial = single_gpu(nx, ny, iter_max, a_ref_h);
 
-    if (csv) {
-        printf("single_gpu, %d, %d, %d, %d, %f\n", nx, ny, iter_max, nccheck, runtime_serial);
-    } else {
-        printf("%dx%d: 1 GPU: %8.4f s\n", ny, nx, runtime_serial);
-    }
+    printf("%dx%d: 1 GPU: %8.4f s\n", ny, nx, runtime_serial);
 
     return 0;
 }
 
-double single_gpu(const int nx, const int ny, const int iter_max, real* const a_ref_h,
-                  const int nccheck, const bool print) {
-    real* a;
-    real* a_new;
+double single_gpu(const int nx, const int ny, const int iter_max, float* const a_ref_h) {
+    float* a;
+    float* a_new;
 
-    real* l2_norm_d;
-    real* l2_norm_h;
+    float* l2_norm_d;
+    float* l2_norm_h;
 
     int iy_start = 1;
     int iy_end = (ny - 1);
 
-    CUDA_RT_CALL(cudaMalloc(&a, nx * ny * sizeof(real)));
-    CUDA_RT_CALL(cudaMalloc(&a_new, nx * ny * sizeof(real)));
+    CUDA_RT_CALL(cudaMalloc(&a, nx * ny * sizeof(float)));
+    CUDA_RT_CALL(cudaMalloc(&a_new, nx * ny * sizeof(float)));
 
-    CUDA_RT_CALL(cudaMemset(a, 0, nx * ny * sizeof(real)));
-    CUDA_RT_CALL(cudaMemset(a_new, 0, nx * ny * sizeof(real)));
+    CUDA_RT_CALL(cudaMemset(a, 0, nx * ny * sizeof(float)));
+    CUDA_RT_CALL(cudaMemset(a_new, 0, nx * ny * sizeof(float)));
 
     // Set diriclet boundary conditions on left and right boarder
+    nvtxRangePush("Init boundaries");
     initialize_boundaries<<<ny / 128 + 1, 128>>>(a, a_new, PI, 0, nx, ny, ny);
     CUDA_RT_CALL(cudaGetLastError());
     CUDA_RT_CALL(cudaDeviceSynchronize());
+    nvtxRangePop();
 
-    CUDA_RT_CALL(cudaMalloc(&l2_norm_d, sizeof(real)));
-    CUDA_RT_CALL(cudaMallocHost(&l2_norm_h, sizeof(real)));
+    CUDA_RT_CALL(cudaMalloc(&l2_norm_d, sizeof(float)));
+    CUDA_RT_CALL(cudaMallocHost(&l2_norm_h, sizeof(float)));
 
     CUDA_RT_CALL(cudaDeviceSynchronize());
 
-    if (print)
-        printf(
-            "Single GPU jacobi relaxation: %d iterations on %d x %d mesh with "
-            "norm "
-            "check every %d iterations\n",
-            iter_max, ny, nx, nccheck);
+    printf("Single GPU jacobi relaxation: %d iterations on %d x %d mesh\n", iter_max, ny, nx);
 
-    constexpr int dim_block_x = 32;
-    constexpr int dim_block_y = 32;
-    dim3 dim_grid((nx + dim_block_x - 1) / dim_block_x, (ny + dim_block_y - 1) / dim_block_y, 1);
+    dim3 dim_grid((nx + BLOCK_DIM_X - 1) / BLOCK_DIM_X, (ny + BLOCK_DIM_Y - 1) / BLOCK_DIM_Y, 1);
+    dim3 dim_block(BLOCK_DIM_X, BLOCK_DIM_Y, 1);
 
     int iter = 0;
-    bool calculate_norm;
-    real l2_norm = 1.0;
+    float l2_norm = 1.0;
 
     double start = omp_get_wtime();
-    PUSH_RANGE("Jacobi solve", 0)
+    nvtxRangePush("Jacobi Solve");
     while (l2_norm > tol && iter < iter_max) {
-        CUDA_RT_CALL(cudaMemset(l2_norm_d, 0, sizeof(real)));
+        CUDA_RT_CALL(cudaMemset(l2_norm_d, 0, sizeof(float)));
 
-        calculate_norm = (iter % nccheck) == 0 || (print && ((iter % 100) == 0));
-        jacobi_kernel<dim_block_x, dim_block_y>
-            <<<dim_grid, {dim_block_x, dim_block_y, 1}, 0, 0>>>(
-                a_new, a, l2_norm_d, iy_start, iy_end, nx, calculate_norm);
-        CUDA_RT_CALL(cudaGetLastError());
-
-        if (calculate_norm) {
-            CUDA_RT_CALL(cudaMemcpy(l2_norm_h, l2_norm_d, sizeof(real), cudaMemcpyDeviceToHost));
-        }
+	// Compute grid points for this iteration
+        jacobi_kernel<<<dim_grid, dim_block>>>(a_new, a, l2_norm_d, iy_start, iy_end, nx);
+       	CUDA_RT_CALL(cudaGetLastError());
+        CUDA_RT_CALL(cudaMemcpy(l2_norm_h, l2_norm_d, sizeof(float), cudaMemcpyDeviceToHost));
 
         // Apply periodic boundary conditions
 
-        CUDA_RT_CALL(cudaMemcpy(a_new, a_new + (iy_end - 1) * nx, nx * sizeof(real),
+        CUDA_RT_CALL(cudaMemcpy(a_new, a_new + (iy_end - 1) * nx, nx * sizeof(float),
                                      cudaMemcpyDeviceToDevice));
-        CUDA_RT_CALL(cudaMemcpy(a_new + iy_end * nx, a_new + iy_start * nx, nx * sizeof(real),
+        CUDA_RT_CALL(cudaMemcpy(a_new + iy_end * nx, a_new + iy_start * nx, nx * sizeof(float),
                                      cudaMemcpyDeviceToDevice));
 
-        if (calculate_norm) {
-	    CUDA_RT_CALL(cudaDeviceSynchronize());
-            //CUDA_RT_CALL(cudaStreamSynchronize(compute_stream));
-            l2_norm = *l2_norm_h;
-            l2_norm = std::sqrt(l2_norm);
-            if (print && (iter % 100) == 0) printf("%5d, %0.6f\n", iter, l2_norm);
-        }
+	CUDA_RT_CALL(cudaDeviceSynchronize());
+	l2_norm = *l2_norm_h;
+	l2_norm = std::sqrt(l2_norm);
+
+        iter++;
+	if ((iter % 100) == 0) printf("%5d, %0.6f\n", iter, l2_norm);
 
         std::swap(a_new, a);
-        iter++;
     }
-    POP_RANGE
+    nvtxRangePop();
     double stop = omp_get_wtime();
 
-    CUDA_RT_CALL(cudaMemcpy(a_ref_h, a, nx * ny * sizeof(real), cudaMemcpyDeviceToHost));
+    CUDA_RT_CALL(cudaMemcpy(a_ref_h, a, nx * ny * sizeof(float), cudaMemcpyDeviceToHost));
 
     CUDA_RT_CALL(cudaFreeHost(l2_norm_h));
     CUDA_RT_CALL(cudaFree(l2_norm_d));
