@@ -16,17 +16,14 @@ RUN apt-get -y update && \
 
 ############################################
 # NVIDIA nsight-systems-2020.5.1 ,nsight-compute-2
-RUN apt-get update -y && \
-        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        apt-transport-https \
-        ca-certificates \
-        gnupg \
-        wget && \
-        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F60F4B3D7FA2AF80 && \
-        echo "deb https://developer.download.nvidia.com/devtools/repos/ubuntu2004/amd64/ /" >> /etc/apt/sources.list.d/nsight.list &&\
-        apt-get update -y
+#RUN apt-get update -y && \
+#        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+#       apt-transport-https ca-certificates gnupg wget && \
+#        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F60F4B3D7FA2AF80 && \
+#        echo "deb https://developer.download.nvidia.com/devtools/repos/ubuntu2004/amd64/ /" >> /etc/apt/sources.list.d/nsight.list &&\
+apt-get update -y
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.5.1 nsight-compute-2020.2.1 
+# RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.5.1 nsight-compute-2020.2.1 
 
 # TO COPY the data
 COPY nways_labs/ /labs/
@@ -36,7 +33,8 @@ RUN python3 /labs/nways_MD/English/Fortran/source_code/dataset.py
 
 #################################################
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.3/lib64/"
-ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/include:/usr/local/bin:/opt/anaconda3/bin:/usr/bin:$PATH"
+#ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/include:/usr/local/bin:/opt/anaconda3/bin:/usr/bin:$PATH"
+ENV PATH="/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/include:/usr/local/bin:/opt/anaconda3/bin:/usr/bin:$PATH"
 #################################################
 
 ADD nways_labs/ /labs

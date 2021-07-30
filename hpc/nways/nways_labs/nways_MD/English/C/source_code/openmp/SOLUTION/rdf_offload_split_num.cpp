@@ -166,12 +166,15 @@ void pair_gpu(const double *d_x, const double *d_y, const double *d_z,
     cut = box * 0.5;
     int count = 0;
     printf("\n %d %d ", nconf, numatm);
+
     for (int frame = 0; frame < nconf; frame++)
     {
         printf("\n %d  ", frame);
-#pragma omp target teams distribute parallel for private(dx, dy, dz, r, ig2) collapse(2) num_threads(256)
+#pragma omp target teams distribute num_teams(65535)
+
         for (int id1 = 0; id1 < numatm; id1++)
         {
+#pragma omp parallel for private(dx, dy, dz, r, ig2) 
             for (int id2 = 0; id2 < numatm; id2++)
             {
                 dx = d_x[frame * numatm + id1] - d_x[frame * numatm + id2];
