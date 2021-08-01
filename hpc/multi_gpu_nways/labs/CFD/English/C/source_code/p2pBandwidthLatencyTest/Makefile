@@ -32,8 +32,8 @@
 ################################################################################
 
 # Location of the CUDA Toolkit
-CUDA_PATH ?= /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/
-
+CUDA_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/21.5/cuda
+GCC=
 ##############################
 # start deprecated interface #
 ##############################

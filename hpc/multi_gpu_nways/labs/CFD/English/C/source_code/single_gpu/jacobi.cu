@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
     
     double runtime_serial = single_gpu(nx, ny, iter_max, a_ref_h);
 
-    printf("%dx%d: 1 GPU: %8.4f s\n", ny, nx, runtime_serial);
+    printf("%dx%d: 1 GPU: %8.4f s\n", nx, ny, runtime_serial);
 
     return 0;
 }
@@ -155,7 +155,7 @@ double single_gpu(const int nx, const int ny, const int iter_max, float* const a
 
     CUDA_RT_CALL(cudaDeviceSynchronize());
 
-    printf("Single GPU jacobi relaxation: %d iterations on %d x %d mesh\n", iter_max, ny, nx);
+    printf("Single GPU jacobi relaxation: %d iterations on %d x %d mesh\n", iter_max, nx, ny);
 
     dim3 dim_grid((nx + BLOCK_DIM_X - 1) / BLOCK_DIM_X, (ny + BLOCK_DIM_Y - 1) / BLOCK_DIM_Y, 1);
     dim3 dim_block(BLOCK_DIM_X, BLOCK_DIM_Y, 1);
