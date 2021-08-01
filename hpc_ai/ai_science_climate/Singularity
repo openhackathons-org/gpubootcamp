@@ -1,7 +1,7 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 
 Bootstrap: docker
-FROM: nvcr.io/nvidia/tensorflow:20.01-tf2-py3
+FROM: nvcr.io/nvidia/tensorflow:21.05-tf2-py3
 
 %environment
 %post
