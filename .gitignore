@@ -3,3 +3,6 @@
 alk.traj.dcd
 *.simg
 *.so*
+*.a
+*.la
+mgpm

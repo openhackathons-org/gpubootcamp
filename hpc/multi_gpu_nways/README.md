@@ -6,7 +6,6 @@ Scaling applications to multiple GPUs across multiple nodes requires one to be a
 
 ## Bootcamp Outline
 
-
 * Overview of single-GPU code and Nsight Systems Profiler
 * Single Node Multi-GPU:
   - CUDA Memcpy and Peer-to-Peer Memory Access
@@ -87,4 +86,4 @@ After running Jupyter Lab, open [http://localhost:8888](http://localhost:8888/) 
 
 Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) to raise questions.
 
-If you observe any errors or issues, please file an issue on [GPUBootcamp GitHuB repository](https://github.com/Anish-Saxena/gpubootcamp/tree/hpc-multi-gpu).
+If you observe any errors or issues, please file an issue on [GPUBootcamp GitHuB repository](https://github.com/gpuhackathons-org/gpubootcamp).

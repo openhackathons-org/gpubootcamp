@@ -261,6 +261,11 @@ int main(int argc, char* argv[]) {
             CUDA_RT_CALL(
                 cudaMemsetAsync(l2_norm_d[dev_id], 0, sizeof(float), compute_stream[dev_id]));
 
+            // TODO: Part 4- Block the "compute_stream" as long as the top and bottom halos from the
+            // neighbours are not copied to "dev_id". The "push_top_done" and "push_bottom_done" 
+            // events are to monitored for "bottom" and "top" neighbours, respectively for the 
+            // previous iteration denoted by "iter % 2".
+            // Note that there should be 2 distinct cudaStreamWaitEvent calls.
             CUDA_RT_CALL(
                 cudaStreamWaitEvent(compute_stream[dev_id], push_top_done[(iter % 2)][bottom], 0));
             CUDA_RT_CALL(
@@ -273,6 +278,8 @@ int main(int argc, char* argv[]) {
                     a_new[dev_id], a[dev_id], l2_norm_d[dev_id], iy_start[dev_id], iy_end[dev_id],
                     nx);
 
+            // TODO: Part 4- Record that Jacobi computation on "compute_stream" is done by using
+            // cudaEventRecord for "compute_done" event for "dev_id"
             CUDA_RT_CALL(cudaEventRecord(compute_done[dev_id], compute_stream[dev_id]));
 
             CUDA_RT_CALL(cudaMemcpyAsync(l2_norm_h[dev_id], l2_norm_d[dev_id], sizeof(float),
@@ -284,17 +291,29 @@ int main(int argc, char* argv[]) {
             CUDA_RT_CALL(cudaSetDevice(dev_id));
 
             // Apply periodic boundary conditions
+            // TODO: Part 4- Wait for the Jacobi computation of "dev_id" to complete by using the
+            // "compute_done" event on "push_top_stream" so that the top halo isn't copied to the
+            // neighbour before computation is done
             CUDA_RT_CALL(cudaStreamWaitEvent(push_top_stream[dev_id], compute_done[dev_id], 0));
             CUDA_RT_CALL(cudaMemcpyAsync(a_new[top] + (iy_end[top] * nx),
                                          a_new[dev_id] + iy_start[dev_id] * nx, nx * sizeof(float),
                                          cudaMemcpyDeviceToDevice, push_top_stream[dev_id]));
+            // TODO: Part 4- Record completion of top halo copy from "dev_id" to its neighbour
+            // to be used in next iteration. Record the event for "push_top_done" stream of 
+            // "dev_id" for next iteration which is "(iter+1) % 2"
             CUDA_RT_CALL(
                 cudaEventRecord(push_top_done[((iter + 1) % 2)][dev_id], push_top_stream[dev_id]));
 
+            // TODO: Part 4- Wait for the Jacobi computation of "dev_id" to complete by using the
+            // "compute_done" event on "push_bottom_stream" so that the bottom halo isn't copied to
+            // the neighbour before computation is done
             CUDA_RT_CALL(cudaStreamWaitEvent(push_bottom_stream[dev_id], compute_done[dev_id], 0));
             CUDA_RT_CALL(cudaMemcpyAsync(a_new[bottom], a_new[dev_id] + (iy_end[dev_id] - 1) * nx,
                                          nx * sizeof(float), cudaMemcpyDeviceToDevice,
                                          push_bottom_stream[dev_id]));
+            // TODO: Part 4- Record completion of bottom halo copy from "dev_id" to its neighbour
+            // to be used in next iteration. Record the event for "push_bottom_done" stream of 
+            // "dev_id" for next iteration which is "(iter+1) % 2"
             CUDA_RT_CALL(cudaEventRecord(push_bottom_done[((iter + 1) % 2)][dev_id],
                                          push_bottom_stream[dev_id]));
         }
