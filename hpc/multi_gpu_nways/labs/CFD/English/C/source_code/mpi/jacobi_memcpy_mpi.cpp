@@ -115,14 +115,13 @@ int main(int argc, char* argv[]) {
 
     int local_rank = -1;
     // TODO: Part 1- Obtain the node-level local rank by splitting the global communicator
-    // Make sure ot free the local communicator after its use
+    // Free the local communicator after its use
     MPI_Comm local_comm;
-    MPI_CALL(MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, rank, MPI_INFO_NULL,
-                                    &local_comm));
+    MPI_CALL(MPI_Comm_split_type(/*Fill me*/));
 
-    MPI_CALL(MPI_Comm_rank(local_comm, &local_rank));
+    MPI_CALL(MPI_Comm_rank(/*Fill me*/));
 
-    MPI_CALL(MPI_Comm_free(&local_comm));
+    MPI_CALL(MPI_Comm_free(/*Fill me*/));
 
     CUDA_RT_CALL(cudaSetDevice(local_rank % num_devices));
     CUDA_RT_CALL(cudaFree(0));
@@ -218,8 +217,8 @@ int main(int argc, char* argv[]) {
                                 cudaMemcpyDeviceToHost));
         // TODO: Part 1- Implement the first set of halo exchanges using MPI_SendRecv explained 
         // in the Jupyter Notebook. Observe the Memcpy operations above and below this comment
-        MPI_CALL(MPI_Sendrecv(top_halo_buf, nx, MPI_FLOAT, top, 0,
-                              bot_halo_buf, nx, MPI_FLOAT, bottom, 0, MPI_COMM_WORLD,
+        MPI_CALL(MPI_Sendrecv(/*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0,
+                              /*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0, MPI_COMM_WORLD,
                               MPI_STATUS_IGNORE));
         CUDA_RT_CALL(cudaMemcpy(a_new + (iy_end * nx), bot_halo_buf, nx * sizeof(float), 
                                 cudaMemcpyHostToDevice));
@@ -229,17 +228,15 @@ int main(int argc, char* argv[]) {
         // Second set of halo exchanges
         // TODO: Part 1- Implement the Memcpy operations and MPI calls for the second set of
         // halo exchanges
-        CUDA_RT_CALL(cudaMemcpy(bot_halo_buf, a_new + (iy_end - 1) * nx, nx * sizeof(float), 
-                                cudaMemcpyDeviceToHost));
-        MPI_CALL(MPI_Sendrecv(bot_halo_buf, nx, MPI_FLOAT, bottom, 0, 
-                                top_halo_buf, nx, MPI_FLOAT, top, 0, MPI_COMM_WORLD, 
+        CUDA_RT_CALL(cudaMemcpy(/*Fill me*/, /*Fill me*/, nx * sizeof(float), /*Fill me*/));
+        MPI_CALL(MPI_Sendrecv(/*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0, 
+                                /*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0, MPI_COMM_WORLD, 
                                 MPI_STATUS_IGNORE));
-        CUDA_RT_CALL(cudaMemcpy(a_new, top_halo_buf, nx * sizeof(float), 
-                                cudaMemcpyHostToDevice));
+        CUDA_RT_CALL(cudaMemcpy(/*Fill me*/, /*Fill me*/, nx * sizeof(float), /*Fill me*/));
         nvtxRangePop();                        
 
         // TODO: Part 1- Reduce the rank-local L2 Norm to a global L2 norm using MPI_Allreduce
-        MPI_CALL(MPI_Allreduce(l2_norm_h, &l2_norm, 1, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD));
+        MPI_CALL(MPI_Allreduce(/*Fill me*/, /*Fill me*/, 1, MPI_FLOAT, /*Fill me*/, MPI_COMM_WORLD));
         
         l2_norm = std::sqrt(l2_norm);
 

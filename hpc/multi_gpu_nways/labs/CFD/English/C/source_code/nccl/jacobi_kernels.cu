@@ -26,9 +26,8 @@
  */
 #include <cstdio>
 
-#ifdef HAVE_CUB
-#include <cub/block/block_reduce.cuh>
-#endif  // HAVE_CUB
+#define BLOCK_DIM_X 32
+#define BLOCK_DIM_Y 32
 
 #define CUDA_RT_CALL(call)                                                                  \
     {                                                                                       \
@@ -41,19 +40,10 @@
                     #call, __LINE__, __FILE__, cudaGetErrorString(cudaStatus), cudaStatus); \
     }
 
-#ifdef USE_DOUBLE
-typedef double real;
-#define MPI_REAL_TYPE MPI_DOUBLE
-#else
-typedef float real;
-#define MPI_REAL_TYPE MPI_FLOAT
-#endif
-
-__global__ void initialize_boundaries(real* __restrict__ const a_new, real* __restrict__ const a,
-                                      const real pi, const int offset, const int nx,
-                                      const int my_ny, const int ny) {
+__global__ void initialize_boundaries(float*  a_new, float*  a, const float pi, const int offset, 
+                    const int nx, const int my_ny, const int ny) {
     for (int iy = blockIdx.x * blockDim.x + threadIdx.x; iy < my_ny; iy += blockDim.x * gridDim.x) {
-        const real y0 = sin(2.0 * pi * (offset + iy) / (ny - 1));
+        const float y0 = sin(2.0 * pi * (offset + iy) / (ny - 1));
         a[iy * nx + 0] = y0;
         a[iy * nx + (nx - 1)] = y0;
         a_new[iy * nx + 0] = y0;
@@ -61,53 +51,48 @@ __global__ void initialize_boundaries(real* __restrict__ const a_new, real* __re
     }
 }
 
-void launch_initialize_boundaries(real* __restrict__ const a_new, real* __restrict__ const a,
-                                  const real pi, const int offset, const int nx, const int my_ny,
-                                  const int ny) {
-    initialize_boundaries<<<my_ny / 128 + 1, 128>>>(a_new, a, pi, offset, nx, my_ny, ny);
-    CUDA_RT_CALL(cudaGetLastError());
-}
-
-template <int BLOCK_DIM_X, int BLOCK_DIM_Y>
-__global__ void jacobi_kernel(real* __restrict__ const a_new, const real* __restrict__ const a,
-                              real* __restrict__ const l2_norm, const int iy_start,
-                              const int iy_end, const int nx, const bool calculate_norm) {
-#ifdef HAVE_CUB
-    typedef cub::BlockReduce<real, BLOCK_DIM_X, cub::BLOCK_REDUCE_WARP_REDUCTIONS, BLOCK_DIM_Y>
-        BlockReduce;
-    __shared__ typename BlockReduce::TempStorage temp_storage;
-#endif  // HAVE_CUB
+__global__ void jacobi_kernel(float*  a_new, const float*  a, float*  l2_norm, const int iy_start,
+                              const int iy_end, const int nx) {
     int iy = blockIdx.y * blockDim.y + threadIdx.y + iy_start;
     int ix = blockIdx.x * blockDim.x + threadIdx.x + 1;
-    real local_l2_norm = 0.0;
+    __shared__ float block_l2_sum[BLOCK_DIM_X*BLOCK_DIM_Y];
+    unsigned thread_index = threadIdx.y*BLOCK_DIM_X + threadIdx.x;
 
     if (iy < iy_end && ix < (nx - 1)) {
-        const real new_val = 0.25 * (a[iy * nx + ix + 1] + a[iy * nx + ix - 1] +
+        // Update grid point
+        const float new_val = 0.25 * (a[iy * nx + ix + 1] + a[iy * nx + ix - 1] +
                                      a[(iy + 1) * nx + ix] + a[(iy - 1) * nx + ix]);
         a_new[iy * nx + ix] = new_val;
-        if (calculate_norm) {
-            real residue = new_val - a[iy * nx + ix];
-            local_l2_norm += residue * residue;
+        float residue = new_val - a[iy * nx + ix];
+        // Set block-level L2 norm value for this grid point
+        block_l2_sum[thread_index] = residue * residue;
+    }
+    else {
+        block_l2_sum[thread_index] = 0;
+    }
+    // Reduce L2 norm for the block in parallel
+    for (unsigned stride = 1; stride < BLOCK_DIM_X*BLOCK_DIM_Y; stride *= 2) {
+        __syncthreads();
+        if ((thread_index) % (2*stride) == 0) {
+            block_l2_sum[thread_index] += block_l2_sum[thread_index + stride];
         }
     }
-    if (calculate_norm) {
-#ifdef HAVE_CUB
-        real block_l2_norm = BlockReduce(temp_storage).Sum(local_l2_norm);
-        if (0 == threadIdx.y && 0 == threadIdx.x) atomicAdd(l2_norm, block_l2_norm);
-#else
-        atomicAdd(l2_norm, local_l2_norm);
-#endif  // HAVE_CUB
+    // Atomically update global L2 norm with block-reduced L2 norm
+    if (thread_index == 0) {
+        atomicAdd(l2_norm, block_l2_sum[0]);
     }
 }
 
-void launch_jacobi_kernel(real* __restrict__ const a_new, const real* __restrict__ const a,
-                          real* __restrict__ const l2_norm, const int iy_start, const int iy_end,
-                          const int nx, const bool calculate_norm, cudaStream_t stream) {
-    constexpr int dim_block_x = 32;
-    constexpr int dim_block_y = 32;
-    dim3 dim_grid((nx + dim_block_x - 1) / dim_block_x,
-                  ((iy_end - iy_start) + dim_block_y - 1) / dim_block_y, 1);
-    jacobi_kernel<dim_block_x, dim_block_y><<<dim_grid, {dim_block_x, dim_block_y, 1}, 0, stream>>>(
-        a_new, a, l2_norm, iy_start, iy_end, nx, calculate_norm);
-    CUDA_RT_CALL(cudaGetLastError());
+void launch_initialize_boundaries(float*  a_new, float*  a, const float pi, const int offset, 
+                                    const int nx, const int my_ny, const int ny) {
+    initialize_boundaries<<<my_ny / 128 + 1, 128>>>(a_new, a, pi, offset, nx, my_ny, ny);
 }
+
+void launch_jacobi_kernel(float*  a_new, const float*  a, float*  l2_norm, const int iy_start,
+                              const int iy_end, const int nx, cudaStream_t stream) {
+    dim3 dim_block(BLOCK_DIM_X, BLOCK_DIM_Y, 1);
+    dim3 dim_grid((nx + BLOCK_DIM_X - 1) / BLOCK_DIM_X,
+                  ((iy_end - iy_start) + BLOCK_DIM_Y - 1) / BLOCK_DIM_Y, 1);
+    jacobi_kernel<<<dim_grid, dim_block, 0, stream>>>(a_new, a, l2_norm, iy_start, iy_end, nx);
+}
+

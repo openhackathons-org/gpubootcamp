@@ -263,22 +263,20 @@ int main(int argc, char* argv[]) {
             // from the previous iteration by synchronizing "push_top_stream" and
             // "push_bottom_stream" streams. Be careful with which neighbour's top stream and
             // which neighbour's bottom stream needs to be synchronized.
-            CUDA_RT_CALL(cudaStreamSynchronize(push_top_stream[bottom]));
-            CUDA_RT_CALL(cudaStreamSynchronize(push_bottom_stream[top]));
+            CUDA_RT_CALL(cudaStreamSynchronize(/*Fill me*/));
+            CUDA_RT_CALL(cudaStreamSynchronize(/*Fill me*/));
 
             dim3 dim_grid((nx + BLOCK_DIM_X - 1) / BLOCK_DIM_X,
                           (chunk_size[dev_id] + BLOCK_DIM_Y - 1) / BLOCK_DIM_Y, 1);
 
             // TODO: Part 3- Launch Jacobi kernel on "compute_stream[dev_id]" and all other
             // functional arguments
-            jacobi_kernel<<<dim_grid, dim_block, 0, compute_stream[dev_id]>>>(
-                    a_new[dev_id], a[dev_id], l2_norm_d[dev_id], iy_start[dev_id], iy_end[dev_id],
-                    nx);
+            jacobi_kernel<<</*Fill me*/, /*Fill me*/, 0, /*Fill me*/>>>(/*Fill me*/);
 
             // TODO: Part 3- Copy GPU-local L2 norm "l2_norm_d" back to CPU "l2_norm_h" on
             // "compute_stream[dev_id]"
-            CUDA_RT_CALL(cudaMemcpyAsync(l2_norm_h[dev_id], l2_norm_d[dev_id], sizeof(float),
-                     cudaMemcpyDeviceToHost, compute_stream[dev_id]));
+            CUDA_RT_CALL(cudaMemcpyAsync(/*Fill me*/, /*Fill me*/, sizeof(float),
+                                            /*Fill me*/, /*Fill me*/));
         }    
         for (int dev_id = 0; dev_id < num_devices; ++dev_id) {
             const int top = dev_id > 0 ? dev_id - 1 : (num_devices - 1);
@@ -287,20 +285,18 @@ int main(int argc, char* argv[]) {
 
             // TODO: Part 3- Before copying the updated halos to neighbours, ensure the 
             // computation is complete by synchronizing "compute_stream[dev_id]" stream
-            CUDA_RT_CALL(cudaStreamSynchronize(compute_stream[dev_id]));
+            CUDA_RT_CALL(cudaStreamSynchronize(/*Fill me*/));
 
             // Apply periodic boundary conditions
             // TODO: Part 3- Implement halo exchange with top neighbour on current device's 
             // "push_top_stream"
-            CUDA_RT_CALL(cudaMemcpyAsync(a_new[top] + (iy_end[top] * nx),
-                                         a_new[dev_id] + iy_start[dev_id] * nx, nx * sizeof(float),
-                                         cudaMemcpyDeviceToDevice, push_top_stream[dev_id]));
+            CUDA_RT_CALL(cudaMemcpyAsync(/*Fill me*/, /*Fill me*/, nx * sizeof(float),
+                                         /*Fill me*/, /*Fill me*/));
 
             // TODO: Part 3- Implement halo exchange with "bottom" neighbour on current device's 
             // "push_bottom_stream"
-            CUDA_RT_CALL(cudaMemcpyAsync(a_new[bottom], a_new[dev_id] + (iy_end[dev_id] - 1) * nx,
-                                         nx * sizeof(float), cudaMemcpyDeviceToDevice,
-                                         push_bottom_stream[dev_id]));
+            CUDA_RT_CALL(cudaMemcpyAsync(/*Fill me*/, /*Fill me*/, nx * sizeof(float),
+                                         /*Fill me*/, /*Fill me*/));
         }
         l2_norm = 0.0;
         for (int dev_id = 0; dev_id < num_devices; ++dev_id) {

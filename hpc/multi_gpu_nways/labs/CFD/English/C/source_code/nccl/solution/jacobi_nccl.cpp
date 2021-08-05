@@ -1,4 +1,4 @@
-/* Copyright (c) 2017, NVIDIA CORPORATION. All rights reserved.
+/* Copyright (c) 2021, NVIDIA CORPORATION. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,6 +33,7 @@
 #include <nvToolsExt.h>
 #include <mpi.h>
 #include <omp.h>
+#include <nccl.h>
 
 #define MPI_CALL(call)                                                                \
     {                                                                                 \
@@ -66,17 +67,26 @@
                     #call, __LINE__, __FILE__, cudaGetErrorString(cudaStatus), cudaStatus); \
     }
 
+#define NCCL_CALL(call)                                                                     \
+    {                                                                                       \
+        ncclResult_t  ncclStatus = call;                                                    \
+        if (ncclSuccess != ncclStatus)                                                      \
+            fprintf(stderr,                                                                 \
+                    "ERROR: NCCL call \"%s\" in line %d of file %s failed "                 \
+                    "with "                                                                 \
+                    "%s (%d).\n",                                                           \
+                    #call, __LINE__, __FILE__, ncclGetErrorString(ncclStatus), ncclStatus); \
+    }
+
 constexpr float tol = 1.0e-8;
 
 const float PI = 2.0 * std::asin(1.0);
 
-void launch_initialize_boundaries(float* __restrict__ const a_new, float* __restrict__ const a,
-                                  const float pi, const int offset, const int nx, const int my_ny,
-                                  const int ny);
+void launch_jacobi_kernel(float*  a_new, const float*  a, float*  l2_norm, const int iy_start,
+                              const int iy_end, const int nx, cudaStream_t stream);
 
-void launch_jacobi_kernel(float* __restrict__ const a_new, const float* __restrict__ const a,
-                          float* __restrict__ const l2_norm, const int iy_start, const int iy_end,
-                          const int nx);
+void launch_initialize_boundaries(float*  a_new, float*  a, const float pi, const int offset, 
+                                    const int nx, const int my_ny, const int ny);
 
 double single_gpu(const int nx, const int ny, const int iter_max, 
                     float* const a_ref_h, bool print);
@@ -105,25 +115,42 @@ int main(int argc, char* argv[]) {
     MPI_CALL(MPI_Comm_rank(MPI_COMM_WORLD, &rank));
     int size;
     MPI_CALL(MPI_Comm_size(MPI_COMM_WORLD, &size));
-    int num_devices = 0;
-    cudaGetDeviceCount(&num_devices);
-    
+
+    ncclUniqueId nccl_uid;
+    if (rank == 0) NCCL_CALL(ncclGetUniqueId(&nccl_uid));
+    MPI_CALL(MPI_Bcast(&nccl_uid, sizeof(ncclUniqueId), MPI_BYTE, 0, MPI_COMM_WORLD));
+
     const int iter_max = get_argval(argv, argv + argc, "-niter", 1000);
     const int nx = get_argval(argv, argv + argc, "-nx", 16384);
     const int ny = get_argval(argv, argv + argc, "-ny", 16384);
     const bool skip_single_gpu = get_arg(argv, argv + argc, "-skip_single_gpu");
 
     int local_rank = -1;
-    MPI_Comm local_comm;
-    MPI_CALL(MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, rank, MPI_INFO_NULL,
-                                    &local_comm));
+    {
+        MPI_Comm local_comm;
+        MPI_CALL(MPI_Comm_split_type(MPI_COMM_WORLD, MPI_COMM_TYPE_SHARED, rank, MPI_INFO_NULL,
+                                     &local_comm));
 
-    MPI_CALL(MPI_Comm_rank(local_comm, &local_rank));
+        MPI_CALL(MPI_Comm_rank(local_comm, &local_rank));
 
-    MPI_CALL(MPI_Comm_free(&local_comm));
+        MPI_CALL(MPI_Comm_free(&local_comm));
+    }
 
-    CUDA_RT_CALL(cudaSetDevice(local_rank % num_devices));
+    CUDA_RT_CALL(cudaSetDevice(local_rank));
     CUDA_RT_CALL(cudaFree(0));
+
+    ncclComm_t nccl_comm;
+    NCCL_CALL(ncclCommInitRank(&nccl_comm, size, nccl_uid, rank));
+
+
+    int nccl_version = 0;
+    NCCL_CALL(ncclGetVersion(&nccl_version));
+    if ( nccl_version < 2800 ) {
+        fprintf(stderr,"ERROR NCCL 2.8 or newer is required.\n");
+        NCCL_CALL(ncclCommDestroy(nccl_comm));
+        MPI_CALL(MPI_Finalize());
+        return 1;
+    }
 
     float* a_ref_h;
     CUDA_RT_CALL(cudaMallocHost(&a_ref_h, nx * ny * sizeof(float)));
@@ -134,7 +161,6 @@ int main(int argc, char* argv[]) {
     if (!skip_single_gpu){
         runtime_serial = single_gpu(nx, ny, iter_max, a_ref_h, rank == 0);
     }
-
     // ny - 2 rows are distributed amongst `size` ranks in such a way
     // that each rank gets either (ny - 2) / size or (ny - 2) / size + 1 rows.
     // This optimizes load balancing when (ny - 2) % size != 0
@@ -178,6 +204,8 @@ int main(int argc, char* argv[]) {
 
     float* l2_norm_d;
     CUDA_RT_CALL(cudaMalloc(&l2_norm_d, sizeof(float)));
+    float* l2_global_norm_d;
+    CUDA_RT_CALL(cudaMalloc(&l2_global_norm_d, sizeof(float)));
     float* l2_norm_h;
     CUDA_RT_CALL(cudaMallocHost(&l2_norm_h, sizeof(float)));
 
@@ -194,38 +222,53 @@ int main(int argc, char* argv[]) {
     double start = MPI_Wtime();
     nvtxRangePush("Jacobi Solve Multi-GPU");
     while (l2_norm > tol && iter < iter_max) {
-        CUDA_RT_CALL(cudaMemset(l2_norm_d, 0, sizeof(float)));
+        CUDA_RT_CALL(cudaMemsetAsync(l2_norm_d, 0, sizeof(float)));
 
-        launch_jacobi_kernel(a_new, a, l2_norm_d, iy_start, iy_end, nx);
-
-        CUDA_RT_CALL(cudaMemcpy(l2_norm_h, l2_norm_d, sizeof(float), cudaMemcpyDeviceToHost));
+        launch_jacobi_kernel(a_new, a, l2_norm_d, iy_start, iy_end, nx, 0);
 
         const int top = rank > 0 ? rank - 1 : (size - 1);
         const int bottom = (rank + 1) % size;
 
+        // TODO: Reduce the device-local L2 norm, "l2_norm_d" to the global L2 norm on each device,
+        // "l2_global_norm_d", using ncclAllReduce() function. Use "ncclSum" as the reduction operation.
+        // Make sure to encapsulate this funciton call within NCCL group calls.
+        // Use "0" in the stream parameter function argument.
+        NCCL_CALL(ncclGroupStart());
+        NCCL_CALL(ncclAllReduce(l2_norm_d, l2_global_norm_d, 1, ncclFloat, ncclSum, nccl_comm, 
+                                    0));
+        NCCL_CALL(ncclGroupEnd());
+
+        // TODO: Transfer the global L2 norm from each device to the host using cudaMemcpyAsync
+        CUDA_RT_CALL(cudaMemcpyAsync(l2_norm_h, l2_global_norm_d, sizeof(float), cudaMemcpyDeviceToHost));
+
         // Apply periodic boundary conditions
-	    CUDA_RT_CALL(cudaDeviceSynchronize());
-
-        nvtxRangePush("Halo exchange CUDA-aware MPI");
-        // TODO: Part 2- Implement top halo exchange. Use only GPU buffers in the MPI call's 
-        // function arguments.
-        MPI_CALL(MPI_Sendrecv(/*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0,
-                              /*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0, MPI_COMM_WORLD,
-                              MPI_STATUS_IGNORE));
-        nvtxRangePop(); 
-
-        nvtxRangePush("Halo exchange CUDA-aware MPI");
-        // TODO: Part 2- Implement bottom halo exchange. Use only GPU buffers in the MPI call's 
-        // function arguments.
-        MPI_CALL(MPI_Sendrecv(/*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0, 
-                                /*Fill me*/, nx, MPI_FLOAT, /*Fill me*/, 0, MPI_COMM_WORLD, 
-                                MPI_STATUS_IGNORE));
-        nvtxRangePop(); 
-
-        // TODO: Part 2- Reduce the rank-local L2 Norm to a global L2 norm
-        MPI_CALL(MPI_Allreduce(/*Fill me*/, /*Fill me*/, 1, MPI_FLOAT, /*Fill me*/, MPI_COMM_WORLD));
-        l2_norm = std::sqrt(l2_norm);
+        NCCL_CALL(ncclGroupStart());
         
+        //TODO: Perform the first set of halo exchanges by:
+        // 1. Receiving the top halo from the "top" neighbour into the "a_new" device memory array location. 
+        // 2. Sending current device's bottom halo to "bottom" neighbour from the "a_new + (iy_end - 1) * nx"
+        //    device memory array location.
+        // Use "0" in the stream parameter function argument.
+        NCCL_CALL(ncclRecv(a_new,                     nx, ncclFloat, top,    nccl_comm, 0));
+        NCCL_CALL(ncclSend(a_new + (iy_end - 1) * nx, nx, ncclFloat, bottom, nccl_comm, 0));
+
+        //TODO: Perform the second set of halo exchanges by:
+        // 1. Receiving the bottom halo from the "bottom" neighbour into the "a_new + (iy_end * nx)" 
+        //    device memory array location. 
+        // 2. Sending current device's top halo to "top" neighbour from the "a_new + iy_start * nx"
+        //    device memory array location.
+        // Use "0" in the stream parameter function argument.
+        NCCL_CALL(ncclRecv(a_new + (iy_end * nx),     nx, ncclFloat, bottom, nccl_comm, 0));
+        NCCL_CALL(ncclSend(a_new + iy_start * nx,     nx, ncclFloat, top,    nccl_comm, 0));
+
+        NCCL_CALL(ncclGroupEnd());
+
+        // TODO: Synchronize the device before computing the global L2 norm on host for printing
+        CUDA_RT_CALL(cudaDeviceSynchronize());
+
+        l2_norm = *l2_norm_h;
+        l2_norm = std::sqrt(l2_norm);
+
         iter++;
         if (0 == rank && (iter % 100) == 0) {
             printf("%5d, %0.6f\n", iter, l2_norm);
@@ -233,6 +276,7 @@ int main(int argc, char* argv[]) {
 
         std::swap(a_new, a);
     }
+    CUDA_RT_CALL(cudaDeviceSynchronize());
     double stop = MPI_Wtime();
     nvtxRangePop();
 
@@ -282,6 +326,8 @@ int main(int argc, char* argv[]) {
     CUDA_RT_CALL(cudaFreeHost(a_h));
     CUDA_RT_CALL(cudaFreeHost(a_ref_h));
 
+    NCCL_CALL(ncclCommDestroy(nccl_comm));
+
     MPI_CALL(MPI_Finalize());
     return (result_correct == 1) ? 0 : 1;
 }
@@ -327,7 +373,7 @@ double single_gpu(const int nx, const int ny, const int iter_max, float* const a
         CUDA_RT_CALL(cudaMemset(l2_norm_d, 0, sizeof(float)));
 
         // Compute grid points for this iteration
-        launch_jacobi_kernel(a_new, a, l2_norm_d, iy_start, iy_end, nx);
+        launch_jacobi_kernel(a_new, a, l2_norm_d, iy_start, iy_end, nx, 0);
         CUDA_RT_CALL(cudaGetLastError());
         CUDA_RT_CALL(cudaMemcpy(l2_norm_h, l2_norm_d, sizeof(float), cudaMemcpyDeviceToHost));
 

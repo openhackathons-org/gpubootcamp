@@ -6,3 +6,6 @@ alk.traj.dcd
 *.a
 *.la
 mgpm
+*.o
+*.out
+final_remarks.ipynb

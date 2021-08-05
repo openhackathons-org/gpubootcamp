@@ -224,21 +224,20 @@ int main(int argc, char* argv[]) {
         if (p2p == true) {
             const int top = dev_id > 0 ? dev_id - 1 : (num_devices - 1);
             int canAccessPeer = 0;
-	    // TODO: Part 2- Check whether GPU "devices[dev_id]" can access peer "devices[top]"
-            CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, devices[dev_id], devices[top]));
+            // TODO: Part 2- Check whether GPU "devices[dev_id]" can access peer "devices[top]"
+            CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, /*Fill me*/, /*Fill me*/));
             if (canAccessPeer) {
-		// TODO: Part 2- Enable peer access from GPU "devices[dev_id]" to "devices[top]"
-                CUDA_RT_CALL(cudaDeviceEnablePeerAccess(devices[top], 0));
+            // TODO: Part 2- Enable peer access from GPU "devices[dev_id]" to "devices[top]"
+                CUDA_RT_CALL(cudaDeviceEnablePeerAccess(/*Fill me*/, 0));
             }
             const int bottom = (dev_id + 1) % num_devices;
             if (top != bottom) {
                 canAccessPeer = 0;
-		// TODO: Part 2- Check and enable peer access from GPU "devices[dev_id]" to
-		// "devices[bottom]", whenever possible
-                CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, 
-					devices[dev_id], devices[bottom]));
+                // TODO: Part 2- Check and enable peer access from GPU "devices[dev_id]" to
+                // "devices[bottom]", whenever possible
+                CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, /*Fill me*/, /*Fill me*/));
                 if (canAccessPeer) {
-                    CUDA_RT_CALL(cudaDeviceEnablePeerAccess(devices[bottom], 0));
+                    CUDA_RT_CALL(cudaDeviceEnablePeerAccess(/*Fill me*/, 0));
                 }
             }
         }
@@ -274,7 +273,7 @@ int main(int argc, char* argv[]) {
 	    // Launch device kernel on each GPU
         for (int dev_id = 0; dev_id < num_devices; ++dev_id) {
             // TODO: Part 1- Set current GPU to be "devices[dev_id]"
-            CUDA_RT_CALL(cudaSetDevice(devices[dev_id]));
+            CUDA_RT_CALL(cudaSetDevice(/*Fill me*/));
 
             CUDA_RT_CALL(cudaMemsetAsync(l2_norm_d[dev_id], 0, sizeof(float)));
             dim3 dim_grid((nx + BLOCK_DIM_X - 1) / BLOCK_DIM_X,
@@ -283,13 +282,10 @@ int main(int argc, char* argv[]) {
             // TODO: Part 1- Call Jacobi kernel with "dim_grid" blocks in grid and "dim_block"
             // blocks per thread. "dev_id" variable points to corresponding memory allocated 
             // for the current GPU.
-            jacobi_kernel<<<dim_grid, dim_block>>>(
-                    a_new[dev_id], a[dev_id], l2_norm_d[dev_id], iy_start[dev_id], iy_end[dev_id],
-                    nx);
+            jacobi_kernel<<</*Fill me*/, /*Fill me*/>>>(/*Fill me*/);
 
             // TODO: Part 1- Copy GPU-local L2 norm "l2_norm_d" back to CPU "l2_norm_h"
-            CUDA_RT_CALL(cudaMemcpyAsync(l2_norm_h[dev_id], l2_norm_d[dev_id], sizeof(float),
-                     cudaMemcpyDeviceToHost));
+            CUDA_RT_CALL(cudaMemcpyAsync(/*Fill me*/, /*Fill me*/, sizeof(float), /*Fill me*/));
 	}
     // Launch async memory copy operations for halo exchange and 
 	// for copying local-grid L2 norm from each GPU to host
@@ -298,23 +294,20 @@ int main(int argc, char* argv[]) {
             const int bottom = (dev_id + 1) % num_devices;
             
             // TODO: Part 1- Set current GPU
-            CUDA_RT_CALL(cudaSetDevice(devices[dev_id]));
+            CUDA_RT_CALL(cudaSetDevice(/*Fill me*/));
 
             // TODO: Part 1- Implement halo exchange with top neighbour "top"
-            CUDA_RT_CALL(cudaMemcpyAsync(a_new[top] + (iy_end[top] * nx),
-                                         a_new[dev_id] + iy_start[dev_id] * nx, nx * sizeof(float),
-                                         cudaMemcpyDeviceToDevice));
+            CUDA_RT_CALL(cudaMemcpyAsync(/*Fill me*/, /*Fill me*/, nx * sizeof(float), /*Fill me*/));
 	    
             // TODO: Part 1- Implement halo exchange with bottom neighbour "bottom"
-            CUDA_RT_CALL(cudaMemcpyAsync(a_new[bottom], a_new[dev_id] + (iy_end[dev_id] - 1) * nx,
-                                         nx * sizeof(float), cudaMemcpyDeviceToDevice));
+            CUDA_RT_CALL(cudaMemcpyAsync(/*Fill me*/, /*Fill me*/, nx * sizeof(float), /*Fill me*/));
         }
         l2_norm = 0.0;
         // Synchronize devices and compute global L2 norm
         for (int dev_id = 0; dev_id < num_devices; ++dev_id) {
             // TODO: part 1- Set current GPU and call cudaDeviceSynchronize()
-	        CUDA_RT_CALL(cudaSetDevice(devices[dev_id]));
-            CUDA_RT_CALL(cudaDeviceSynchronize());
+	        CUDA_RT_CALL(cudaSetDevice(/*Fill me*/));
+            CUDA_RT_CALL(/*Fill me*/);
 
             l2_norm += *(l2_norm_h[dev_id]);
         }
