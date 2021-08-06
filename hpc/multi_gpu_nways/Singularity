@@ -61,4 +61,4 @@ FROM: nvcr.io/nvidia/nvhpc:21.5-devel-cuda_multi-ubuntu20.04
     "$@"
 
 %labels
-    AUTHOR mozhgank
+    AUTHOR Anish-Saxena
