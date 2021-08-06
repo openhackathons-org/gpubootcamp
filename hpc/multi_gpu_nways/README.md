@@ -92,9 +92,9 @@ jupyter lab --notebook-dir=<path-to-gpubootcamp-repo>/hpc/multi_gpu_nways/labs/ 
 
 After running Jupyter Lab, open [http://localhost:8888](http://localhost:8888/) in a web browser and start the `introduction.ipynb` notebook.
 
-### Containerized Build with Singularity
+## Optional: Containerized Build with Singularity
 
-**Note:** This material is designed to primarily run in containerless environments, that is, directly on the cluster. Thus, building the Singularity container is OPTIONAL.
+This material is designed to primarily run in containerless environments, that is, directly on the cluster. Thus, building the Singularity container is OPTIONAL.
 
 If containerization is desired, follow the steps outlined in the notebook [MPI in Containerized Environments](labs/CFD/English/C/jupyter_notebook/mpi/containers_and_mpi.ipynb).
 
@@ -108,6 +108,12 @@ singularity run --nv multi_gpu_nways.simg jupyter lab --notebook-dir=<path-to-gp
 ```
 
 Then, access Jupyter Lab on [http://localhost:8888](http://localhost:8888/).
+
+## Troubleshooting
+
+#### Compiler throws errors
+
+If compiling any program throws an error related to CUDA/ NCCL/ NVHSMEM/ MPI libraries or header files being not found, ensure that `LD_LIBRARY_PATH` is correctly set. Moreover, make sure environment variables `CUDA_HOME`, `NCCL_HOME`, and `NVSHMEM_HOME` are set either during installation or manually inside each `Makefile`.
 
 ## Questions?
 
