@@ -1,5 +1,19 @@
 # openacc-training-materials
-Training materials provided by OpenACC.org.(**Tested on NVIDIA driver 440.82**)
+
+This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**). This bootcamp covers how to program GPUs with OpenACC though hands on experience.
+
+**Tutorial Outline**
+- Lab 1: Introduction to OpenACC 
+- Lab 2: OpenACC Data Management 
+- Lab 3: Loop Optimizations with OpenACC
+
+## Target Audience
+
+The target audience for this lab is researchers/graduate students and developers who are interested in learning about programming GPUs with OpenACC.
+
+## Tutorial Duration
+
+The total bootcamp material  would take approximate 3 hours (  1 hour per Lab ).
 
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -46,5 +60,7 @@ Then, run the container:
 Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `START_profiling.ipynb` notebook.
 
 
+
 ## Questions?
-Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for questions.
+- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps.

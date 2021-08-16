@@ -1,5 +1,18 @@
 # openacc-training-materials
-Training materials provided by OpenACC.org. The objective of this lab is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing (HPC) Simulations ). This Bootcamp will provide introduction to fundamentals of using Physics Informed Neural Network and how they can be applied to real world scientific domains using NVIDIA SimNet. 
+This repository contains mini applications for GPU Bootcamps. The objective of this lab is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing (HPC) Simulations ). This Bootcamp will provide introduction to fundamentals of using Physics Informed Neural Network and how they can be applied to real world scientific domains using NVIDIA SimNet.
+
+- Introduction: Data Driven vs PINN approach
+- Lab 1: Solving Partial Differential Equations using SimNet
+- Lab 2: Solving transient problems and inverse problems using SimNet
+- Lab 3: Mini Challenge
+
+## Target Audience:
+
+The target audience for this bootcamp are researchers/graduate students and developers who are new to field of Artifical Intelligence and interested in learning difference between Data and Physics Informed Neural Network approach applied to Simulation domains. Basic Python programming knowledge is required. 
+
+## Tutorial Duration
+
+The overall bootcamp will take approximate 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
 
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -35,4 +48,8 @@ Then, run the container:
 
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
+
+## Questions?
+- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps.
 

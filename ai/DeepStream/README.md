@@ -1,6 +1,20 @@
 
 # openacc-training-materials
-Training materials provided by OpenACC.org. The objective of this lab is to give an introduction to using Nvidia DeepStream Framework in a Intelligent Video Analytics Domain.  
+This repository contains mini applications for GPU Bootcamps. The objective of this Bootcamp is to give an introduction to using NVIDIA DeepStream Framework and apply to Intelligent Video Analytics Domain.  
+
+- Introduction to Deepstream and Gstreamer
+- Lab 1: Getting started with Deepstream Pipeline
+- Lab 2: Introduction to Multi-DNN pipeline
+- Lab 3: Creationg multi-stream pipeline
+- Lab 4: Mini-Challenge : Combining Multi-stream with Multi-DNN pipeline
+
+## Target Audience:
+
+The target audience for this bootcamp are AI developers working in domain of Intelligent Video Anaytics and looking at optimizing the application using NVIDIA DeepStream SDK.
+
+## Tutorial Duration
+
+The overall lab should take approximate 3.5 hours. There is an additional mini-challenge provided at the end of lab.  
 
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -47,4 +61,8 @@ Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 Q. "ResourceExhaustedError" error is observed while running the labs
 A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
+
+## Questions?
+- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps.
 
