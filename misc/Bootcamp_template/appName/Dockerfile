@@ -1,3 +1,4 @@
+# Copyright (c) 2021 NVIDIA Corporation.  All rights reserved.
 
 # To run this dockerfile you need to present port 8888 and provide a hostname. 
 # For instance:
@@ -7,5 +8,5 @@ FROM nvcr.io/hpc/pgi-compilers:ce
 RUN apt update && \
     apt install -y --no-install-recommends python3-pip 
 
-ADD appName/ /labs
+ADD appName_labs/ /labs
 WORKDIR /labs

@@ -1,3 +1,5 @@
+# Copyright (c) 2021 NVIDIA Corporation.  All rights reserved.
+
 Bootstrap: docker
 FROM: nvcr.io/hpc/pgi-compilers:ce
 
@@ -8,7 +10,7 @@ FROM: nvcr.io/hpc/pgi-compilers:ce
 
 
 %files
-    appName /labs
+    appName_labs /labs
 
 %runscript
     "$@"
