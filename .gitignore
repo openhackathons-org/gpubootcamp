@@ -2,3 +2,5 @@
 */.ipynb_checkpoints/*
 alk.traj.dcd
 *.simg
+*/.ses/*
+*/.log/*

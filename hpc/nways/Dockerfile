@@ -21,7 +21,7 @@ RUN apt-get -y update && \
 #       apt-transport-https ca-certificates gnupg wget && \
 #        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F60F4B3D7FA2AF80 && \
 #        echo "deb https://developer.download.nvidia.com/devtools/repos/ubuntu2004/amd64/ /" >> /etc/apt/sources.list.d/nsight.list &&\
-apt-get update -y
+RUN apt-get update -y
 
 # RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.5.1 nsight-compute-2020.2.1 
 
