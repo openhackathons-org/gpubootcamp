@@ -34,5 +34,5 @@ RUN ls -l
 RUN unzip deepstream_dataset.zip
 WORKDIR /opt/nvidia/deepstream/deepstream-5.0
 ## Uncomment this line to run Jupyter notebook by default
-CMD jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8889 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8889 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python
 

@@ -17,7 +17,11 @@ RUN apt-get -y update && \
 
 RUN pip3 install --no-cache-dir -U install setuptools pip
 RUN pip3 install gdown
-RUN pip3 install --no-cache-dir jupyter
+RUN apt-get update -y
+RUN apt-get install -y git nvidia-modprobe
+# Install required python packages
+RUN pip3 install jupyterlab
+RUN pip3 install ipywidgets
 RUN pip3 install --no-cache-dir "cupy-cuda112==8.6.0" \
     numba numpy scipy 
        
@@ -51,4 +55,4 @@ RUN pip3 install --no-cache-dir MDAnalysis
 
 ADD nways_labs/ /labs
 WORKDIR /labs
-CMD service nginx start && jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs

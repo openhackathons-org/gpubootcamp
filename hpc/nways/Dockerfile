@@ -11,8 +11,13 @@ RUN apt-get -y update && \
         DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends python3-pip python3-setuptools nginx zip make build-essential libtbb-dev && \
         rm -rf /var/lib/apt/lists/* && \
         pip3 install --upgrade pip &&\
-        pip3 install --no-cache-dir jupyter &&\
         pip3 install gdown
+
+RUN apt-get update -y        
+RUN apt-get install -y git nvidia-modprobe
+RUN pip3 install jupyterlab
+# Install required python packages
+RUN pip3 install ipywidgets
 
 ############################################
 # NVIDIA nsight-systems-2020.5.1 ,nsight-compute-2
@@ -41,4 +46,4 @@ ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/202
 
 ADD nways_labs/ /labs
 WORKDIR /labs
-CMD service nginx start && jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs

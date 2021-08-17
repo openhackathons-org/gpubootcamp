@@ -24,13 +24,13 @@ For instance:
 and to run the container, run:
 `sudo docker run --rm -it --gpus=all --network=host -p 8888:8888 myimage:1.0`
 
-The container launches jupyter notebook and runs on port 8888
-`jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
+The container launches jupyter lab and runs on port 8888
+`jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
-Once inside the container launch the jupyter notebook by typing the following command
-`jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python`
+Once inside the container launch the jupyter lab by typing the following command
+`jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ### Singularity Container
@@ -43,9 +43,9 @@ and copy the files to your local machine to make sure changes are stored locally
 
 
 Then, run the container:
-`singularity run --nv --writable <image_name>.simg jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=~/workspace/python`
+`singularity run --nv --writable <image_name>.simg jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=~/workspace/python`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ## Troubleshooting

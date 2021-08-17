@@ -18,8 +18,11 @@ RUN apt-get update -y && \
 RUN apt-get update 
 RUN apt-get install --no-install-recommends -y python3
 RUN pip3 install --upgrade pip
-
-RUN pip3 install --no-cache-dir jupyter
+RUN apt-get update -y        
+RUN apt-get install -y git nvidia-modprobe
+RUN pip3 install jupyterlab
+# Install required python packages
+RUN pip3 install ipywidgets
 RUN pip3 install netcdf4
 
 # NVIDIA nsight-systems-2020.2.1 
@@ -49,4 +52,4 @@ ENV PATH="/opt/nvidia/nsight-systems/2020.2.1/bin:$PATH"
 
 ADD English/ /labs
 WORKDIR /labs
-CMD service nginx start && jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs
+CMD jupyter-lab  --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs

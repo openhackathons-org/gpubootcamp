@@ -23,8 +23,11 @@ FROM: nvcr.io/nvidia/nvhpc:21.3-devel-cuda_multi-ubuntu20.04
     rm -rf /var/lib/apt/cache/* 
 
     pip3 install --upgrade pip
-    pip3 install --no-cache-dir jupyter
     pip3 install gdown
+    apt-get update -y
+    apt-get -y install git nvidia-modprobe
+    pip3 install jupyterlab
+    pip3 install ipywidgets
 
     apt-get install --no-install-recommends -y build-essential 
 

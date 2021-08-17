@@ -24,9 +24,9 @@ and to run the container, run:
 `sudo docker run --rm -it --gpus=all --network=host -p 8888:8888 myimage:1.0`
 
 The container launches jupyter notebook and runs on port 8888
-`jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
+`jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ### Singularity Container
@@ -39,9 +39,9 @@ and copy the files to your local machine to make sure changes are stored locally
 
 
 Then, run the container:
-`singularity run --nv <image_name>.simg jupyter notebook --notebook-dir=~/workspace/python/jupyter_notebook`
+`singularity run --nv <image_name>.simg jupyter-lab --notebook-dir=~/workspace/python/jupyter_notebook`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ## Troubleshooting
