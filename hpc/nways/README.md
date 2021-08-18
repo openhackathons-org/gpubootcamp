@@ -1,27 +1,38 @@
 # Nways to GPU programming
-This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**). This labs comprises Nways to GPU programming implemented with the following programning approaches:
+This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**). This bootcamp comprises N-Ways to GPU programming implemented with the following programming approaches:
 
 **C programming language**
+  - std::par
   - OpenACC
-  - Kokkos
-  - PSTL
   - OpenMP
-  - CUDA C
-  
-  
+  - CUDA
   
 **Fortran programming language**
   - do-concurrent
   - OpenACC
   - OpenMP
-  - CUDA Fortran
+  - CUDA
   
   
 **Python programming language**
   - CuPy
   - Numba
 
-We showcase above ways using mini applications in MD domain and CFD.
+We showcase above ways using mini applications in domains like Molecular Dynamics, Computational Fluid Dynamics etc.
+
+## Target Audience:
+
+The target audience for this bootcamp are researchers/graduate students and developers who are interested in learning about various ways of GPU programming to accelerate their scientific applications. Basic experience with C/C++ or Python or Fortran programming is needed. No GPU programming knowledge is required.
+
+## Tutorial Duration
+
+N-Ways bootcamp is designed to be modular and the participants can choose one of the ways to go through the contents in this bootcamp: 
+
+- Depth Learning: Choose one of the GPU programming approach and dive deep with optimaztion techniques.  This approach is recommended for developers who have already decided to use a programming approach and want to learn best practises for same. e.g. Learn different features of OpenACC C and  apply best programming practise to application.
+- Breadth Learning: Cover at high level all the N-Ways to GPU programming. This approach is recommended for developers starting with GPU programming and yet to converge on the best available option to port to GPU.
+
+Individual labs in the bootcamp take 1 hour each and based on path chosen total Bootcamp can take approximate 8 hours. 
+
 
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -86,5 +97,5 @@ Then, run the container:
 Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `nways_start.ipynb` notebook.
 
 
-## Questions?
-Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for questions.
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).

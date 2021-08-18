@@ -1,5 +1,21 @@
 # Nsight Tool Tutorial
-This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**)
+This repository contains mini applications for GPU Bootcamps (**Tested on NVIDIA driver 440.82**). In this bootcamp, we will be optimizing the serial Weather Simulation application written in both C and Fortran programming language
+
+- Introduction: Overview of profiling tools and Mini Weather application
+- Lab 1: Profile Serial application to find hotspots using NVIDIA Nsight System
+- Lab 2: Parallelise the serial application using OpenACC compute directives
+- Lab 3: OpenACC optimization techniques
+- Lab 4: Apply incremental parallelization strategies and use profiler's report for the next step
+- Lab 5: Nsight Compute Kernel Level Analysis ( Optional )
+
+## Target Audience
+
+The target audience for this bootcamp are researchers/graduate students and developers who are interested in getting hands on experience with the NVIDIA Nsight System through profiling a real life parallel application using OpenACC programming model and NVTX.
+
+## Tutorial Duration
+
+The bootcamp material would take approximately 2 hours. Link to material is available for download at the end of the lab.
+
 
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -46,5 +62,5 @@ Then, run the container:
 Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `START_profiling.ipynb` notebook.
 
 
-## Questions?
-Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for questions.
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
