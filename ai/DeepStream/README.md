@@ -60,6 +60,7 @@ Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 ## Known issues
 
 Q. "ResourceExhaustedError" error is observed while running the labs
+
 A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
 
 - If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
