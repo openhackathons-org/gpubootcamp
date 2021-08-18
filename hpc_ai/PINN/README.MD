@@ -12,7 +12,7 @@ The target audience for this bootcamp are researchers/graduate students and deve
 
 ## Tutorial Duration
 
-The overall bootcamp will take approximate 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
+The overall bootcamp will take approximately 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
 
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -49,7 +49,5 @@ Then, run the container:
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
-## Questions?
-- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
-- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps.
-
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).

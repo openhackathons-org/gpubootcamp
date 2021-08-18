@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/gpuhackathons-org/gpubootcamp?include_prereleases)](https://github.com/gpuhackathons-org/gpubootcamp/releases/latest) [![GitHub issues](https://img.shields.io/github/issues/gpuhackathons-org/gpubootcamp)](https://github.com/gpuhackathons-org/gpubootcamp/issues)
+
+
 #  GPUBootcamp Official Training Materials
 GPU Bootcamps are designed to help build confidence in Accelerated Computing and eventually prepare developers to enroll for [Hackathons](http://gpuhackathons.org/)
 
@@ -12,7 +15,7 @@ The bootcamp content focuses on how to follow the Analyze, Parallelize and Optim
 | [OpenACC](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/openacc)   | The lab will cover how to write portable parallel program that can run on multicore CPUs and accelerators like GPUs and how to apply incremental parallelization strategies using OpenACC       |
 
 - [Convergence of HPC and AI](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc_ai) :: 
-The bootcamp content focuses on how AI can accelerate HPC simulations by introducing concepts of Deep Neural Networks, including data pre-processing, techniques on how to build, compare and improve accuracy of deep learning models. The bootcamp covers 
+The bootcamp content focuses on how AI can accelerate HPC simulations by introducing concepts of Deep Neural Networks, including data pre-processing, techniques on how to build, compare and improve accuracy of deep learning models. 
 
 | Lab      | Description |
 | ----------- | ----------- |
@@ -35,6 +38,11 @@ Each lab contains docker and singularity definition files. Follow the readme fil
 # Contribution
 - The repository uses Apache 2.0 license. For more details on folder structure developers may refer to CONTRIBUTING.md file.
 - A project template for reference is located at [Template](https://github.com/bharatk-parallel/gpubootcamp-1/tree/nways_md_fortran/misc/jupyter_lab_template/appName)
+
+## Authors and Acknowledgment
+
+See [Contributors](https://github.com/gpuhackathons-org/gpubootcamp/graphs/contributors) for a list of contributors towards this Bootcamp.
+
 
 # Feature Request or filing issues
 - Bootcamp users may request for newer training material or file a bug by filing a github issues

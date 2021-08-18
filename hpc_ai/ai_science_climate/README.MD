@@ -7,7 +7,7 @@ The target audience for this bootcamp are researchers/graduate students and deve
 
 ## Tutorial Duration
 
-The overall bootcamp will take approximate 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
+The overall bootcamp will take approximately 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
 
 
 ## Prerequisites
@@ -53,7 +53,8 @@ Then, run the container:
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
-## Troubleshooting
+
+## Known issues
 
 Q. cuDNN failed to initialize or GPU out of memory error
 
@@ -66,8 +67,7 @@ A. Some notebooks depend on writing logs to /tmp directory. While creating conta
 Q. "ResourceExhaustedError" error is observed while running the labs 
 A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
 
-## Questions?
-- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
-- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps.
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+
 
 

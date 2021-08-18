@@ -31,7 +31,7 @@ N-Ways bootcamp is designed to be modular and the participants can choose one of
 - Depth Learning: Choose one of the GPU programming approach and dive deep with optimaztion techniques.  This approach is recommended for developers who have already decided to use a programming approach and want to learn best practises for same. e.g. Learn different features of OpenACC C and  apply best programming practise to application.
 - Breadth Learning: Cover at high level all the N-Ways to GPU programming. This approach is recommended for developers starting with GPU programming and yet to converge on the best available option to port to GPU.
 
-Individual labs in the bootcamp take 1 hour each and based on path chosen total labs can take approximate 8 hours. 
+Individual labs in the bootcamp take 1 hour each and based on path chosen total Bootcamp can take approximate 8 hours. 
 
 
 ## Prerequisites:
@@ -97,6 +97,5 @@ Then, run the container:
 Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `nways_start.ipynb` notebook.
 
 
-## Questions?
-- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
-- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps.
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).

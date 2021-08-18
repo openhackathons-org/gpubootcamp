@@ -13,14 +13,14 @@ This repository contains mini applications for GPU Bootcamps. This repository co
 
 ## Tutorial Duration
 
-The overall lab should take approximate 3.5 hours. There is an additional mini-challenge provided at the end of lab.  
+The overall Bootcamp should take approximate 3.5 hours. There is an additional mini-challenge provided at the end of Bootcamp.  
 
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
 
 - Install the latest [Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) or [Singularity](https://sylabs.io/docs/).
 
-- The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
+- The base containers required for the Bootcamp may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
@@ -62,8 +62,7 @@ Q. Out of memory Error
 
 A. The bootcamp is designed considering a GPU with minimum 16 GB memory. The users can reduce the overall size of the array sizes to reduce the overall memory footprint if required based on GPU card RAM .
 
-## For more information about RAPIDS applications and Docker, please refer <a href="https://hub.docker.com/r/rapidsai/rapidsai/"> here</a>
+## For more information about RAPIDS applications and Docker, please refer to <a href="https://hub.docker.com/r/rapidsai/rapidsai/"> here</a>
 
-## Questions?
-- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
-- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).

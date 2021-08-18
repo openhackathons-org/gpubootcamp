@@ -1,6 +1,6 @@
 
 # openacc-training-materials
-This repository contains mini applications for GPU Bootcamps. The objective of this Bootcamp is to provide insight into DeepStream performance optimization cycle. The lab will make use of Nvidia Nsight System for profiling Nvidia DeepStream pipeline in a Intelligent Video Analytics Domain.  
+This repository contains mini applications for GPU Bootcamps. The objective of this Bootcamp is to provide insight into DeepStream performance optimization cycle. The lab will make use of NVIDIA Nsight System for profiling Nvidia DeepStream pipeline in a Intelligent Video Analytics Domain.  
 
 - Introduction: Performance analysis
 - Lab 1: Performance Analysis using NVIDIA Nsight systems
@@ -61,7 +61,7 @@ Then, run the container:
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
-## Questions?
-- If you observe any errors, please file an issue on [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
-- Also join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for general queries related to Hackathons and Bootcamps
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+
 
