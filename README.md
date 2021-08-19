@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/gpuhackathons-org/gpubootcamp?include_prereleases)](https://github.com/gpuhackathons-org/gpubootcamp/releases/latest) [![GitHub issues](https://img.shields.io/github/issues/gpuhackathons-org/gpubootcamp)](https://github.com/gpuhackathons-org/gpubootcamp/issues)
+
+
 #  GPUBootcamp Official Training Materials
 GPU Bootcamps are designed to help build confidence in Accelerated Computing and eventually prepare developers to enroll for [Hackathons](http://gpuhackathons.org/)
 
@@ -8,16 +11,17 @@ The bootcamp content focuses on how to follow the Analyze, Parallelize and Optim
 
 | Lab      | Description |
 | ----------- | ----------- |
-| [N-Ways](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/nways)      | This lab will cover multiple GPU programming models and choose the one that best fits your needs. The material supports different programmin glangauges including C ( CUDA C, OpenACC C, OpenMP C, C++ stdpar ),  Fortran ( CUDA Fortran, OpenACC Fortran, OpenMP Fortran, ISO DO CONCURRENT       |
+| [N-Ways](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/nways)      | This lab will cover multiple GPU programming models and choose the one that best fits your needs. The material supports different programming langauges including C ( CUDA C, OpenACC C, OpenMP C, C++ stdpar ),  Fortran ( CUDA Fortran, OpenACC Fortran, OpenMP Fortran, ISO DO CONCURRENT ) Python ( Numba, CuPy )       |
 | [OpenACC](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/openacc)   | The lab will cover how to write portable parallel program that can run on multicore CPUs and accelerators like GPUs and how to apply incremental parallelization strategies using OpenACC       |
 
 - [Convergence of HPC and AI](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc_ai) :: 
-The bootcamp content focuses on how AI can accelerate HPC simulations by introducing concepts of Deep Neural Networks, including data pre-processing, techniques on how to build, compare and improve accuracy of deep learning models.
+The bootcamp content focuses on how AI can accelerate HPC simulations by introducing concepts of Deep Neural Networks, including data pre-processing, techniques on how to build, compare and improve accuracy of deep learning models. 
 
 | Lab      | Description |
 | ----------- | ----------- |
 | [Weather Pattern Recognition](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc_ai/ai_science_climate)      | This Bootcamp will introduce developers to fundamentals of AI and how data driven approach can be applied to Climate/Weather domain |
 | [CFD Flow Prediction](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc_ai/ai_science_cfd)      | This Bootcamp will introduce developers to fundamentals of AI and how they can be applied to CFD (Computational Fluid Dynamics) |
+| [PINN](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc_ai/ai_science_cfd)      | This Bootcamp will introduce developers to fundamentals of using Physics Informed Neural Network and how they can be applied to different scientific domains using Nvidia SimNet |
 
 - [AI](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/ai)::
 The bootcamp content focuses on using popular accelerated AI frameworks and using optimization techniques to get max performance from accelerators like GPU.
@@ -35,9 +39,14 @@ Each lab contains docker and singularity definition files. Follow the readme fil
 - The repository uses Apache 2.0 license. For more details on folder structure developers may refer to CONTRIBUTING.md file.
 - A project template for reference is located at [Template](https://github.com/bharatk-parallel/gpubootcamp-1/tree/nways_md_fortran/misc/jupyter_lab_template/appName)
 
+## Authors and Acknowledgment
+
+See [Contributors](https://github.com/gpuhackathons-org/gpubootcamp/graphs/contributors) for a list of contributors towards this Bootcamp.
+
+
 # Feature Request or filing issues
 - Bootcamp users may request for newer training material or file a bug by filing a github issues
 - Please do go through the existing list of issues to get more details of upcoming features and bugs currently being fixed [Issues](https://github.com/gpuhackathons-org/gpubootcamp/issues)
 
-## Questions?
-Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for questions.
+## Join OpenACC Community
+Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup).

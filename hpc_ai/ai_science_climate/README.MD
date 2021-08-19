@@ -1,5 +1,14 @@
 # openacc-training-materials
-Training materials provided by OpenACC.org. The objective of this lab is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing(HPC) Simulations ). This Bootcamp will introduce you to fundamentals of AI and how they can be applied to Climate/Weather
+This repository contains mini applications for GPU Bootcamps. The objective of this Bootcamp is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing(HPC) Simulations ). This bootcamp will introduce  fundamentals of AI and how they can be applied to Climate/Weather
+
+## Target Audience:
+
+The target audience for this bootcamp are researchers/graduate students and developers who are new to field of Artifical Intelligence and interested in learning about how it can be applied to Simulation domains like Climate/Weather. Basic Python programming knowledge is required. 
+
+## Tutorial Duration
+
+The overall bootcamp will take approximately 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
+
 
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -44,7 +53,8 @@ Then, run the container:
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
-## Troubleshooting
+
+## Known issues
 
 Q. cuDNN failed to initialize or GPU out of memory error
 
@@ -55,5 +65,10 @@ Q. Cannot write to /tmp directory
 A. Some notebooks depend on writing logs to /tmp directory. While creating container make sure /tmp director is accesible with write permission to container. Else the user can also change the tmp directory location
 
 Q. "ResourceExhaustedError" error is observed while running the labs 
+
 A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
+
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+
+
 
