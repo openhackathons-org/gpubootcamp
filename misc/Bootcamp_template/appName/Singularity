@@ -1,0 +1,19 @@
+# Copyright (c) 2021 NVIDIA Corporation.  All rights reserved.
+
+Bootstrap: docker
+FROM: nvcr.io/nvidia/nvhpc:21.3-devel-cuda_multi-ubuntu20.04
+
+%environment
+    export XDG_RUNTIME_DIR=
+
+%post
+
+
+%files
+    appName_labs /labs
+
+%runscript
+    "$@"
+
+%labels
+    AUTHOR 
