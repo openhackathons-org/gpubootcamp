@@ -12,8 +12,8 @@ To run this tutorial you will need a machine with NVIDIA GPU.
 - The base containers required for the lab requires users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
 
 ## Pulling containers
-To start with, you will have to pull the RIVA Docker container.
-ngc registry resource download-version "nvidia/riva/riva_quickstart:1.4.0-beta"
+To start with, you will have to pull the RIVA Docker container  
+``` ngc registry resource download-version "nvidia/riva/riva_quickstart:1.4.0-beta" ```  
 
 ### Copy Docker Initialization Scripts
 ```cp *.sh riva_quickstart_v1.4.0-beta ```  
