@@ -51,7 +51,7 @@ For example :
 `sudo docker build -f Dockerfile_python -t myimage:1.0 .`
 
 
-For C, Fortran, and Python, the code labs have been written using Jupyter notebooks and a Dockerfile has been built to simplify deployment. In order to serve the docker instance for a student, it is necessary to expose port 8000 from the container. For example, the following command would expose port 8000 inside the container as port 8000 on the lab machine:
+For C, Fortran, and Python, the code labs have been written using Jupyter lab and a Dockerfile has been built to simplify deployment. In order to serve the docker instance for a student, it is necessary to expose port 8000 from the container. For example, the following command would expose port 8000 inside the container as port 8000 on the lab machine:
 
 `sudo docker run --rm -it --gpus=all -p 8888:8888 myimage:1.0`
 
@@ -63,7 +63,7 @@ Then, inside the container launch the Jupyter lab assigning the port you opened:
 `jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
 
-Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `START_nways.ipynb` notebook.
+Once inside the container, open the jupyter lab in browser: http://localhost:8888, and start the lab by clicking on the `START_nways.ipynb` notebook.
 
 ### Singularity Container
 
@@ -83,7 +83,7 @@ Then, run the container:
 
 `singularity run --nv nways.simg jupyter-lab --notebook-dir=~/labs`
 
-Once inside the container, open the jupyter notebook in browser: http://localhost:8888, and start the lab by clicking on the `nways_start.ipynb` notebook.
+Once inside the container, open the jupyter lab in browser: http://localhost:8888, and start the lab by clicking on the `nways_start.ipynb` notebook.
 
 
 ## Questions?
