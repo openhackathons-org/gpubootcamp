@@ -11,4 +11,4 @@ WORKDIR /opt/nvidia/deepstream/deepstream-5.0
 RUN pip3 install jupyterlab
 COPY English /opt/nvidia/deepstream/deepstream-5.0
 
-CMD jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8889 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8889 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python
