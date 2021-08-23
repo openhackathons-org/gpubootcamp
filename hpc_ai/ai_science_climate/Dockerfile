@@ -12,6 +12,12 @@ RUN apt-get update -y
 RUN apt-get install -y libsm6 libxext6 libxrender-dev git nvidia-modprobe
 # Install required python packages
 RUN pip3 install  opencv-python==4.1.2.30 pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
+RUN pip3 install --upgrade pip
+RUN apt-get update -y        
+RUN apt-get install -y git nvidia-modprobe
+RUN pip3 install jupyterlab
+# Install required python packages
+RUN pip3 install ipywidgets
 
 ##### TODO - From the Final Repo Changing this 
 
@@ -22,4 +28,4 @@ COPY English/ /workspace/
 RUN python3 /workspace/python/source_code/dataset.py
 
 ## Uncomment this line to run Jupyter notebook by default
-CMD jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/python/jupyter_notebook/
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/python/jupyter_notebook/

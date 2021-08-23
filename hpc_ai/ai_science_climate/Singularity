@@ -10,6 +10,12 @@ FROM: nvcr.io/nvidia/tensorflow:21.05-tf2-py3
     pip3 install  opencv-python==4.1.2.30 pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
     python3 /workspace/python/source_code/dataset.py
     
+    pip3 install --upgrade pip
+    apt-get update -y
+    apt-get -y install git nvidia-modprobe
+    pip3 install jupyterlab
+    pip3 install ipywidgets
+    
 %files
     English/* /workspace/
 

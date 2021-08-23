@@ -23,7 +23,10 @@ FROM:  nvidia/cuda:11.2.2-devel-ubuntu20.04
 
     pip3 install --no-cache-dir -U install setuptools pip
     pip3 install gdown
-    pip3 install --no-cache-dir jupyter
+    apt-get update -y
+    apt-get -y install git nvidia-modprobe
+    pip3 install jupyterlab
+    pip3 install ipywidgets
     pip3 install --no-cache-dir "cupy-cuda112==8.6.0" \
     numba numpy scipy
     pip3 install --upgrade MDAnalysis
