@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2018, NVIDIA CORPORATION. All rights reserved.
 NVCC=nvcc
-CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/
+#CUDA_HOME=hpc_sdk_path/Linux_x86_64/21.3/cuda/11.2/
 GENCODE_SM30	:= -gencode arch=compute_30,code=sm_30
 GENCODE_SM35	:= -gencode arch=compute_35,code=sm_35
 GENCODE_SM37	:= -gencode arch=compute_37,code=sm_37

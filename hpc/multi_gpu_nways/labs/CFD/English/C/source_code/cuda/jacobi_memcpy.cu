@@ -224,20 +224,22 @@ int main(int argc, char* argv[]) {
         if (p2p == true) {
             const int top = dev_id > 0 ? dev_id - 1 : (num_devices - 1);
             int canAccessPeer = 0;
-            // TODO: Part 2- Check whether GPU "devices[dev_id]" can access peer "devices[top]"
-            CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, /*Fill me*/, /*Fill me*/));
+            // TODO: Part 2- Check whether GPU "devices[dev_id]" can access peer "devices[top]" 
+            //Fill and uncomment line below
+            //CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, /*Fill me*/, /*Fill me*/));
             if (canAccessPeer) {
-            // TODO: Part 2- Enable peer access from GPU "devices[dev_id]" to "devices[top]"
-                CUDA_RT_CALL(cudaDeviceEnablePeerAccess(/*Fill me*/, 0));
+            // TODO: Part 2- Enable peer access from GPU "devices[dev_id]" to "devices[top]" 
+            //Fill and uncomment line below
+                //CUDA_RT_CALL(cudaDeviceEnablePeerAccess(/*Fill me*/, 0));
             }
             const int bottom = (dev_id + 1) % num_devices;
             if (top != bottom) {
                 canAccessPeer = 0;
                 // TODO: Part 2- Check and enable peer access from GPU "devices[dev_id]" to
-                // "devices[bottom]", whenever possible
-                CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, /*Fill me*/, /*Fill me*/));
+                // "devices[bottom]", whenever possible. Fill and uncomment line below
+                //CUDA_RT_CALL(cudaDeviceCanAccessPeer(&canAccessPeer, /*Fill me*/, /*Fill me*/));
                 if (canAccessPeer) {
-                    CUDA_RT_CALL(cudaDeviceEnablePeerAccess(/*Fill me*/, 0));
+                    //CUDA_RT_CALL(cudaDeviceEnablePeerAccess(/*Fill me*/, 0));
                 }
             }
         }

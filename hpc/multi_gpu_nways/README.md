@@ -1,6 +1,6 @@
 # N-Ways to Multi-GPU Programming
 
-This bootcamp focuses on multi-GPU programming models. 
+This repository contains mini applications for GPU Bootcamps. This bootcamp focuses on multi-GPU programming models.
 
 Scaling applications to multiple GPUs across multiple nodes requires one to be adept at not just the programming models and optimization techniques, but also at performing root-cause analysis using in-depth profiling to identify and minimize bottlenecks. In this bootcamp, participants will learn to improve the performance of an application step-by-step, taking cues from profilers along the way. Moreover, understanding of the underlying technologies and communication topology will help us utilize high-performance NVIDIA libraries to extract more performance out of the system.
 
@@ -21,19 +21,26 @@ Scaling applications to multiple GPUs across multiple nodes requires one to be a
 
 ## Prerequisites
 
-This bootcamp requires a multi-node system with multiple GPUs in each node (atleast 2 GPUs/ node). 
+This bootcamp requires a multi-node system with multiple GPUs in each node (atleast 2 GPUs/ node).
+
+## Tutorial Duration
+
+The total bootcamp material  would take approximately 8 hours .
 
 ### Using NVIDIA HPC SDK
 
 A multi-node installation of [NVIDIA's HPC SDK](https://developer.nvidia.com/hpc-sdk) is desired. Refer to [NVIDIA HPC SDK Installation Guide](https://docs.nvidia.com/hpc-sdk/hpc-sdk-install-guide/index.html) for detailed instructions. Ensure that your installation contains HPCX with UCX. 
 
-After installation, make sure to add HPC SDK to the environment as follows:
+After installation, make sure to add HPC SDK to the environment as follows(For example the PATH highlighted below is for HPC SDK 21.5):
 
 ```bash
 # Add HPC-SDK to PATH:
 export PATH="<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/compilers/bin:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/bin:$PATH"
 # Add HPC-SDK to LD_LIBRARY_PATH:
 export LD_LIBRARY_PATH="<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/nvshmem/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/nccl/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/mpi/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/math_libs/lib64:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/compilers/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/extras/CUPTI/lib64:<path-nvidia-hpc-sdk>>/Linux_x86_64/21.5/cuda/lib64:$LD_LIBRARY_PATH"
+#ADD NVSHMEM HOME DIRECTORY PATH
+export CUDA_HOME=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda
+export NVSHMEM_HOME=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/nvshmem
 ```
 **Note:** If you don't use Slurm workload manager, remove `--with-slurm` flag.
 
@@ -46,7 +53,7 @@ tar -xvzf openmpi-4.1.1.tar.gz
 cd openmpi-4.1.1/
 mkdir -p build
 # Configure OpenMPI
-./configure --prefix=$PWD/build --with-libevent=internal --with-xpmem --with-cuda=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/ --with-slurm --enable-mpi1-compatibility --with-verbs --with-hcoll=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/hpcx/hpcx-2.8.1/hcoll/ --with-ucx=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/hpcx/hpcx-2.8.1/ucx/
+./configure --prefix=$PWD/build --with-libevent=internal --with-xpmem --with-cuda=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/ --with-slurm --enable-mpi1-compatibility --with-verbs --with-hcoll=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/hpcx/hpcx-2.8.1/hcoll/lib --with-ucx=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/hpcx/hpcx-2.8.1/ucx/
 # Install OpenMPI
 make all install
 ```
@@ -109,11 +116,15 @@ singularity run --nv multi_gpu_nways.simg jupyter lab --notebook-dir=<path-to-gp
 
 Then, access Jupyter Lab on [http://localhost:8888](http://localhost:8888/).
 
-## Troubleshooting
+
+## Known issues
 
 #### Compiler throws errors
 
 If compiling any program throws an error related to CUDA/ NCCL/ NVHSMEM/ MPI libraries or header files being not found, ensure that `LD_LIBRARY_PATH` is correctly set. Moreover, make sure environment variables `CUDA_HOME`, `NCCL_HOME`, and `NVSHMEM_HOME` are set either during installation or manually inside each `Makefile`.
+
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
+
 
 ## Questions?
 
