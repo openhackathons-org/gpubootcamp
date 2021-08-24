@@ -2,12 +2,20 @@
 
 This folder contains contents for Distributed Deep learning bootcamp.
 
+- Introduction to Distributed deep learning
+- Understanding System Topology
+- Hands-on with Distributed training ( Horovord, TensorFlow )
+- Techniques for faster convergence
+
 ## Prerequisites
 To run this tutorial you will need a machine with NVIDIA GPU.
 
 - Install the latest [Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) or [Singularity](https://sylabs.io/docs/).
 
 - The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
+
+#Tutorial Duration
+The total bootcamp material would take approximately 5 hours ( including solving mini-challenge ).
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
@@ -47,12 +55,9 @@ Then, run the container:
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
-## Troubleshooting
+## Known Issues
 
 Q. "ResourceExhaustedError" error is observed while running the labs
 A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
 
-
-## Questions?
-Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup) for questions.
-
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).

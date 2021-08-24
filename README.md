@@ -11,8 +11,10 @@ The bootcamp content focuses on how to follow the Analyze, Parallelize and Optim
 
 | Lab      | Description |
 | ----------- | ----------- |
-| [N-Ways](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/nways)      | This lab will cover multiple GPU programming models and choose the one that best fits your needs. The material supports different programming langauges including C ( CUDA C, OpenACC C, OpenMP C, C++ stdpar ),  Fortran ( CUDA Fortran, OpenACC Fortran, OpenMP Fortran, ISO DO CONCURRENT ) Python ( Numba, CuPy )       |
-| [OpenACC](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/openacc)   | The lab will cover how to write portable parallel program that can run on multicore CPUs and accelerators like GPUs and how to apply incremental parallelization strategies using OpenACC       |
+| [N-Ways](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/nways)      | This Bootcamp will cover multiple GPU programming models and choose the one that best fits your needs. The material supports different programming langauges including C ( CUDA C, OpenACC C, OpenMP C, C++ stdpar ),  Fortran ( CUDA Fortran, OpenACC Fortran, OpenMP Fortran, ISO DO CONCURRENT ) Python ( Numba, CuPy )       |
+| [OpenACC](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/openacc)   | The Bootcamp will cover how to write portable parallel program that can run on multicore CPUs and accelerators like GPUs and how to apply incremental parallelization strategies using OpenACC       |
+| [Multi GPU Programming Model](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/multi_gpu_nways)   | This bootcamp will cover scaling applications to multiple GPUs across multiple nodes. Moreover, understanding of the underlying technologies and communication topology will help us utilize high-performance NVIDIA libraries to extract more performance out of the system     |
+
 
 - [Convergence of HPC and AI](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc_ai) :: 
 The bootcamp content focuses on how AI can accelerate HPC simulations by introducing concepts of Deep Neural Networks, including data pre-processing, techniques on how to build, compare and improve accuracy of deep learning models. 
@@ -31,6 +33,7 @@ The bootcamp content focuses on using popular accelerated AI frameworks and usin
 | ----------- | ----------- |
 | [Accelerated Intelligent Video Analytics](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/ai/DeepStream) | Learn how Nvidia DeepStream SDK can be used to create optimized Intelligent Video Analytics (IVA) pipeline. Participants will be exposed to the building blocks for creating IVA pipeline followed by profiling exercise to identify hotspots in the pipeline and methods to optimize and get higher throughput       |
 | [Accelerated Data Science](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/ai/RAPIDS)   | Learn how RAPIDS suite of open source software libraries gives you the freedom to execute end-to-end data science and analytics pipelines entirely on GPUs. Participants will be exposed to using libraries that can be easily integrated with the daily data science pipeline and accelerate computations for faster execution       |
+| [Distributed Deep Learning](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/ai/Distributed_Deep_Learning)   | This bootcamp will introduce participants to fundamentals of Distributed deep learning and give a hands-on experience on methods that can be applied to Deep learning models for faster model training |
 
 # System Requirements
 Each lab contains docker and singularity definition files. Follow the readme files inside each on how to build the container and run the labs inside it.
