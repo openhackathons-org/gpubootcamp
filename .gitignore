@@ -2,5 +2,12 @@
 */.ipynb_checkpoints/*
 alk.traj.dcd
 *.simg
+*.so*
+*.a
+*.la
+mgpm
+*.o
+*.out
 */.ses/*
 */.log/*
+

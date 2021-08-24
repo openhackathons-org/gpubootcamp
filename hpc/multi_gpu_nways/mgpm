@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -N 1               # number of nodes
+#SBATCH -t 08:00:00        # wall time
+#SBATCH --exclusive           # exclusive node access
+#SBATCH --ntasks-per-node=8    # n tasks per machine (one task per gpu)
+#SBATCH --cores-per-socket=20    # 20 cores on each socket
+
+module purge
+#module load Singularity/3.6.1
+source ~/init.sh
+singularity run --nv multi_gpu.simg  jupyter lab --notebook-dir=~/multi_gpu_labs/ --port=8000 --ip=0.0.0.0 --no-browser --NotebookApp.token=""

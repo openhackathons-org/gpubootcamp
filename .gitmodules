@@ -1,0 +1,3 @@
+[submodule "hpc/multi_gpu_nways/labs/CFD/English/C/source_code/multi-gpu-programming-models"]
+	path = hpc/multi_gpu_nways/labs/CFD/English/C/source_code/multi-gpu-programming-models
+	url = https://github.com/Anish-Saxena/multi-gpu-programming-models.git
