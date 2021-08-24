@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/tensorflow:21.07-tf2-py3
+
+%runscript
+ 
+    "$@"
+
+%post
+
+    apt-get -y update
+    apt-get -y install git nvidia-modprobe
+    pip3 install jupyterlab
+    pip3 install ipywidgets
+    mkdir /workspace/python/source_code/Data
+    curl https://s3.amazonaws.com/research.metamind.io/wikitext/wikitext-2-v1.zip -o /workspace/python/source_code/Data/wikitext-2-v1.zip
+    unzip /workspace/python/source_code/Data/wikitext-2-v1.zip -d /workspace/python/source_code/Data
+
+
+
+%files
+
+    English/* /workspace/
+
+%environment
+XDG_RUNTIME_DIR=
+
+%labels
+
+AUTHOR bharatk

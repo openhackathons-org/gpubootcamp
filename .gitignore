@@ -8,4 +8,6 @@ alk.traj.dcd
 mgpm
 *.o
 *.out
-final_remarks.ipynb
+*/.ses/*
+*/.log/*
+

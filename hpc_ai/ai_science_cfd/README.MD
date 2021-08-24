@@ -1,5 +1,17 @@
 # openacc-training-materials
-Training materials provided by OpenACC.org. The objective of this lab is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing(HPC) Simulations ). This Bootcamp will introduce you to fundamentals of AI and how they can be applied to CFD (Computational Fluid Dynamics)
+This repository contains mini applications for GPU Bootcamps. The objective of this bootcamp is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing(HPC) Simulations ). This Bootcamp will introduce  fundamentals of AI and how they can be applied to CFD (Computational Fluid Dynamics)
+
+- Introduction to AI and Convolution Neural Network with Keras
+- Using AI for Steady State Flow using Neural Networks
+
+## Target Audience:
+
+The target audience for this bootcamp are researchers/graduate students and developers who are new to field of Artifical Intelligence and interested in learning about how it can be applied to Simulation domains like Computational Fluid Dynamics. Basic Python programming knowledge is required. 
+
+## Tutorial Duration
+
+The overall bootcamp will take approximately 3 hours. There is an additional mini-challenge provided at the end of bootcamp.
+
 
 ## Prerequisites:
 To run this tutorial you will need a machine with NVIDIA GPU.
@@ -23,10 +35,10 @@ For instance:
 and to run the container, run:
 `sudo docker run --rm -it --gpus=all --network=host -p 8888:8888 myimage:1.0`
 
-The container launches jupyter notebook and runs on port 8888
-`jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
+The container launches jupyter lab and runs on port 8888
+`jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ### Singularity Container
@@ -38,9 +50,9 @@ and copy the files to your local machine to make sure changes are stored locally
 `singularity run <image_name>.simg cp -rT /workspace ~/workspace`
 
 Then, run the container:
-`singularity run --nv <image_name>.simg jupyter notebook --notebook-dir=~/workspace/python/jupyter_notebook`
+`singularity run --nv <image_name>.simg jupyter-lab --notebook-dir=~/workspace/python/jupyter_notebook`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ## Troubleshooting
@@ -56,3 +68,5 @@ A. Some notebooks depend on writing logs to /tmp directory. While creating conta
 Q. "ResourceExhaustedError" error is observed while running the labs
 A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
 
+## Known issues
+- Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).

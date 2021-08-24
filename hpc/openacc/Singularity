@@ -12,7 +12,13 @@ From: nvcr.io/nvidia/nvhpc:20.9-devel-ubuntu20.04
     apt-get -y update
     DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends python3-pip python3-setuptools zip build-essential
     rm -rf /var/lib/apt/lists/*
-    pip3 install --no-cache-dir jupyter
+    
+    pip3 install --upgrade pip
+    pip3 install gdown
+    apt-get update -y
+    apt-get -y install git nvidia-modprobe
+    pip3 install jupyterlab
+    pip3 install ipywidgets
 
 %files
 

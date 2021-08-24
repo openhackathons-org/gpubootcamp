@@ -9,9 +9,14 @@ FROM nvcr.io/nvidia/nvhpc:20.9-devel-ubuntu20.04
 RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends python3-pip python3-setuptools nginx zip build-essential && \
     rm -rf /var/lib/apt/lists/* && \
-    pip3 install --no-cache-dir jupyter
+    pip3 install --upgrade pip
 
+RUN apt-get update -y        
+RUN apt-get install -y git nvidia-modprobe
+RUN pip3 install jupyterlab
+# Install required python packages
+RUN pip3 install ipywidgets
 
 ADD English/ /labs
 WORKDIR /labs
-CMD service nginx start && jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/labs
