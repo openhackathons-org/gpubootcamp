@@ -1,0 +1,1 @@
+nvidia-smi dmon -s pucvmt
