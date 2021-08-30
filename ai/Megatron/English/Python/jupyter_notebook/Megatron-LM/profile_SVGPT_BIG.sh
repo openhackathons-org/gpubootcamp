@@ -11,7 +11,7 @@ VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json'
 MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt'
 PROFILE_OUTPUT_PATH='/home/zcharpy/profiles/DLprof/2ndrun/nsys_improved' # modify this to your own profile path
 
-#### --------------- params in the following block are allowed to change -----------#### 
+#### [TODO]--------------- params in the following block are allowed to change -----------#### 
 WORLD_SIZE=8 # <--- remember to change the number of GPUs you actually have in your system
 GPUS_PER_NODE=8 # <--- remember to change the number of GPUs you actually have in your system
 
@@ -45,7 +45,7 @@ python -m torch.distributed.launch $DISTRIBUTED_ARGS \
        --train-samples 100 \
        --save $CHECKPOINT_PATH \
        --load $CHECKPOINT_PATH \
-       --data-path $DATA_PATH \
+       --data-path 1. $DATA_PATH \
        --vocab-file $VOCAB_FILE \
        --merge-file $MERGE_FILE \
        --data-impl mmap \
