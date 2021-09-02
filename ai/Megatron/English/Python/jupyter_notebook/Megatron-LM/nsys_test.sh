@@ -1,3 +1,4 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 GPUS_PER_NODE=8 # <--- remember to change the number of GPUs you actually have in your system
 # Change for multinode config
 MASTER_ADDR=localhost

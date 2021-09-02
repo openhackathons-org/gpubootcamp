@@ -1,3 +1,4 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 INPUT_JSON_FILE=/workspace/SVdata/raw/json/79803/SV_CC100Sprakbank.json
 #OUTPUT_PATH=./SVdata/gpt2bpe/SV_GPT3_56kvocab_CC100Sprakbank
 OUTPUT_PATH=./SVdata/gpt2bpe/SV_GPT3_56kvocab_CC100Sprakbank

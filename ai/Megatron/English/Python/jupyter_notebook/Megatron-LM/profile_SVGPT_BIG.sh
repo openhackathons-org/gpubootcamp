@@ -1,4 +1,4 @@
-
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 MASTER_ADDR=localhost
 MASTER_PORT=6000
 NNODES=1 #<-- currently we are using 1 node multigpus

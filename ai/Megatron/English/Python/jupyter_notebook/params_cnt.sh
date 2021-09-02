@@ -1,4 +1,4 @@
-
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 NLAYERS=32
 NHIDDEN=2048
 NHEADS=32
