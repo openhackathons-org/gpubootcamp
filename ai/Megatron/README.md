@@ -17,12 +17,12 @@ To run this tutorial you will need a machine with at least 2 x NVIDIA GPUs.
 
 - you will also need to run the below script in order to obtain the toy data
 `
-git clone https://github.com/gpuhackathons-org/gpubootcamp.git
-cd gpubootcamp
-git checkout megatron
-cd ./ai/Megatron/English/Python/ 
-mkdir ./dataset/SV/
-mkdir ./datset/EN/
+git clone https://github.com/gpuhackathons-org/gpubootcamp.git &&
+cd gpubootcamp &&
+git checkout megatron &&
+cd ./ai/Megatron/English/Python/ &&
+mkdir ./dataset/SV/ &&
+mkdir ./datset/EN/ &&
 bash ./source_code/download_webnyheter2013.sh`
 
 #Tutorial Duration
