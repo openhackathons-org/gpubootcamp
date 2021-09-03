@@ -16,13 +16,14 @@ To run this tutorial you will need a machine with at least 2 x NVIDIA GPUs.
 - The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
 
 - you will also need to run the below script in order to obtain the toy data
+`
 git clone https://github.com/gpuhackathons-org/gpubootcamp.git
 cd gpubootcamp
 git checkout megatron
 cd ./ai/Megatron/English/Python/ 
 mkdir ./dataset/SV/
 mkdir ./datset/EN/
-bash ./source_code/download_webnyheter2013.sh 
+bash ./source_code/download_webnyheter2013.sh`
 
 #Tutorial Duration
 The total bootcamp material would take approximately 12 hours ( including solving mini-challenge ).
