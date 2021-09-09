@@ -51,5 +51,11 @@ See [Contributors](https://github.com/gpuhackathons-org/gpubootcamp/graphs/contr
 - Bootcamp users may request for newer training material or file a bug by filing a github issues
 - Please do go through the existing list of issues to get more details of upcoming features and bugs currently being fixed [Issues](https://github.com/gpuhackathons-org/gpubootcamp/issues)
 
+## General Troubleshooting
+
+- All materials developed are tested with latest GPU Architectures (V100, A100). Most labs unless specified explicitly are expected to work even on older GPU architectures and with lesser compute and memory capacity like the one present even in laptops. There will be change in performance results observed based on GPU used. In case you see any issue using the material on other GPU please file an issue in Github mentioning the details of GPU and CUDA Driver version installed.
+- The material developed are tested inside container environment like Docker and Singularity. In case the users don't have container environment in the cluster, they can explicitly look at the steps mentioned in the Dockerfile and Singularity scripts and install the dependenciesmanually.
+- All bootcamps are jupyter based and by default the Dockerfile and Singularity script runs the jupyter notebook at port 8888. In a munti-tenancy environment the admins are requested to explicitly map the ports to individual users else will result into port conflict issues. We recommend having installations of interactive interface to remote computing resources like [Open OnDemand](https://openondemand.org/) or [JupyterHub](https://jupyter.org/hub) coupled with scheduler (SLURM, Kubernetes etc ) to do these resources mapping automatically. 
+
 ## Join OpenACC Community
 Please join [OpenACC Slack Channel](https://openacclang.slack.com/messages/openaccusergroup).
