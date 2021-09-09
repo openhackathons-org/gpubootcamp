@@ -1,3 +1,5 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+
 # Select Base Image
 FROM nvcr.io/nvidia/deepstream:5.0.1-20.09-triton
 

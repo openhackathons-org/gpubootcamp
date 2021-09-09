@@ -1,3 +1,5 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+
 # Select Base Image 
 #FROM rapidsai/rapidsai:cuda10.1-runtime-ubuntu18.04-py3.7
 FROM rapidsai/rapidsai:cuda11.0-runtime-ubuntu18.04-py3.7

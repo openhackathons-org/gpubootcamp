@@ -1,3 +1,5 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+
 Bootstrap: docker
 From: nvcr.io/nvidia/deepstream:5.0-20.07-triton
 
