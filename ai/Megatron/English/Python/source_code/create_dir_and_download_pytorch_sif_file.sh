@@ -46,8 +46,11 @@ mv toydata.zip ./dataset/
 cd dataset/
 unzip -r toydata.zip
 cd ..
-ls ./dataset/
 
 ### move the Megatron run script to the correct directory
 cp ./gpubootcamp/ai/Megatron/English/Python/source_code/Day1-runMegatron-LM_GPT_template.sh ./
+
+### clone Megatron-LM repo onto the current dir
+git clone https://github.com/NVIDIA/Megatron-LM.git
+ls .
 echo "done !"

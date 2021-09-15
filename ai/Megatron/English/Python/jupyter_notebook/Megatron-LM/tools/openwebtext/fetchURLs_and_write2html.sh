@@ -1,3 +1,4 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 #!/bin/bash
 export PATH="${PATH}:${HOME}/.local/bin"
 input="NVdevblog_urls.txt"

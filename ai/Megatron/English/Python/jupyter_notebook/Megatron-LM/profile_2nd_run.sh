@@ -9,11 +9,11 @@ WORLD_SIZE=8 # <--- remember to change the number of GPUs you actually have in y
 TENSOR_MP_SIZE=8
 PIPELINE_MP_SIZE=1
 ### modify this section to point the file to its own path 
-CHECKPOINT_PATH='./Megatron-LM/sv_ckpt/'
-DATA_PATH='../dataset/EN/NVblogs_text_document'
-VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json'
-MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt'
-PROFILE_OUTPUT_PATH='/home/zcharpy/profiles/DLprof/2ndrun/nsys_improved' # modify this to your own profile path
+CHECKPOINT_PATH='../sv_ckpt/' ## modify this path if you customize it 
+DATA_PATH='../dataset/EN/NVblog_text_document' ## modify this path if you customize it 
+VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json' ## modify this path if you customize it 
+MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt' ## modify this path if you customize it 
+PROFILE_OUTPUT_PATH='../profiles/2ndrun/nsys_improved' # modify this to your own profile path
 
 export OMP_NUM_THREADS=1
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"

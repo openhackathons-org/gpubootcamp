@@ -5,22 +5,22 @@ NNODES=1 #<-- currently we are using 1 node multigpus
 NODE_RANK=0
 
 ### modify this section to point the file to its own path 
-CHECKPOINT_PATH='./Megatron-LM/sv_ckpt/'
-DATA_PATH='../dataset/EN/NVblogs_text_document'
-VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json'
-MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt'
-PROFILE_OUTPUT_PATH='/home/zcharpy/profiles/DLprof/2ndrun/nsys_improved' # modify this to your own profile path
+CHECKPOINT_PATH='../sv_ckpt/'
+DATA_PATH='../dataset/SV/webnyheter2013_56kvocab_text_document'
+VOCAB_FILE='../dataset/SV/56k/vocab.json'
+MERGE_FILE='../dataset/SV/56k/merges.txt'
+PROFILE_OUTPUT_PATH='../profiles/SV/nsys_sv_' # modify this to your own profile path
 
 #### [TODO]--------------- params in the following block are allowed to change -----------#### 
-WORLD_SIZE=8 # <--- remember to change the number of GPUs you actually have in your system
-GPUS_PER_NODE=8 # <--- remember to change the number of GPUs you actually have in your system
+WORLD_SIZE=2 # <--- remember to change the number of GPUs you actually have in your system
+GPUS_PER_NODE=2 # <--- remember to change the number of GPUs you actually have in your system
 
-TENSOR_MP_SIZE=8
+TENSOR_MP_SIZE=2
 PIPELINE_MP_SIZE=1
 LAYERS=32
-HIDDEN_SZ=2048
+HIDDEN_SZ=4096
 NUM_ATTN_HEADS=32
-MICRO_BZ=64
+MICRO_BZ=8
 GLOBAL_BZ=512
 SEQ_LEN=512
 MAX_POS_EM=512
@@ -30,7 +30,7 @@ export OMP_NUM_THREADS=1
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"
 
 ## for nsys run
-nsys profile --stats=false --force-overwrite=true --duration=300 --trace=cudnn,cuda,osrt,nvtx -o $PROFILE_OUTPUT_PATH \
+#nsys profile --stats=false --force-overwrite=true --duration=300 --trace=cudnn,cuda,osrt,nvtx -o $PROFILE_OUTPUT_PATH \
 python -m torch.distributed.launch $DISTRIBUTED_ARGS \
     ./Megatron-LM/Dlprof_pretrain_gpt.py \
        --tensor-model-parallel-size $TENSOR_MP_SIZE \

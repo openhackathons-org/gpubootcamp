@@ -1,17 +1,17 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
-GPUS_PER_NODE=8 # <--- remember to change the number of GPUs you actually have in your system
+GPUS_PER_NODE=2 # <--- remember to change the number of GPUs you actually have in your system
 # Change for multinode config
 MASTER_ADDR=localhost
 MASTER_PORT=6000
 NNODES=1 #<-- currently we are using 1 node multigpus
 NODE_RANK=0
-WORLD_SIZE=8 # <--- remember to change the number of GPUs you actually have in your system
+WORLD_SIZE=2 # <--- remember to change the number of GPUs you actually have in your system
 
-CHECKPOINT_PATH='./Megatron-LM/sv_ckpt/'
-DATA_PATH='../dataset/EN/NVblogs_text_document'
-VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json'
-MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt'
-PROFILE_OUTPUT_PATH='/home/zcharpy/profiles/DLprof/naive/nsys_naive' # modify this to your own profile path
+CHECKPOINT_PATH='../sv_ckpt/' ## modify this path if you customize it 
+DATA_PATH='../dataset/EN/NVblog_text_document' ## modify this path if you customize it 
+VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json' ## modify this path if you customize it 
+MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt' ## modify this path if you customize it 
+PROFILE_OUTPUT_PATH='../profiles/naive/nsys_naive' # modify this to your own profile path
 
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"
 

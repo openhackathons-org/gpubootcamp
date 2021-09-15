@@ -1,3 +1,4 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 # -*- coding: utf-8 -*-
 import os , sys
 from tokenizers import Tokenizer

@@ -1,17 +1,17 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
-GPUS_PER_NODE=4
+GPUS_PER_NODE=2
 # Change for multinode config
 MASTER_ADDR=localhost
 MASTER_PORT=6000
 NNODES=1
 NODE_RANK=0
-WORLD_SIZE=8
+WORLD_SIZE=2
 TENSOR_MP_SIZE=1
 PIPELINE_MP_SIZE=1
-CHECKPOINT_PATH='./Megatron-LM/sv_ckpt/'
-DATA_PATH='../dataset/EN/NVblogs_text_document'
-VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json'
-MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt'
+CHECKPOINT_PATH='../sv_ckpt/' ## modify this path if you customize it 
+DATA_PATH='../dataset/EN/NVblog_text_document' ## modify this path if you customize it 
+VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json' ## modify this path if you customize it 
+MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt' ## modify this path if you customize it 
 
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"
 
