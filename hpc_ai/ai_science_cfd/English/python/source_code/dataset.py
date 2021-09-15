@@ -27,27 +27,32 @@
 import gdown
 import os
 ## CFD TRAIN DATASET
-url = 'https://drive.google.com/uc?id=1VZOPUG6mHsRYG58H_l3_LOPM4N4f9LiZ&export=download'
+#url = 'https://drive.google.com/uc?id=1VZOPUG6mHsRYG58H_l3_LOPM4N4f9LiZ&export=download'
+url = 'https://drive.google.com/u/0/uc?export=download&confirm=jDXw&id=1VZOPUG6mHsRYG58H_l3_LOPM4N4f9LiZ'
 output = '/workspace/python/jupyter_notebook/CFD/data/train.tfrecords'
 gdown.download(url, output, quiet=False,proxy=None)
 
 ## CFD TEST DATASET
-url = 'https://drive.google.com/uc?id=1fTo0L0ckqGEeZjLwefBc4S5e28psixle&export=download'
+#url = 'https://drive.google.com/uc?id=1fTo0L0ckqGEeZjLwefBc4S5e28psixle&export=download'
+url = 'https://drive.google.com/u/0/uc?export=download&confirm=jDXw&id=1fTo0L0ckqGEeZjLwefBc4S5e28psixle'
 output = '/workspace/python/jupyter_notebook/CFD/data/test.tfrecords'
 gdown.download(url, output, quiet=False,proxy=None)
 
 ## CFD CONV_SDF MODEL
-url = 'https://drive.google.com/uc?id=1ObX4jjhv2wkaTfI-ai09SyoOqVP20jAU&export=download'
+#url = 'https://drive.google.com/uc?id=1ObX4jjhv2wkaTfI-ai09SyoOqVP20jAU&export=download'
+url = 'https://drive.google.com/u/0/uc?export=download&confirm=jDXw&id=1ObX4jjhv2wkaTfI-ai09SyoOqVP20jAU'
 output = '/workspace/python/jupyter_notebook/CFD/conv_sdf_model.h5'
 gdown.download(url, output, quiet=False,proxy=None)
 
 ## CFD CONV MODEL
-url = 'https://drive.google.com/uc?id=1xfw9C7PFrd3e_ef92ZZbRuK__ak7mo0f&export=download'
+#url = 'https://drive.google.com/uc?id=1xfw9C7PFrd3e_ef92ZZbRuK__ak7mo0f&export=download'
+url = 'https://drive.google.com/u/0/uc?export=download&confirm=jDXw&id=1xfw9C7PFrd3e_ef92ZZbRuK__ak7mo0f'
 output = '/workspace/python/jupyter_notebook/CFD/conv_model.h5'
 gdown.download(url, output, quiet=False,proxy=None)
 
 
 ## CFD TEST Dataset
-url = 'https://drive.google.com/uc?id=1VG9jCTBcERytV7w5bHoaVIZSQOa-AlmU&export=download'
+#url = 'https://drive.google.com/uc?id=1VG9jCTBcERytV7w5bHoaVIZSQOa-AlmU&export=download'
+url = 'https://drive.google.com/u/0/uc?export=download&confirm=lR5L&id=1VG9jCTBcERytV7w5bHoaVIZSQOa-AlmU'
 output = '/workspace/python/jupyter_notebook/CFD/data/computed_car_flow.zip'
 gdown.cached_download(url, output, quiet=False,proxy=None,postprocess=gdown.extractall)
