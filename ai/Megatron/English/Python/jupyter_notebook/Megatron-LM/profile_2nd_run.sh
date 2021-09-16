@@ -1,12 +1,12 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
-GPUS_PER_NODE=8 # <--- remember to change the number of GPUs you actually have in your system
+GPUS_PER_NODE=2 # <--- remember to change the number of GPUs you actually have in your system
 # Change for multinode config
 MASTER_ADDR=localhost
 MASTER_PORT=6000
 NNODES=1 #<-- currently we are using 1 node multigpus
 NODE_RANK=0
-WORLD_SIZE=8 # <--- remember to change the number of GPUs you actually have in your system
-TENSOR_MP_SIZE=8
+WORLD_SIZE=2 # <--- remember to change the number of GPUs you actually have in your system
+TENSOR_MP_SIZE=2
 PIPELINE_MP_SIZE=1
 ### modify this section to point the file to its own path 
 CHECKPOINT_PATH='../sv_ckpt/' ## modify this path if you customize it 
@@ -25,12 +25,12 @@ python -m torch.distributed.launch $DISTRIBUTED_ARGS \
        --tensor-model-parallel-size $TENSOR_MP_SIZE \
        --pipeline-model-parallel-size $PIPELINE_MP_SIZE \
        --num-layers 32 \
-       --hidden-size 1024 \
+       --hidden-size 2048 \
        --num-attention-heads 32 \
-       --micro-batch-size 64 \
-       --global-batch-size 512 \
-       --seq-length 512 \
-       --max-position-embeddings 512 \
+       --micro-batch-size 16 \
+       --global-batch-size 128 \
+       --seq-length 1024 \
+       --max-position-embeddings 1024 \
        --train-samples 100 \
        --save $CHECKPOINT_PATH \
        --load $CHECKPOINT_PATH \
