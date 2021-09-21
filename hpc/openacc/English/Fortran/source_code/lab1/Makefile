@@ -1,5 +1,5 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
-FC := pgfortran
+FC := nvfortran
 ACCFLAGS_1 := -fast
 ACCFLAGS_2 := -fast -ta=multicore -Minfo=accel
 ACCFLAGS_3 := -fast -ta=tesla:managed -Minfo=accel

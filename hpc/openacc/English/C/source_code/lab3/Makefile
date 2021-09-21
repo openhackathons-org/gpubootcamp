@@ -1,5 +1,5 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
-CC := pgcc
+CC := nvc
 ACCFLAGS:= -fast -ta=tesla -Minfo=accel
 
 laplace: jacobi.c laplace2d.c

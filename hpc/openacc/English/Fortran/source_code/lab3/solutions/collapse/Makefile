@@ -1,5 +1,5 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
-FC := pgfortran
+FC := nvfortran
 ACCFLAGS:= -fast -ta=tesla -Minfo=accel
 
 laplace: laplace2d.f90 jacobi.f90
