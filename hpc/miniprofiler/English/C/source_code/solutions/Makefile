@@ -1,6 +1,6 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 
-CC := pgc++
+CC := nvc++
 CFLAGS := -O3 -w
 ACCFLAGS := -ta=tesla:managed -Minfo=accel
 

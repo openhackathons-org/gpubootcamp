@@ -1,5 +1,5 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
-FC := pgf90
+FC := nvfortran
 FFLAGS := -fast
 LDFLAGS := -lnvToolsExt 
 ACCFLAGS := -ta=tesla:managed -Minfo=accel
