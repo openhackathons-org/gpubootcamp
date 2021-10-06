@@ -13,10 +13,12 @@ VOCAB_FILE='../dataset/EN/50k/gpt2-vocab.json' ## modify this path if you custom
 MERGE_FILE='../dataset/EN/50k/gpt2-merges.txt' ## modify this path if you customize it 
 PROFILE_OUTPUT_PATH='../profiles/naive/nsys_naive' # modify this to your own profile path
 
+
+
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"
 
 ## for nsys run
-nsys profile --stats=false --force-overwrite=true --duration=300 --trace=cudnn,cuda,osrt,nvtx -o $PROFILE_OUTPUT_PATH \
+nsys profile --stats=false --force-overwrite=true --duration=300 --trace=cudnn,cuda,nvtx -o $PROFILE_OUTPUT_PATH \
 python -m torch.distributed.launch $DISTRIBUTED_ARGS \
     ./Megatron-LM/Dlprof_pretrain_gpt.py \
        --num-layers 16 \
