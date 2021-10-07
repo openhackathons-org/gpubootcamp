@@ -1,8 +1,8 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
-NLAYERS=32 ## modify this param
-NHIDDEN=4096 ## modify this param
-NHEADS=32 ## modify this param
-SEQ_LEN=512 ## modify this param
+NLAYERS=  ## modify this param
+NHIDDEN=  ## modify this param
+NHEADS=  ## modify this param
+SEQ_LEN= ## modify this param
 VOCAB_SIZE=56000 ## modify this param
 
 MODEL_SIZE=$((($NLAYERS * (12*$NHIDDEN**2 + 13*$NHIDDEN) + ($VOCAB_SIZE * $NHIDDEN) + ($SEQ_LEN * $NHIDDEN) ) / 10**9))
