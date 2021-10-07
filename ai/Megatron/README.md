@@ -1,78 +1,86 @@
 # Practical Guide to Train Megatron-LM with your own language
 
-This folder contains contents for Practical Guide to train your own GPT models with Megatron-LM bootcamp.
+This folder contains contents for Practical Guide to train Megatron-LM GPT Model with your own langauge.
+There are 2 Labs, each with a differnt focus. 
 
-- Introduction to Megatron-LM workflow
-- Customize Megatron-LM for your own langauge
-- Advise on cleaning + preparing the data for training 
-- Hands-on practice training your own GPTBPE Tokenizer 
-- Hands-on profiling Megatron-LM GPT training with varying config
+- **Outlines of Lab 1**
+    Megatron 101 in half a day - a walk through of Megatron-LM's default workflow.
 
-## Prerequisites
-To run this tutorial you will need a machine with at least 2 x NVIDIA GPUs.
+- **Outlines of Lab 2**
+    Customizing Megatron-LM's workflow to adjust to local langauge needs.
 
-- Install the latest [Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) or [Singularity](https://sylabs.io/docs/).
+**Important** : This bootcamp is intended to be delivered by NVIDIA certified instructors and TAs, it is _NOT_ meant for self-paced learners.
 
-- The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
+Note1 : The lecture presentations as well as the solutions to the challenges and mini-challenges will be delivered at the end of each lab
 
-- you will also need to run the below script in order to obtain the toy data
+## Labs Duration :
+The two labs will take approximately 12 hours ( including solving challenges and mini-challenges ) to complete.
+
+## Compute Resources & Environment preperation:
+
+Although this bootcamp is designed to run on a computing cluster with [NVIDIA SuperPOD Architecture](https://resources.nvidia.com/en-us-auto-datacenter/nvpod-superpod-wp-09)
+It is possible to run it in an environment where you have access to 2 X A100 GPUs 40GB with NVLink/NVSwitch.
+
+### Scenario 1 : When docker pull & run is allowed, and the GPUs are directly accessbile to the users in the environment.
+
+#### Step 1 - Clone the gpubootcamp repo to obtain the scripts and notebooks.
+`git clone https://github.com/gpuhackathons-org/gpubootcamp.git &&
+cd gpubootcamp `
+
+#### Step 2 - run Pytorch docker image 
+USR_PORT=<Available_PORT>
+GPUS=<Available_GPUs_list> # you only need two gpus
+DIR=<Directory_After_cd_into_gpubootcamp> 
+With sudo privilege : 
+`sudo docker run --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=GPUS -p USR_PORT:USR_PORT -it --rm --ulimit memlock=-1 --ulimit stack=67108864 --cap-add=SYS_ADMIN -v DIR:/workspace nvcr.io/nvidia/pytorch:21.03-py3 `
+
+Without sudo privilege but the user is added to the docker group : 
+`docker run --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=GPUS -p USR_PORTUSR_PORT -it --rm --ulimit memlock=-1 --ulimit stack=67108864 -v DIR:/workspace nvcr.io/nvidia/pytorch:21.03-py3`
+
+#### Step 3 - call out jupyter lab 
+` jupyter lab --no-browser --port=USR_PORT --allow-root --NotebookApp.token='' `
+
+#### Step 4 - in another terminal , call out a browser ( such as firefox )
+Then, open the jupyter notebook in browser: localhost:USR_PORT
+Navigate to gpubootcamp/ai/Megatron/English/Python/ and open the `Start_Here.ipynb` notebook.
+
+### Scenario 2 : Accessing the jupyter lab with Singularity + Slurm + SSH port forwarding is allowed
+A User Guide is often provided when one requests for access to a computing cluster with [NVIDIA SuperPOD Architecture](https://resources.nvidia.com/en-us-auto-datacenter/nvpod-superpod-wp-09). However, each compute cluster might have slight deviations to the reference architecture on various levels, HW and/or SW as well as the resource management control setups. 
+
+It is likely the below steps will need to be adjusted, in which case, the user will need to consult the cluster admin or cluster operator to get help in debugging environment preparation in order to prepare for the bootcamp materaisl to run.
+
+#### Step 1 - Clone the gpubootcamp repo to obtain the scripts and notebooks.
+` clone https://github.com/gpuhackathons-org/gpubootcamp.git`
+
+DIR_to_gpubootcamp=<THE_ABSOLUTE_PATH_to_gpubootcamp>
+USR_PORT=<Available_PORT> # communiacate with the cluster admin to know which port is available to you as a user
+HOST_PORT=<Available_PORT_ON_HOST>
+CLUSTER_NAME=<Obtain_this_from_cluster_admin>
+#### Step 2 - Build the pytorch_21.03.sif file  
+`sudo singularity build pytorch_21.03.sif docker://nvcr.io/pytorch:21.03-py3`
+Note1: If you do not have sudo rights, you might need to either contact the cluster admin, or build this in another environment where you have sudo rights.
+Note2: You should copy the pytorch_21.03.sif to the cluster enviroment one level above the DIR_to_gpubootcamp
+
+#### Step 3 - request 2 A100 GPUs resource   
+`srun --gres=gpu:2 --pty bash -i`
+
+#### Step 4 - request 2 A100 GPUs resource   
+`export SINGULARITY_BINDPATH=DIR_to_gpubootcamp`
+
+#### Step 5 - Run singularity with the pytorch_21.03.sif file   
+`singularity run --nv  pytorch_21.03.sif  jupyter lab --notebook-dir=DIR_to_gpubootcamp --port=USR_PORT --ip=0.0.0.0 --no-browser --NotebookApp.iopub_data_rate_limit=1.0e15  --NotebookApp.token="" 
 `
-git clone https://github.com/gpuhackathons-org/gpubootcamp.git &&
-cd gpubootcamp &&
-git checkout megatron &&
-cd ./ai/Megatron/English/Python/ &&
-mkdir ./dataset/SV/ &&
-mkdir ./datset/EN/ &&
-bash ./source_code/download_webnyheter2013.sh`
+#### Step 6 - ssh and Port forwarding  
+` ssh -L localhost:HOST_PORT:machine_number:USR_PORT CLUSTER_NAME`
 
-#Tutorial Duration
-The total bootcamp material would take approximately 12 hours ( including solving mini-challenge ).
+#### Step 7 - in another terminal , call out a browser ( such as firefox )
+Then, open the jupyter notebook in browser: localhost:HOST_PORT
+Navigate to gpubootcamp/ai/Megatron/English/Python/ and open the `Start_Here.ipynb` notebook.
 
-## Creating containers
-To start with, you will have to build a Docker or Singularity container.
-
-### Docker Container
-To build a docker container, run:
-`sudo docker build --network=host -t <imagename>:<tagnumber> .`
-
-For instance:
-`sudo docker build -t myimage:1.0 .`
-
-The code labs have been written using Jupyter notebooks and a Dockerfile has been built to simplify deployment. In order to serve the docker instance for a student, it is necessary to expose port 8888 from the container, for instance, the following command would expose port 8888 inside the container as port 8888 on the lab machine:
-
-`sudo docker run --rm -it --gpus=all -p 8888:8888 -p 8000:8000 myimage:1.0`
-
-When this command is run, you can browse to the serving machine on port 8888 using any web browser to access the labs and port 8000 for dlprofviewer server. For instance, from if they are running on the local machine the web browser should be pointed to http://localhost:8888. The `--gpus` flag is used to enable `all` NVIDIA GPUs during container runtime. The `--rm` flag is used to clean an temporary images created during the running of the container. The `-it` flag enables killing the jupyter server with `ctrl-c`. This command may be customized for your hosting environment.
-
-
-Once inside the container launch the jupyter notebook by typing the following command
-`jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --NotebookApp.iopub_data_rate_limit=1.0e15 --notebook-dir=/workspace/python/jupyter_notebook/`
-
-Then, open the jupyter notebook in browser: http://localhost:8888
-Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
-
-### Singularity Container
-
-To build the singularity container, run:
-`sudo singularity build --sandbox <image_name>.simg Singularity`
-
-and copy the files to your local machine to make sure changes are stored locally:
-`singularity run --writable <image_name>.simg cp -rT /workspace/ ~/workspace`
-
-export the bootcamp Megatron directory 
-
-`export SINGULARITY_BINDPATH="<Your_local_Bootcamp_Megatron_Directory>"`
-
-Then, run the container:
-`singularity run --nv  --writable <image_name>.simg  jupyter lab --notebook-dir=/workspace/python/jupyter_notebook/--port=8000 --ip=0.0.0.0 --no-browser --NotebookApp.token=""`
-
-
-Then, open the jupyter notebook in browser: http://localhost:8888
-Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ## Known Issues
 
 Q. "ResourceExhaustedError" error is observed while running the labs
-A. Currently the batch size and network model is set to consume 16GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 16GB GPU memory. Else the users can play with batch size to reduce the memory footprint
+A. Currently the batch size and network model is set to consume 40GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 40GB GPU memory. Else the users can play with batch size to reduce the memory footprint, also ensure you have NVLINK/NVSwitch enabled in the environment.Do not enable MIG mode when requesting A100 GPUs as resources.
 
 - Please go through the list of exisiting bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
