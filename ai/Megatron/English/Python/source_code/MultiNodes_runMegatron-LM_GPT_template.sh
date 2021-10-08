@@ -9,7 +9,7 @@
 ###  -----------------  modify <UserName> and <FILL_IN> in the section below -----------------
 #SBATCH --output=//proj/guest_at_nsc/users/<UserName>/output/multinode_template_%x_%j_$DATETIME.log 
 
-DIR='/proj/guest_at_nsc/users/<UserName>/'
+DIR='/proj/<BootCamp_DIR>/users/<UserName>/'
 DATETIME=`date +'date_%y-%m-%d_time_%H-%M-%S'`
 CHECKPOINT_PATH=$DIR/output/sv_gpt3_ckpt/
 VOCAB_FILE=$DIR/dataset/vocab.json
