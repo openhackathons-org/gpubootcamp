@@ -1,0 +1,38 @@
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+
+Bootstrap: docker
+From: nvcr.io/nvidia/tlt-streamanalytics:v3.0-dp-py3
+
+%environment
+    export XDG_RUNTIME_DIR=
+    echo "export PATH=\"\$PATH:$(pwd)\"" >> ~/.bash_profile && source ~/.bash_profile
+    export PATH="$PATH:/usr/local/bin"
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+
+
+%post
+
+    apt-get -y update
+    apt-get -y install git nvidia-modprobe
+    pip3 install jupyterlab
+    pip3 install ipywidgets
+    pip3 install gdown
+    #mkdir /workspace/tlt-experiments/data
+    mkdir /workspace/tlt-experiments/classification
+    python3 /workspace/tlt-experiments/source_code/dataset.py
+
+    chmod -R 777  /workspace/tlt-experiments/specs
+    chmod -R 777 /workspace/tlt-experiments/data 
+    chmod -R 777 /workspace/tlt-experiments/classification
+
+%files
+
+    English/ /workspace/tlt-experiments
+
+
+%runscript
+ 
+    "$@"
+
+%labels
+    AUTHOR Tosin
