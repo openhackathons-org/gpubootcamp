@@ -36,6 +36,7 @@ When this command is run, you can browse to the serving machine on port 8888 usi
 
 
 Once inside the container launch the jupyter notebook by typing the following command
+
 `jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/tlt-experiments`
 
 Then, open the jupyter notebook in browser: http://localhost:8888
@@ -47,13 +48,15 @@ To build the singularity container, run:
 `sudo singularity build --sandbox <image_name>.simg Singularity`
 
 For instance:
-sudo singularity build --sandbox  myimage.simg Singularity
+`sudo singularity build --sandbox  myimage.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
+
 `singularity run --writable <image_name>.simg cp -rT /workspace/tlt-experiments/ ~/workspace` 
 
 Then, run the container:
-`singularity run --nv --writable <image_name>.simg jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/tlt-experiments
+
+`singularity run --nv --writable <image_name>.simg jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/tlt-experiments`
 
 Then, open the jupyter notebook in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
