@@ -1,0 +1,100 @@
+random_seed: 42
+yolov4_config {
+  big_anchor_shape: "[(114.94, 60.67), (159.06, 114.59), (297.59, 176.38)]"
+  mid_anchor_shape: "[(42.99, 31.91), (79.57, 31.75), (56.80, 56.93)]"
+  small_anchor_shape: "[(15.60, 13.88), (30.25, 20.25), (20.67, 49.63)]"
+  box_matching_iou: 0.25
+  arch: "resnet"
+  nlayers: 18
+  arch_conv_blocks: 2
+  loss_loc_weight: 0.8
+  loss_neg_obj_weights: 100.0
+  loss_class_weights: 0.5
+  label_smoothing: 0.0
+  big_grid_xy_extend: 0.05
+  mid_grid_xy_extend: 0.1
+  small_grid_xy_extend: 0.2
+  freeze_bn: false
+  #freeze_blocks: 0
+  force_relu: false
+}
+training_config {
+  batch_size_per_gpu: 8
+  num_epochs: 80
+  enable_qat: false
+  checkpoint_interval: 10
+  learning_rate {
+    soft_start_cosine_annealing_schedule {
+      min_learning_rate: 1e-7
+      max_learning_rate: 1e-4
+      soft_start: 0.3
+    }
+  }
+  regularizer {
+    type: L1
+    weight: 3e-5
+  }
+  optimizer {
+    adam {
+      epsilon: 1e-7
+      beta1: 0.9
+      beta2: 0.999
+      amsgrad: false
+    }
+  }
+  pretrain_model_path: "EXPERIMENT_DIR/pretrained_resnet18/tlt_pretrained_object_detection_vresnet18/resnet_18.hdf5"
+}
+eval_config {
+  average_precision_mode: SAMPLE
+  batch_size: 8
+  matching_iou_threshold: 0.5
+}
+nms_config {
+  confidence_threshold: 0.001
+  clustering_iou_threshold: 0.5
+  top_k: 200
+}
+augmentation_config {
+  hue: 0.1
+  saturation: 1.5
+  exposure:1.5
+  vertical_flip:0
+  horizontal_flip: 0.5
+  jitter: 0.3
+  output_width: 1248
+  output_height: 384
+  randomize_input_shape_period: 0
+  mosaic_prob: 0.5
+  mosaic_min_ratio:0.2
+}
+dataset_config {
+  data_sources: {
+      label_directory_path: "/workspace/tlt-experiments/data/training/label_2"
+      image_directory_path: "/workspace/tlt-experiments/data/training/image_2"
+  }
+  include_difficult_in_training: true
+  target_class_mapping {
+      key: "car"
+      value: "car"
+  }
+  target_class_mapping {
+      key: "pedestrian"
+      value: "pedestrian"
+  }
+  target_class_mapping {
+      key: "cyclist"
+      value: "cyclist"
+  }
+  target_class_mapping {
+      key: "van"
+      value: "car"
+  }
+  target_class_mapping {
+      key: "person_sitting"
+      value: "pedestrian"
+  }
+  validation_data_sources: {
+      label_directory_path: "/workspace/tlt-experiments/data/val/label"
+      image_directory_path: "/workspace/tlt-experiments/data/val/image"
+  }
+}
