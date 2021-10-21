@@ -2,6 +2,7 @@
 - TAO toolkit Architecture
 - NGC API KEY registration
 - Image classification Pretrained Models
+- Yolov4 object detection 
 - Training, Evaluation, Pruning, Retraining, Inferencing, and INT8 Optimization using resnet18 pretrained model
 
 The lab contains docker and singularity definition files. Follow the readme files inside each on how to build the container and run the labs inside it. 

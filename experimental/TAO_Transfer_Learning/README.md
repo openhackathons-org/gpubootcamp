@@ -4,7 +4,7 @@ This folder contains contents for TLT learning bootcamp.
 
 - Transfer learning with NVIDIA TAO
 - Pretrained Model from NGC
-- Hands-on on Image classification that involes training, evaluation, pruning, retraining, inferencing, model export, and INT8 optimization
+- Hands-on on image classification and YOLOv4 object detection that involes training, evaluation, pruning, retraining, inferencing, model export, and INT8 optimization
 
 
 ## Prerequisites
@@ -15,7 +15,7 @@ To run this tutorial you will need a machine with NVIDIA GPU.
 - The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
 
 #Tutorial Duration
-The total bootcamp material would take approximately 2 hours.
+The total bootcamp material would take approximately 6 hours.
 
 ## Creating containers
 To start with, you will have to build a Docker or Singularity container.
