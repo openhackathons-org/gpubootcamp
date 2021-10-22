@@ -23,7 +23,7 @@ Although this boot camp is designed to run on a computing cluster with [NVIDIA S
 It is possible to run it in an environment where you have access to 2 X A100 GPUs 40 GB with NVLink/Switch.
 
 ### Scenario 1 : local station with 2 X A100 GPU 40 GB and NVLINK 
-When docker pull & run is allowed, and the GPUs are directly accessbile to the users in the environment.
+When docker pull & run is allowed, and the GPUs are directly accessible to the users in the environment.
 
 #### Step 1 - Clone the gpubootcamp repo to obtain the scripts and notebooks.
 `git clone https://github.com/gpuhackathons-org/gpubootcamp.git &&
@@ -49,7 +49,7 @@ Navigate to /gpubootcamp/ai/Megatron/English/Python/ and open the `Start_Here.ip
 ### Scenario 2 : Accessing the Jupiter lab with Singularity + Slurm + SSH port forwarding is allowed
 A User Guide is often provided when one requests for access to a computing cluster with [NVIDIA SuperPOD Architecture](https://resources.nvidia.com/en-us-auto-datacenter/nvpod-superpod-wp-09). However, each compute cluster might have slight deviations to the reference architecture on various levels, HW and/or SW as well as the resource management control setups. 
 
-It is likely the below steps will need to be adjusted, in which case, the user will need to consult the cluster admin or cluster operator to get help in debugging environment preparation in order to prepare for the boot camp materiel to run.
+It is likely the below steps will need to be adjusted, in which case, the user will need to consult the cluster admin or cluster operator to get help in debugging environment preparation in order to prepare for the boot camp material to run.
 
 #### Step 1 - Clone the gpubootcamp repo to obtain the scripts and notebooks.
 ` clone https://github.com/gpuhackathons-org/gpubootcamp.git`
@@ -84,7 +84,7 @@ Navigate to gpubootcamp/ai/Megatron/English/Python/ and open the `Start_Here.ipy
 ## Known Issues
 
 Q. "ResourceExhaustedError" error is observed while running the labs
-A. Currently the batch size and network model is set to consume 40 GB GPU memory. In order to use the labs without any modifications it is recommended to have GPU with minimum 40 GB GPU memory. Else the users can play with batch size to reduce the memory footprint, also ensure you have NVLINK/Switch enabled in the environment.Do not enable MIG mode when requesting A100 GPUs as resources.
+A. Currently the batch size and network model is set to consume 40 GB GPU memory. In order to use the labs without any modifications it is recommended to use a GPU with a minimum of 40 GB GPU memory. Otherwise, the users can play with batch size to reduce the memory footprint, ensuring you have NVLINK/Switch enabled in the environment. Do not enable MIG mode when requesting A100 GPUs as resources.
 
 - Please go through the list of existing bugs/issues or file a new issue at [Github](https://github.com/gpuhackathons-org/gpubootcamp/issues).
 
