@@ -22,8 +22,9 @@ RUN apt-get install -y git nvidia-modprobe
 # Install required python packages
 RUN pip3 install jupyterlab
 RUN pip3 install ipywidgets
-RUN pip3 install --no-cache-dir "cupy-cuda112==8.6.0" \
-    numba numpy scipy 
+RUN pip3 install --upgrade numpy==1.19.5
+RUN pip3 install --no-cache-dir "cupy-cuda112==9.0.0" \
+    numba==0.53.1 scipy 
        
         
 ############################################
