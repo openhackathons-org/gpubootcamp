@@ -40,7 +40,7 @@ RUN apt-get update -y && \
         apt-get update -y
         
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.5.1 nsight-compute-2020.2.1 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2021.3.1 nsight-compute-2021.2.2 
 
 # TO COPY the data
 COPY nways_labs/ /labs/
@@ -50,7 +50,7 @@ RUN python3 /labs/nways_MD/English/Python/source_code/dataset.py
 
 #################################################
 ENV LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib/python3.8/dist-packages:/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-ENV PATH="/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:/usr/local/bin:/bin:/usr/local/cuda/bin:/usr/bin${PATH:+:${PATH}}"
+ENV PATH="/opt/nvidia/nsight-systems/2021.3.1/bin:/opt/nvidia/nsight-compute/2021.2.2:/usr/local/bin:/bin:/usr/local/cuda/bin:/usr/bin${PATH:+:${PATH}}"
 
 RUN pip3 install --no-cache-dir MDAnalysis
 
