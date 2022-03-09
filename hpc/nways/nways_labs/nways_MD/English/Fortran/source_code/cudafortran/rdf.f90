@@ -82,6 +82,7 @@ module readdata
 
 program rdf
       use readdata
+      use nvtx
       use cudafor
       implicit none
       integer n,i,j,iconf,ind,istat
