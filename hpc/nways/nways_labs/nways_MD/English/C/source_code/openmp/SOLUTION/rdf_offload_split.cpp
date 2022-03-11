@@ -158,13 +158,11 @@ void pair_gpu(const double *d_x, const double *d_y, const double *d_z,
     double r, cut, dx, dy, dz;
     int ig2;
     double box;
-    int myround;
     box = min(xbox, ybox);
     box = min(box, zbox);
 
     double del = box / (2.0 * d_bin);
     cut = box * 0.5;
-    int count = 0;
     printf("\n %d %d ", nconf, numatm);
 
     for (int frame = 0; frame < nconf; frame++)
