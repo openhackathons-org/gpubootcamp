@@ -1,5 +1,8 @@
 # Practical Guide to Train Megatron-LM with your own language
 
+Megatron-LM is used in [NeMo Megatron](https://developer.nvidia.com/nvidia-nemo#nemo-megatron), 
+this is the framework to help enterprises overcome the challenges of building and training sophisticated natural language processing models with billions and trillions of parameters.
+
 This folder contains contents for Practical Guide to train Megatron-LM GPT Model with your own language.
 There are 2 Labs, each with a different focus. 
 
