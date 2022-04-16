@@ -1,22 +1,21 @@
-# import SimNet library
+# import Modulus library
 from sympy import Symbol, sin, Eq, Abs, exp
 import numpy as np
 import sys
 sys.path.append('../../')
-from simnet.solver import Solver
-from simnet.dataset import TrainDomain, ValidationDomain, MonitorDomain
-from simnet.data import Validation, BC, Monitor
-from simnet.sympy_utils.geometry_1d import Line1D
-#from simnet.PDES.diffusion import Diffusion
-from simnet.controller import SimNetController
-from simnet.node import Node
-from simnet.pdes import PDES
+from modulus.solver import Solver
+from modulus.dataset import TrainDomain, ValidationDomain, MonitorDomain
+from modulus.data import Validation, BC, Monitor
+from modulus.sympy_utils.geometry_1d import Line1D
+from modulus.controller import ModulusController
+from modulus.node import Node
+from modulus.pdes import PDES
 import tensorflow as tf
 from sympy import Symbol, Function, Number
 
-from simnet.pdes import PDES
-from simnet.node import Node
-from simnet.variables import Variables
+from modulus.pdes import PDES
+from modulus.node import Node
+from modulus.variables import Variables
 
 
 # params for domain
@@ -238,5 +237,5 @@ class DiffusionSolver(Solver):
         })
 
 if __name__ == '__main__':
-  ctr = SimNetController(DiffusionSolver)
+  ctr = ModulusController(DiffusionSolver)
   ctr.run()

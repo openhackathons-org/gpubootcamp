@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-import simnet as sn
+import modulus as sn
 
 base_dir = './network_checkpoint_spring_mass_pointMass_2/val_domain/results/'
 

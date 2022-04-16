@@ -2,12 +2,12 @@ from sympy import Symbol, Eq
 import numpy as np
 import tensorflow as tf
 
-from simnet.solver import Solver
-from simnet.dataset import TrainDomain, ValidationDomain, MonitorDomain
-from simnet.data import Validation, BC, Monitor
-from simnet.sympy_utils.geometry_1d import Point1D
-from simnet.controller import SimNetController
-from simnet.plot_utils.vtk import var_to_vtk
+from modulus.solver import Solver
+from modulus.dataset import TrainDomain, ValidationDomain, MonitorDomain
+from modulus.data import Validation, BC, Monitor
+from modulus.sympy_utils.geometry_1d import Point1D
+from modulus.controller import ModulusController
+from modulus.plot_utils.vtk import var_to_vtk
 
 from spring_mass_ode import SpringMass
 
@@ -92,5 +92,5 @@ class SpringMassSolver(Solver):
 
 
 if __name__ == '__main__':
-  ctr = SimNetController(SpringMassSolver)
+  ctr = ModulusController(SpringMassSolver)
   ctr.run()

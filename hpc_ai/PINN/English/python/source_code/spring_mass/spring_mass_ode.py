@@ -1,6 +1,6 @@
 from sympy import Symbol, Function, Number
-from simnet.pdes import PDES
-from simnet.variables import Variables
+from modulus.pdes import PDES
+from modulus.variables import Variables
 
 class SpringMass(PDES):
   name= 'SpringMass'

@@ -1,17 +1,17 @@
 from sympy import Symbol
 import numpy as np
 import tensorflow as tf
-from simnet.solver import Solver
-from simnet.dataset import TrainDomain, ValidationDomain, MonitorDomain
-from simnet.data import Validation, Monitor, BC
-from simnet.sympy_utils.geometry_2d import Rectangle, Line, Channel2D
-from simnet.sympy_utils.functions import parabola
-from simnet.csv_utils.csv_rw import csv_to_dict
-from simnet.PDES.navier_stokes import IntegralContinuity, NavierStokes
-from simnet.controller import SimNetController
-from simnet.architecture import FourierNetArch
+from modulus.solver import Solver
+from modulus.dataset import TrainDomain, ValidationDomain, MonitorDomain
+from modulus.data import Validation, Monitor, BC
+from modulus.sympy_utils.geometry_2d import Rectangle, Line, Channel2D
+from modulus.sympy_utils.functions import parabola
+from modulus.csv_utils.csv_rw import csv_to_dict
+from modulus.PDES.navier_stokes import IntegralContinuity, NavierStokes
+from modulus.controller import ModulusController
+from modulus.architecture import FourierNetArch
 
-#TODO: Replace all the placeholders with appropriate values
+# TODO: Replace all the placeholders with appropriate values
 
 # define sympy variables to parametrize domain curves
 x, y = Symbol('x'), Symbol('y')
@@ -75,5 +75,5 @@ class ChipSolver(Solver):
         'xla': True
         })
 if __name__ == '__main__':
-  ctr = SimNetController(ChipSolver)
+  ctr = ModulusController(ChipSolver)
   ctr.run()

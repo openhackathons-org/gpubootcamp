@@ -1,15 +1,15 @@
 from sympy import Symbol
 import numpy as np
 import tensorflow as tf
-from simnet.solver import Solver
-from simnet.dataset import TrainDomain, ValidationDomain
-from simnet.data import Validation
-from simnet.sympy_utils.geometry_2d import Rectangle, Line, Channel2D
-from simnet.sympy_utils.functions import parabola
-from simnet.csv_utils.csv_rw import csv_to_dict
-from simnet.PDES.navier_stokes import IntegralContinuity, NavierStokes
-from simnet.controller import SimNetController
-from simnet.architecture import FourierNetArch
+from modulus.solver import Solver
+from modulus.dataset import TrainDomain, ValidationDomain
+from modulus.data import Validation
+from modulus.sympy_utils.geometry_2d import Rectangle, Line, Channel2D
+from modulus.sympy_utils.functions import parabola
+from modulus.csv_utils.csv_rw import csv_to_dict
+from modulus.PDES.navier_stokes import IntegralContinuity, NavierStokes
+from modulus.controller import ModulusController
+from modulus.architecture import FourierNetArch
 
 # simulation params
 channel_length = (-2.5, 2.5)
@@ -139,5 +139,5 @@ class ChipSolver(Solver):
         'xla': True
         })
 if __name__ == '__main__':
-  ctr = SimNetController(ChipSolver)
+  ctr = ModulusController(ChipSolver)
   ctr.run()

@@ -1,16 +1,16 @@
 from sympy import Symbol
 import numpy as np
 import tensorflow as tf
-from simnet.solver import Solver
-from simnet.dataset import TrainDomain, ValidationDomain, InferenceDomain
-from simnet.data import Validation, Inference
-from simnet.sympy_utils.geometry_2d import Rectangle, Line, Channel2D
-from simnet.sympy_utils.functions import parabola
-from simnet.csv_utils.csv_rw import csv_to_dict
-from simnet.PDES.navier_stokes import IntegralContinuity, NavierStokes
-from simnet.controller import SimNetController
-from simnet.architecture import FourierNetArch
-from simnet.learning_rate import ExponentialDecayLRWithWarmup
+from modulus.solver import Solver
+from modulus.dataset import TrainDomain, ValidationDomain, InferenceDomain
+from modulus.data import Validation, Inference
+from modulus.sympy_utils.geometry_2d import Rectangle, Line, Channel2D
+from modulus.sympy_utils.functions import parabola
+from modulus.csv_utils.csv_rw import csv_to_dict
+from modulus.PDES.navier_stokes import IntegralContinuity, NavierStokes
+from modulus.controller import ModulusController
+from modulus.architecture import FourierNetArch
+from modulus.learning_rate import ExponentialDecayLRWithWarmup
 
 # simulation params
 channel_length = (-2.5, 2.5)
@@ -30,7 +30,7 @@ chip_width_range  = (0.6, 1.4)
 param_ranges = {chip_height: chip_height_range,
                 chip_width: chip_width_range}
 
-#TODO: Replace all the placeholders with appropriate geometry constructions
+# TODO: Replace all the placeholders with appropriate geometry constructions
 # define geometry here
 # you may use the geometry generated in the previous challenge problem as a reference
 
@@ -52,7 +52,7 @@ x_pos = Symbol('x_pos')
 integral_line = placeholder
 x_pos_range = {x_pos: lambda batch_size: np.full((batch_size, 1), np.random.uniform(channel_length[0], channel_length[1]))}
 
-#TODO: Replace all the placeholders with appropriate values
+# TODO: Replace all the placeholders with appropriate values
 
 # define sympy variables to parametrize domain curves
 x, y = Symbol('x'), Symbol('y')
@@ -114,7 +114,7 @@ openfoam_var = csv_to_dict('openfoam/2D_chip_fluid0.csv', mapping)
 openfoam_var['x'] -= 2.5 # normalize pos
 openfoam_var['y'] -= 0.5
 
-#TODO: Add the arrays for 'chip_height' and 'chip_width'
+# TODO: Add the arrays for 'chip_height' and 'chip_width'
 
 openfoam_invar_numpy = {key: value for key, value in openfoam_var.items() if key in ['x', 'y', 'chip_height', 'chip_width']}
 openfoam_outvar_numpy = {key: value for key, value in openfoam_var.items() if key in ['u', 'v', 'p']}
@@ -165,6 +165,6 @@ class ChipSolver(Solver):
         'xla': True
         })
 if __name__ == '__main__':
-  ctr = SimNetController(ChipSolver)
+  ctr = ModulusController(ChipSolver)
   ctr.run()
 
