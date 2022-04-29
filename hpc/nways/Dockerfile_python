@@ -1,13 +1,17 @@
-
 # Copyright (c) 2021 NVIDIA Corporation.  All rights reserved. 
 
 # To build the docker container, run: $ sudo docker build -t nways-labs:latest .
 # To run: $ sudo docker run --rm -it --runtime nvidia -p 8888:8888 nways-labs:latest
 # Finally, open http://localhost:8888/
 
-#FROM nvcr.io/nvidia/nvhpc:20.11-devel-cuda_multi-ubuntu20.04
-FROM nvidia/cuda:11.2.2-devel-ubuntu20.04
+#FROM nvidia/cuda:11.2.2-devel-ubuntu20.04
+FROM nvidia/cuda:11.4.2-devel-ubuntu20.04
 
+#####
+# Read https://forums.developer.nvidia.com/t/notice-cuda-linux-repository-key-rotation/212772
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
+#####
 
 RUN apt-get -y update && \
         DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends \
@@ -22,25 +26,26 @@ RUN apt-get install -y git nvidia-modprobe
 # Install required python packages
 RUN pip3 install jupyterlab
 RUN pip3 install ipywidgets
-RUN pip3 install --upgrade numpy==1.19.5
-RUN pip3 install --no-cache-dir "cupy-cuda112==9.0.0" \
+#RUN pip3 install --upgrade numpy==1.19.5
+RUN pip3 install --upgrade numpy==1.21.1
+#RUN pip3 install --no-cache-dir "cupy-cuda112==9.0.0" \
+RUN pip3 install --no-cache-dir "cupy-cuda114==10.3.1" \
     numba==0.53.1 scipy 
-       
         
 ############################################
-# NVIDIA nsight-systems-2020.5.1 ,nsight-compute-2
+# NVIDIA nsight-systems-cli-2022.1.1, nsight-compute-2022.1.1
 RUN apt-get update -y && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         apt-transport-https \
         ca-certificates \
         gnupg \
         wget && \
-        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F60F4B3D7FA2AF80 && \
+        #apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F60F4B3D7FA2AF80 && \
+        wget -qO - https://developer.download.nvidia.com/devtools/repos/ubuntu2004/amd64/nvidia.pub | apt-key add - \
         echo "deb https://developer.download.nvidia.com/devtools/repos/ubuntu2004/amd64/ /" >> /etc/apt/sources.list.d/nsight.list &&\
         apt-get update -y
-        
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2021.3.1 nsight-compute-2021.2.2 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-cli-2022.1.1 nsight-compute-2022.1.1
 
 # TO COPY the data
 COPY nways_labs/ /labs/
@@ -50,7 +55,7 @@ RUN python3 /labs/nways_MD/English/Python/source_code/dataset.py
 
 #################################################
 ENV LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib/python3.8/dist-packages:/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-ENV PATH="/opt/nvidia/nsight-systems/2021.3.1/bin:/opt/nvidia/nsight-compute/2021.2.2:/usr/local/bin:/bin:/usr/local/cuda/bin:/usr/bin${PATH:+:${PATH}}"
+ENV PATH="/opt/nvidia/nsight-systems/2022.1.1/bin:/opt/nvidia/nsight-compute/2022.1.1:/usr/local/bin:/bin:/usr/local/cuda/bin:/usr/bin${PATH:+:${PATH}}"
 
 RUN pip3 install --no-cache-dir MDAnalysis
 
