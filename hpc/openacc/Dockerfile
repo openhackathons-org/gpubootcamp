@@ -4,7 +4,7 @@
 # To run: $ sudo docker run --rm -it --gpus=all -p 8888:8888 openacc-labs:latest
 # Finally, open http://127.0.0.1:8888/
 
-FROM nvcr.io/nvidia/nvhpc:20.9-devel-ubuntu20.04
+FROM nvcr.io/nvidia/nvhpc:22.3-devel-cuda_multi-ubuntu20.04
 
 RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install --no-install-recommends python3-pip python3-setuptools nginx zip build-essential && \

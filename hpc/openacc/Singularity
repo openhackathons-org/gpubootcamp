@@ -1,7 +1,7 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved. 
 
 Bootstrap: docker
-From: nvcr.io/nvidia/nvhpc:20.9-devel-ubuntu20.04
+FROM: nvcr.io/nvidia/nvhpc:22.3-devel-cuda_multi-ubuntu20.04
 
 %runscript
  
