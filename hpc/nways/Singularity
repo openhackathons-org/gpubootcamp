@@ -1,14 +1,11 @@
 # Copyright (c) 2021 NVIDIA Corporation.  All rights reserved. 
 
 Bootstrap: docker
-#FROM: nvcr.io/nvidia/nvhpc:20.11-devel-cuda_multi-ubuntu20.04
-FROM: nvcr.io/nvidia/nvhpc:21.3-devel-cuda_multi-ubuntu20.04
+FROM: nvcr.io/nvidia/nvhpc:22.3-devel-cuda_multi-ubuntu20.04
 
 %environment
     export XDG_RUNTIME_DIR=
     export PATH="$PATH:/usr/local/bin:/opt/anaconda3/bin:/usr/bin"
-   # export PATH=/opt/nvidia/nsight-systems/2020.5.1/bin:/opt/nvidia/nsight-compute/2020.2.1:$PATH
-    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/cuda/11.2/lib64/"
 
 %post
     build_tmp=$(mktemp -d) && cd ${build_tmp}
@@ -34,14 +31,7 @@ FROM: nvcr.io/nvidia/nvhpc:21.3-devel-cuda_multi-ubuntu20.04
     python3 /labs/nways_MD/English/C/source_code/dataset.py
     python3 /labs/nways_MD/English/Fortran/source_code/dataset.py
 
-
-# NVIDIA nsight-systems-2020.5.1 ,nsight-compute-2
-  # apt-get update -y   
-  #  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-transport-https ca-certificates gnupg wget
-  #  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F60F4B3D7FA2AF80
-  #  echo "deb https://developer.download.nvidia.com/devtools/repos/ubuntu2004/amd64/ /" >> /etc/apt/sources.list.d/nsight.list 
     apt-get update -y 
-  #  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nsight-systems-2020.5.1 nsight-compute-2020.2.1 
     apt-get install --no-install-recommends -y build-essential
 
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 
