@@ -41,7 +41,7 @@ The container launches jupyter lab and runs on port 8888
 `jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
 Once inside the container launch the jupyter lab by typing the following command
-`jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-5.0/python`
+`jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/opt/nvidia/deepstream/deepstream-6.0/python`
 
 Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
@@ -52,11 +52,11 @@ To build the singularity container, run:
 `sudo singularity build --sandbox <image_name>.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
-`singularity run --writable <image_name>.simg cp -rT /opt/nvidia/deepstream/deepstream-5.0/ ~/workspace`
+`singularity run --writable <image_name>.simg cp -rT /opt ~/opt`
 
 
 Then, run the container:
-`singularity run --nv --writable <image_name>.simg jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=~/workspace/python`
+`singularity run --nv --writable <image_name>.simg jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=~/opt/nvidia/deepstream/deepstream-6.0/python`
 
 Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
