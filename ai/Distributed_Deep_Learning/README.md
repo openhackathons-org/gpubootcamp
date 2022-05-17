@@ -31,7 +31,7 @@ The code labs have been written using Jupyter notebooks and a Dockerfile has bee
 
 `sudo docker run --rm -it --gpus=all -p 8888:8888 -p 8000:8000 myimage:1.0`
 
-When this command is run, you can browse to the serving machine on port 8888 using any web browser to access the labs and port 8000 for dlprofviewer server. For instance, from if they are running on the local machine the web browser should be pointed to http://localhost:8888. The `--gpus` flag is used to enable `all` NVIDIA GPUs during container runtime. The `--rm` flag is used to clean an temporary images created during the running of the container. The `-it` flag enables killing the jupyter server with `ctrl-c`. This command may be customized for your hosting environment.
+When this command is run, you can browse to the serving machine on port 8888 using any web browser to access the labs. For instance, from if they are running on the local machine the web browser should be pointed to http://localhost:8888. The `--gpus` flag is used to enable `all` NVIDIA GPUs during container runtime. The `--rm` flag is used to clean an temporary images created during the running of the container. The `-it` flag enables killing the jupyter server with `ctrl-c`. This command may be customized for your hosting environment.
 
 
 Once inside the container launch the jupyter notebook by typing the following command

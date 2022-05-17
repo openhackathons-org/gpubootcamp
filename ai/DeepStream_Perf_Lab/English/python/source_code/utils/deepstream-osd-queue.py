@@ -37,9 +37,9 @@ pgie_classes_str= ["Vehicle", "TwoWheeler", "Person","RoadSign"]
 ################ Three Stream Pipeline ###########
 # Define Input and output Stream information 
 num_sources = 3 
-INPUT_VIDEO_1 = '/opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
-INPUT_VIDEO_2 = '/opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
-INPUT_VIDEO_3 = '/opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
+INPUT_VIDEO_1 = '/opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
+INPUT_VIDEO_2 = '/opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
+INPUT_VIDEO_3 = '/opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
 OUTPUT_VIDEO_NAME = "../source_code/N1/ds_out2.mp4"
 
 

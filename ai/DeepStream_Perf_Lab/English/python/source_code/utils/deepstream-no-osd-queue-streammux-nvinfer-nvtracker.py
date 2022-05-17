@@ -31,7 +31,7 @@ pgie_classes_str= ["Vehicle", "TwoWheeler", "Person","RoadSign"]
 
 ################ Three Stream Pipeline ###########
 # Define Input and output Stream information 
-INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
+INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -195,7 +195,7 @@ def main():
     if (args.prof):
         INPUT_VIDEO = 'file://' + path +'/../source_code/dataset/sample_720p_prof.mp4'
     else :
-        INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
+        INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
     
     print("Creating pipeline with "+str(num_sources)+" streams")
     # Initialise FPS
@@ -297,7 +297,7 @@ def main():
         sgie3.set_property("batch-size",sgie_batch_size)
     #Set properties of tracker from tracker_config
     config = configparser.ConfigParser()
-    config.read('../source_code/N1/dstest4_tracker_config.txt')
+    config.read('../source_code/N2/dstest4_tracker_config.txt')
     config.sections()
     for key in config['tracker']:
         if key == 'tracker-width' :

@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8)
 find_package(CUDA REQUIRED)
-find_package(PythonInterp 3.6 REQUIRED)
-find_package(PythonLibs 3.6 REQUIRED)
+find_package(PythonInterp 3.8 REQUIRED)
+find_package(PythonLibs 3.8 REQUIRED)
 
 include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ./pybind11/include
-    /usr/local/lib/python3.6/dist-packages/pybind11/include
+    /usr/local/lib/python3.8/dist-packages/pybind11/include
     )
 
 link_directories(

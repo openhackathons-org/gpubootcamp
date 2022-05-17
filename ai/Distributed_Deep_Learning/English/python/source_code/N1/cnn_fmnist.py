@@ -10,6 +10,7 @@ import time
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--batch-size", type=int, default=256, help="Batch size")
+    parser.add_argument("--epochs", type=int, default=4, help="number of epochs")
     args = parser.parse_args()
 
     return args
@@ -18,6 +19,7 @@ args = parse_args()
 global g_args
 g_args = args
 batch_size = args.batch_size
+epochs = args.epochs
 
 # Horovod: initialize Horovod.
 hvd.init()
@@ -99,5 +101,5 @@ verbose = 2 if hvd.rank() == 0 else 0
 
 # Train the model.
 # Horovod: adjust number of steps based on number of GPUs.
-mnist_model.fit(dataset, steps_per_epoch=len(mnist_labels) // (batch_size*hvd.size()), callbacks=callbacks, epochs=4, verbose=verbose)
+mnist_model.fit(dataset, steps_per_epoch=len(mnist_labels) // (batch_size*hvd.size()), callbacks=callbacks, epochs=epochs, verbose=verbose)
 
