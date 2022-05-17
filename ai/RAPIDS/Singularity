@@ -1,7 +1,9 @@
 # Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
 
 Bootstrap: docker
-FROM: rapidsai/rapidsai:cuda11.0-runtime-ubuntu18.04-py3.7
+#FROM: rapidsai/rapidsai:cuda11.0-runtime-ubuntu18.04-py3.7
+#FROM: nvcr.io/nvidia/rapidsai/rapidsai:22.04-cuda11.4-runtime-ubuntu20.04
+FROM: rapidsai/rapidsai-core:22.04-cuda11.4-runtime-ubuntu20.04-py3.8
 
 %environment
 %post

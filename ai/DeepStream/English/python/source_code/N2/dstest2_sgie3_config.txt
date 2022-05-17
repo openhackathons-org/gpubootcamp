@@ -60,12 +60,12 @@
 [property]
 gpu-id=0
 net-scale-factor=1
-model-file=/opt/nvidia/deepstream/deepstream-5.0/samples/models/Secondary_VehicleTypes/resnet18.caffemodel
-proto-file=/opt/nvidia/deepstream/deepstream-5.0/samples/models/Secondary_VehicleTypes/resnet18.prototxt
-#model-engine-file=/opt/nvidia/deepstream/deepstream-5.0/samples/models/Secondary_VehicleTypes/resnet18.caffemodel_b16_gpu0_fp32.engine
-mean-file=/opt/nvidia/deepstream/deepstream-5.0/samples/models/Secondary_VehicleTypes/mean.ppm
-labelfile-path=/opt/nvidia/deepstream/deepstream-5.0/samples/models/Secondary_VehicleTypes/labels.txt
-int8-calib-file=/opt/nvidia/deepstream/deepstream-5.0/samples/models/Secondary_VehicleTypes/cal_trt.bin
+model-file=/opt/nvidia/deepstream/deepstream-6.0/samples/models/Secondary_VehicleTypes/resnet18.caffemodel
+proto-file=/opt/nvidia/deepstream/deepstream-6.0/samples/models/Secondary_VehicleTypes/resnet18.prototxt
+#model-engine-file=/opt/nvidia/deepstream/deepstream-6.0/samples/models/Secondary_VehicleTypes/resnet18.caffemodel_b16_gpu0_fp32.engine
+mean-file=/opt/nvidia/deepstream/deepstream-6.0/samples/models/Secondary_VehicleTypes/mean.ppm
+labelfile-path=/opt/nvidia/deepstream/deepstream-6.0/samples/models/Secondary_VehicleTypes/labels.txt
+int8-calib-file=/opt/nvidia/deepstream/deepstream-6.0/samples/models/Secondary_VehicleTypes/cal_trt.bin
 force-implicit-batch-dim=1
 batch-size=16
 # 0=FP32 and 1=INT8 mode

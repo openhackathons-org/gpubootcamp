@@ -20,6 +20,8 @@ tf.random.set_seed(1337)
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--batch-size", type=int, default=256, help="Batch size")
+    parser.add_argument("--epochs", type=int, default=12, help="number of epochs")
+    parser.add_argument("--lr", type=float, default=0.001, help="learning rate")
     args = parser.parse_args()
 
     return args
@@ -28,6 +30,8 @@ args = parse_args()
 global g_args
 g_args = args
 batch_size = args.batch_size
+epochs = args.epochs
+lr = args.lr
 
 # Horovod: initialize Horovod.
 hvd.init()
@@ -122,7 +126,7 @@ model = ResNet(input_shape = (32, 32, 3), classes = 10)
 
 # %%
 # Horovod: adjust learning rate based on number of GPUs.
-scaled_lr = 0.001 * hvd.size()
+scaled_lr = lr * hvd.size()
 opt = tf.optimizers.Adam(scaled_lr)
 
 
@@ -174,4 +178,4 @@ verbose = 1 if hvd.rank() == 0 else 0
 
 # Train the model.
 # Horovod: adjust number of steps based on number of GPUs.
-model.fit(dataset, steps_per_epoch=len(labels) // (batch_size*hvd.size()), callbacks=callbacks, epochs=12, verbose=verbose)
+model.fit(dataset, steps_per_epoch=len(labels) // (batch_size*hvd.size()), callbacks=callbacks, epochs=epochs, verbose=verbose)

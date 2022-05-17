@@ -31,7 +31,7 @@ pgie_classes_str= ["Vehicle", "TwoWheeler", "Person","RoadSign"]
 
 ################ Three Stream Pipeline ###########
 # Define Input and output Stream information 
-INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
+INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -192,7 +192,7 @@ def main():
     if (args.prof):
         INPUT_VIDEO = 'file://' + path +'/../source_code/dataset/sample_720p_prof.mp4'
     else :
-        INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-5.0/samples/streams/sample_720p.h264'
+        INPUT_VIDEO = 'file:///opt/nvidia/deepstream/deepstream-6.0/samples/streams/sample_720p.h264'
     
     print("Creating pipeline with "+str(num_sources)+" streams")
     # Initialise FPS

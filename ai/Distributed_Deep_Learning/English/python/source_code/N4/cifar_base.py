@@ -19,6 +19,7 @@ tf.random.set_seed(1330)
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--batch-size", type=int, default=256, help="Batch size")
+    parser.add_argument("--epochs", type=int, default=12, help="number of epochs")
     args = parser.parse_args()
 
     return args
@@ -27,6 +28,7 @@ args = parse_args()
 global g_args
 g_args = args
 batch_size = args.batch_size
+epochs = args.epochs
 
 # Horovod: initialize Horovod.
 hvd.init()
@@ -171,4 +173,4 @@ verbose = 1 if hvd.rank() == 0 else 0
 
 # Train the model.
 # Horovod: adjust number of steps based on number of GPUs.
-model.fit(dataset, steps_per_epoch=len(labels) // (batch_size*hvd.size()), callbacks=callbacks, epochs=12, verbose=verbose)
+model.fit(dataset, steps_per_epoch=len(labels) // (batch_size*hvd.size()), callbacks=callbacks, epochs=epochs, verbose=verbose)
