@@ -11,7 +11,7 @@ RUN apt-get update -y
 # Install required dependencies
 RUN apt-get install -y libsm6 libxext6 libxrender-dev git nvidia-modprobe
 # Install required python packages
-RUN pip3 install  opencv-python==4.1.2.30 pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
+RUN pip3 install  opencv-python==4.1.2.30 pandas==1.3.5 seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
 RUN pip3 install --upgrade pip
 RUN apt-get update -y        
 RUN apt-get install -y git nvidia-modprobe
