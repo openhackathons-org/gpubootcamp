@@ -1,11 +1,6 @@
 # openacc-training-materials
 This repository contains mini applications for GPU Bootcamps. The objective of this lab is to give an introduction to application of Artificial Intelligence (AI) algorithms in Science ( High Performance Computing (HPC) Simulations ). This Bootcamp will provide introduction to fundamentals of using Physics Informed Neural Network and how they can be applied to real world scientific domains using NVIDIA Modulus.
 
-- Introduction: Data Driven vs PINN approach
-- Lab 1: Solving Partial Differential Equations using Modulus
-- Lab 2: Solving transient problems and inverse problems using Modulus
-- Lab 3: Mini Challenge
-
 ## Target Audience:
 
 The target audience for this bootcamp are researchers/graduate students and developers who are new to field of Artifical Intelligence and interested in learning difference between Data and Physics Informed Neural Network approach applied to Simulation domains. Basic Python programming knowledge is required. 
@@ -19,34 +14,40 @@ To run this tutorial you will need a machine with NVIDIA GPU.
 
 - Install the latest [Docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) or [Singularity](https://sylabs.io/docs/).
 
-- The base containers required for the lab needs to be downloaded from Modulus product page and requires users to create a Nvidia Developer account (https://developer.nvidia.com/nvidia-simnet-downloads)
+- The base containers required for the lab may require users to create a NGC account and generate an API key (https://docs.nvidia.com/ngc/ngc-catalog-user-guide/index.html#registering-activating-ngc-account)
 
 ## Creating containers
-To start with, we need to download the Docker file (`modulus_image_<version>.tar.gz`)as mentioned in the Prerequisites section. (Please note this lab is tested with Modulus release version 21.06). 
+To start with, you will have to build a Docker or Singularity container.
 
 ### Docker Container
-Load the docker tar image: 
-`docker load -i modulus_image_v21.06.tar.gz`
+To build a docker container, run: 
+`sudo docker build --network=host -t <imagename>:<tagnumber> .`
+
+For instance:
+`sudo docker build -t myimage:1.0 .`
 
 and to run the container, run:
-`docker run --shm-size=1g --ulimit memlock=-1 --ulimit stack=67108864 --gpus all -v ${PWD}/English/python:/examples -it modulus:21.06 jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/examples`
+`sudo docker run --rm -it --gpus=all --network=host -p 8888:8888 myimage:1.0`
 
-The container launches jupyter notebook and runs on port 8888
-`jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
+The container launches jupyter lab and runs on port 8888
+`jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ### Singularity Container
 
 To build the singularity container, run: 
-`sudo singularity build <image_name>.simg modulus_image_v21.06.tar.gz`
+`sudo singularity build <image_name>.simg Singularity`
+
+and copy the files to your local machine to make sure changes are stored locally:
+`singularity run <image_name>.simg cp -rT /workspace ~/workspace`
 
 
 Then, run the container:
-`singularity run --nv <image_name>.simg i--bind ${PWD}/English/python:/examples jupyter notebook --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/examples`
+`singularity run --nv <image_name>.simg jupyter-lab --notebook-dir=~/workspace/python/jupyter_notebook`
 
-Then, open the jupyter notebook in browser: http://localhost:8888
+Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 
 ## Known issues
