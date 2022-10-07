@@ -6,7 +6,7 @@ FROM: nvcr.io/nvidia/modulus/modulus:22.09
 %environment
 %post
     pip3 install gdown
-    
+    pip3 install --upgrade nbconvert    
 %files
     English/* /workspace/
 

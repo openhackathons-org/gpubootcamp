@@ -38,14 +38,14 @@ Start working on the lab by clicking on the `Start_Here.ipynb` notebook.
 ### Singularity Container
 
 To build the singularity container, run: 
-`sudo singularity build <image_name>.simg Singularity`
+`sudo singularity build --sandbox <image_name>.simg Singularity`
 
 and copy the files to your local machine to make sure changes are stored locally:
-`singularity run <image_name>.simg cp -rT /workspace ~/workspace`
+`singularity run --writable <image_name>.simg cp -rT /workspace ~/workspace`
 
 
 Then, run the container:
-`singularity run --nv <image_name>.simg jupyter-lab --notebook-dir=~/workspace/python/jupyter_notebook`
+`singularity run --nv --writable <image_name>.simg jupyter-lab --notebook-dir=~/workspace/python`
 
 Then, open the jupyter lab in browser: http://localhost:8888
 Start working on the lab by clicking on the `Start_Here.ipynb` notebook.

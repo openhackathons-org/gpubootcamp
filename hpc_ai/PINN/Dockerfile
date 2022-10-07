@@ -9,9 +9,10 @@ FROM nvcr.io/nvidia/modulus/modulus:22.09
 
 # Install required python packages
 RUN pip3 install gdown
+RUN pip3 install --upgrade nbconvert
 
 # TO COPY the data 
 COPY English/ /workspace/
 
 ## Uncomment this line to run Jupyter notebook by default
-CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/python/jupyter_notebook/
+CMD jupyter-lab --no-browser --allow-root --ip=0.0.0.0 --port=8888 --NotebookApp.token="" --notebook-dir=/workspace/python/
