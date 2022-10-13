@@ -7,7 +7,7 @@ FROM: nvcr.io/nvidia/tensorflow:21.05-tf2-py3
 %post
     apt-get update -y
     apt-get install -y libsm6 libxext6 libxrender-dev git 
-    pip3 install  opencv-python==4.1.2.30 pandas seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
+    pip3 install  opencv-python==4.1.2.30 pandas==1.3.5 seaborn sklearn matplotlib scikit-fmm tqdm h5py gdown
     python3 /workspace/python/source_code/dataset.py
     
     pip3 install --upgrade pip

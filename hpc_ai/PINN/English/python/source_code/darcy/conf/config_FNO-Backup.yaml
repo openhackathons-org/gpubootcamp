@@ -1,0 +1,32 @@
+defaults :
+  - modulus_default
+  - arch:
+      - fno
+  - scheduler: tf_exponential_lr
+  - optimizer: adam
+  - loss: sum
+  - _self_
+
+jit: false
+
+arch:
+  fno:
+    dimension: 2
+    nr_fno_layers: 4
+    fno_layer_size: 32
+    fno_modes: 12
+    padding: 9
+    output_fc_layer_sizes: 
+      - 128
+    
+scheduler:
+  decay_rate: 0.95
+  decay_steps: 1000
+
+training:
+  rec_results_freq : 1000
+  max_steps : 10000
+
+batch_size:
+  grid: 32
+  validation: 32
