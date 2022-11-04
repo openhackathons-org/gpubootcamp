@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH --partition=gpu 
+#SBATCH --nodes=2
+#SBATCH --gres=gpu:8
+#SBATCH --ntasks=16
+##SBATCH --ntasks-per-node=8
+
+mkdir -p ../../source_code/mpi/output_profiler
+profiler_output=../../source_code/mpi/output_profiler
+
+#source ~/nways_multigpu/start_mpi_lustre.sh
+
+mpirun --version
+nsys --version
+
+mpirun  -np 16 --map-by ppr:4:socket $NSIGHT_HOME/nsys profile --trace=mpi,cuda,nvtx,ucx --stats=true --nic-metrics=true -o $profiler_output/jacobi_cuda_aware_mpi_report_2n.%q{OMPI_COMM_WORLD_RANK}  --force-overwrite true ./jacobi_cuda_aware_mpi -ny 32768 -skip_single_gpu
+
+
+mpirun -np 16 --map-by ppr:4:socket $NSIGHT_HOME/nsys profile --trace=mpi,cuda,nvtx,ucx  --stats=true --nic-metrics=true -o $profiler_output/jacobi_cuda_aware_mpi_report_2n_5k.%q{OMPI_COMM_WORLD_RANK}  --force-overwrite true ./jacobi_cuda_aware_mpi -ny 32768 -skip_single_gpu -niter 5000

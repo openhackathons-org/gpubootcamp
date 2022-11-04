@@ -10,7 +10,7 @@ GENCODE_FLAGS	:= $(GENCODE_SM70) $(GENCODE_SM80)
 
 NVCC_FLAGS += -lineinfo $(GENCODE_FLAGS) -std=c++14
 MPICXX_FLAGS = -DUSE_NVTX -I$(CUDA_HOME)/include -I$(NCCL_HOME)/include -fopenmp -std=c++14
-LD_FLAGS = -L$(CUDA_HOME)/lib64 -lcudart -lnvToolsExt -lnccl
+LD_FLAGS = -L$(CUDA_HOME)/lib64 -lcudart -lnvToolsExt -L$(NCCL_HOME)/lib -lnccl
 
 jacobi_nccl: Makefile jacobi_nccl.cpp jacobi_kernels.o
 	$(MPICXX) $(MPICXX_FLAGS) jacobi_nccl.cpp jacobi_kernels.o $(LD_FLAGS) -o jacobi_nccl
@@ -20,5 +20,5 @@ jacobi_kernels.o: Makefile jacobi_kernels.cu
 
 .PHONY.: clean
 clean:
-	rm -rf jacobi_nccl jacobi_kernels.o *.qdrep *.sqlite
+	rm -rf jacobi_nccl jacobi_kernels.o jacobi_nccl.o *.qdrep *.sqlite *.nsys-rep
 

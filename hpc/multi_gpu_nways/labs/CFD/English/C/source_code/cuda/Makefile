@@ -1,6 +1,6 @@
 # Copyright (c) 2017-2018, NVIDIA CORPORATION. All rights reserved.
 NVCC=nvcc
-CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/21.5/cuda/
+# CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/21.5/cuda/
 GENCODE_SM70    := -gencode arch=compute_70,code=sm_70
 GENCODE_SM80    := -gencode arch=compute_80,code=sm_80 -gencode arch=compute_80,code=compute_80
 GENCODE_FLAGS	:= $(GENCODE_SM70) $(GENCODE_SM80)
@@ -19,5 +19,5 @@ all: jacobi_memcpy jacobi_streams jacobi_streams_events
 
 .PHONY: clean
 clean:
-	rm -f jacobi_memcpy jacobi_streams jacobi_streams_events *.qdrep *.sqlite
+	rm -f jacobi_memcpy jacobi_streams jacobi_streams_events *.qdrep *.sqlite *.nsys-rep
 

@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --partition=gpu 
+#SBATCH --nodes=1 
+#SBATCH --gres=gpu:4
+#SBATCH --ntasks=4
+##SBATCH --ntasks-per-node=4
+
+mkdir -p ../../source_code/nccl/output_profiler
+profiler_output=../../source_code/nccl/output_profiler
+
+#source ~/nways_multigpu/start_mpi_lustre.sh
+
+mpirun --version
+nsys --version
+
+
+$NSIGHT_HOME/nsys profile --trace=cuda,mpi,nvtx,ucx  --stats=true --nic-metrics=true --force-overwrite true -o $profiler_output/jacobi_nccl_report mpirun -np 4 --map-by ppr:4:socket ./jacobi_nccl -nx 4096 -ny 8192 -niter 5000 -skip_single_gpu

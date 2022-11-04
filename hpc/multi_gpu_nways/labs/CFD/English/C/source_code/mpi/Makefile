@@ -26,5 +26,5 @@ all: hello_world jacobi_memcpy_mpi jacobi_cuda_aware_mpi
 
 .PHONY.: clean
 clean:
-	rm -rf hello_world jacobi_memcpy_mpi jacobi_cuda_aware_mpi *.o *.qdrep *.sqlite
+	rm -rf hello_world jacobi_memcpy_mpi jacobi_cuda_aware_mpi *.o *.qdrep *.sqlite *.nsys-rep
 

@@ -4,6 +4,8 @@ This repository contains mini applications for GPU Bootcamps. This bootcamp focu
 
 Scaling applications to multiple GPUs across multiple nodes requires one to be adept at not just the programming models and optimization techniques, but also at performing root-cause analysis using in-depth profiling to identify and minimize bottlenecks. In this bootcamp, participants will learn to improve the performance of an application step-by-step, taking cues from profilers along the way. Moreover, understanding of the underlying technologies and communication topology will help us utilize high-performance NVIDIA libraries to extract more performance out of the system.
 
+**NOTE: This branch contains modified version of the multiGPU content in the main branch. Notebook cells were modified to allow running on a cluster with slurm scheduler. Slurm  commands can be modified to allow a user to use more resorces.**
+
 ## Bootcamp Outline
 
 * Overview of single-GPU code and Nsight Systems Profiler
@@ -21,30 +23,32 @@ Scaling applications to multiple GPUs across multiple nodes requires one to be a
 
 ## Prerequisites
 
-This bootcamp requires a multi-node system with multiple GPUs in each node (atleast 2 GPUs/ node).
+This bootcamp requires a multi-node system with multiple GPUs in each node (at least 2 GPUs/ node). 
 
 ## Tutorial Duration
 
-The total bootcamp material  would take approximately 8 hours .
+The total bootcamp material would take between 8-12 hours .
 
 ### Using NVIDIA HPC SDK
 
 A multi-node installation of [NVIDIA's HPC SDK](https://developer.nvidia.com/hpc-sdk) is desired. Refer to [NVIDIA HPC SDK Installation Guide](https://docs.nvidia.com/hpc-sdk/hpc-sdk-install-guide/index.html) for detailed instructions. Ensure that your installation contains HPCX with UCX. 
 
-After installation, make sure to add HPC SDK to the environment as follows(For example the PATH highlighted below is for HPC SDK 21.5):
+After installation, make sure to add HPC SDK to the environment as follows (for example the PATH highlighted below is for HPC SDK 22.7. We used CUDA 11.0, OpenMPI 4.1.1):
 
 ```bash
-# Add HPC-SDK to PATH:
-export PATH="<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/compilers/bin:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/bin:$PATH"
+export hpc_sdk_path=path to installed HPC SDK
+# Add HPC SDK to PATH:
+export PATH="$hpc_sdk_path/Linux_x86_64/22.7/compilers/bin:$hpc_sdk_path/Linux_x86_64/22.7/cuda/11.0/bin:$PATH"
 # Add HPC-SDK to LD_LIBRARY_PATH:
-export LD_LIBRARY_PATH="<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/nvshmem/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/nccl/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/mpi/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/math_libs/lib64:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/compilers/lib:<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/extras/CUPTI/lib64:<path-nvidia-hpc-sdk>>/Linux_x86_64/21.5/cuda/lib64:$LD_LIBRARY_PATH"
-#ADD NVSHMEM HOME DIRECTORY PATH
-export CUDA_HOME=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda
-export NVSHMEM_HOME=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/nvshmem
+export LD_LIBRARY_PATH="$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/11.0/nvshmem/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/11.0/nccl/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/mpi/lib:$hpc_sdk_path/Linux_x86_64/22.7/math_libs/lib64:$hpc_sdk_path/Linux_x86_64/22.7/compilers/lib:$hpc_sdk_path/Linux_x86_64/22.7/cuda/11.0/extras/CUPTI/lib64:$hpc_sdk_path/Linux_x86_64/22.7/cuda/11.0/lib64:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/latest/hcoll/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/latest/ompi/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/latest/nccl_rdma_sharp_plugin/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/latest/sharp/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/latest/ucx/mt/lib:$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/latest/ucx/mt/lib/ucx:$LD_LIBRARY_PATH"
+# Add NVSHMEM PATH
+export CUDA_HOME=$hpc_sdk_path/Linux_x86_64/22.7/cuda/11.0
+export NVSHMEM_HOME=$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/11.0/nvshmem
+export NCCL_HOME=$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/11.0/nccl
+export NSIGHT_HOME=path to Nsight Systems
 ```
-**Note:** If you don't use Slurm workload manager, remove `--with-slurm` flag.
 
-Then, install OpenMPI as follows:
+Now, let's install the OpenMPI (with 'slurm', using `--with-slurm` flag)
 
 ```bash
 # Download and extract OpenMPI Tarfile
@@ -53,7 +57,7 @@ tar -xvzf openmpi-4.1.1.tar.gz
 cd openmpi-4.1.1/
 mkdir -p build
 # Configure OpenMPI
-./configure --prefix=$PWD/build --with-libevent=internal --with-xpmem --with-cuda=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/cuda/ --with-slurm --enable-mpi1-compatibility --with-verbs --with-hcoll=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/hpcx/hpcx-2.8.1/hcoll/lib --with-ucx=<path-to-nvidia-hpc-sdk>/Linux_x86_64/21.5/comm_libs/hpcx/hpcx-2.8.1/ucx/
+./configure --prefix=$PWD/build --with-libevent=internal --with-xpmem --with-cuda=$hpc_sdk_path/Linux_x86_64/22.7/cuda/11.0 --with-slurm --enable-mpi1-compatibility --enable-debug --with-verbs --with-pmi=internal --with-hcoll=$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/hpcx-2.11/hcoll --with-ucx=$hpc_sdk_path/Linux_x86_64/22.7/comm_libs/hpcx/hpcx-2.11/ucx
 # Install OpenMPI
 make all install
 ```
@@ -64,7 +68,6 @@ Now, add OpenMPI to the environment:
 export PATH="<path-to-openmpi>/build/bin/:$PATH"
 export LD_LIBRARY_PATH="<path-to-openmpi/build/lib:$LD_LIBRARY_PATH"
 ```
-
 Ensure that the custom-built OpenMPI is in use by running `which mpirun` which should point the `mpirun` binary in `<path-to-openmpi>/build/bin` directory.
 
 ### Without Using NVIDIA HPC SDK
@@ -79,7 +82,7 @@ Multi-node compatible versions of the following are required:
 
 ## Testing
 
-We have tested all the codes with CUDA drivers 460.32.03 with CUDA 11.3.0.0, OpenMPI 4.1.1, HPCX 2.8.1, Singularity 3.6.1, NCCL 2.9.9.1, and NVSHMEM 2.1.2. Note that OpenMPI in our cluster was compiled with CUDA, HCOLL, and UCX support.
+Content in this branch was tested with HPC SDK 22.7, CUDA 11.0, OpenMPI 4.1.1, HPCX 2.11, UCX 1.13.0, slurm 21.08, Nsight Systems 2022.4, and CUDA Driver 515. 
 
 ## Running Jupyter Lab
 

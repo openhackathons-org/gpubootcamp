@@ -21,7 +21,7 @@ jacobi: Makefile jacobi.cu
 
 .PHONY.: clean
 clean:
-	rm -f jacobi jacobi.qdrep
+	rm -f jacobi *.qdrep *.sqlite *.nsys-rep
 
 sanitize: jacobi
 	compute-sanitizer ./jacobi -niter 10
