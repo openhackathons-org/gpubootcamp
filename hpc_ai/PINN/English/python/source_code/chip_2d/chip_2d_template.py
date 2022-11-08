@@ -22,7 +22,7 @@ from modulus.node import Node
 
 @modulus.main(config_path="conf", config_name="config")
 def run(cfg: ModulusConfig) -> None:
-    
+
     #TODO: Replace all the placeholders with appropriate values
     # make list of nodes to unroll graph on
     ns = NavierStokes(nu=0.02, rho=1.0, dim=2, time=False)
@@ -30,15 +30,15 @@ def run(cfg: ModulusConfig) -> None:
     flow_net = instantiate_arch(
         input_keys=[placeholder],
         output_keys=[placeholder],
-        cfg=cfg.arch.fourier_net,
+        cfg=cfg.arch.fully_connected,
     )
     nodes = (
         ns.make_nodes()
         + normal_dot_vel.make_nodes()
         + [flow_net.make_node(name="flow_network", jit=cfg.jit)]
     )
-    
-  
+
+
     # add constraints to solver
     # simulation params
     channel_length = (-2.5, 2.5)
@@ -50,9 +50,9 @@ def run(cfg: ModulusConfig) -> None:
 
     # define sympy variables to parametrize domain curves
     x, y = Symbol("x"), Symbol("y")
-    
+
     #TODO: Replace x1, y1, x2, y2, and X's with appropriate values
-    
+
     # define geometry
     channel = Channel2D(
         (channel_length[0], channel_width[0]), (channel_length[1], channel_width[1])
@@ -78,8 +78,8 @@ def run(cfg: ModulusConfig) -> None:
     geo = channel - rec
     geo_hr = geo & flow_rec
     geo_lr = geo - flow_rec
-    
-    # Optional integral continuity planes to speed up convergence 
+
+    # Optional integral continuity planes to speed up convergence
     x_pos = Symbol("x_pos")
     integral_line = Line((x_pos, channel_width[0]), (x_pos, channel_width[1]), 1)
     x_pos_range = {
@@ -121,7 +121,7 @@ def run(cfg: ModulusConfig) -> None:
         batch_size=cfg.batch_size.no_slip,
     )
     domain.add_constraint(no_slip, "no_slip")
-    
+
 
     # interior lr
     interior_lr = PointwiseInteriorConstraint(
@@ -144,12 +144,12 @@ def run(cfg: ModulusConfig) -> None:
         lambda_weighting={placeholder},
     )
     domain.add_constraint(interior_hr, "interior_hr")
-    
+
     # integral continuity
     def integral_criteria(invar, params):
         sdf = geo.sdf(invar, params)
         return np.greater(sdf["sdf"], 0)
-     
+
     # integral continuity
     integral_continuity = IntegralBoundaryConstraint(
         nodes=nodes,
@@ -162,7 +162,7 @@ def run(cfg: ModulusConfig) -> None:
         parameterization=x_pos_range,
     )
     domain.add_constraint(integral_continuity, "integral_continuity")
-    
+
     #TODO: Set the appropriate normalization for the validation data
     # The validation data has domain extents of (0,0) to (5,1). Normalize this based on your definition of the domain
 
@@ -183,8 +183,8 @@ def run(cfg: ModulusConfig) -> None:
         true_outvar=openfoam_outvar_numpy,
     )
     domain.add_validator(openfoam_validator)
-    
-    
+
+
     # make solver
     slv = Solver(cfg, domain)
 
