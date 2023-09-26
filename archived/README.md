@@ -1,4 +1,4 @@
-# This folder will contain all the previously created training material which are based on old frameworks or techniques which are deprecated. The idea is to keep the old bootcamp material for anyone using older hardware or software stack for learning purpose
+This folder contains all the previously created training material which are based on old frameworks or techniques which are deprecated. 
 
 To access the new HPC contents, please check below repositories:
 
