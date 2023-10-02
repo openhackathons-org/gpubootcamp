@@ -11,7 +11,7 @@ The bootcamp content focuses on how to follow the Analyze, Parallelize and Optim
 
 | Lab      | Description |
 | ----------- | ----------- |
-| [N-Ways](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/nways)      | This Bootcamp will cover multiple GPU programming models and choose the one that best fits your needs. The material supports different programming langauges including C ( CUDA C, OpenACC C, OpenMP C, C++ stdpar ),  Fortran ( CUDA Fortran, OpenACC Fortran, OpenMP Fortran, ISO DO CONCURRENT ) Python ( Numba, CuPy )       |
+| [N-Ways](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/archived/hpc/nways)      | This Bootcamp will cover multiple GPU programming models and choose the one that best fits your needs. The material supports different programming langauges including C ( CUDA C, OpenACC C, OpenMP C, C++ stdpar ),  Fortran ( CUDA Fortran, OpenACC Fortran, OpenMP Fortran, ISO DO CONCURRENT ) Python ( Numba, CuPy )       |
 | [OpenACC](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/openacc)   | The Bootcamp will cover how to write portable parallel program that can run on multicore CPUs and accelerators like GPUs and how to apply incremental parallelization strategies using OpenACC       |
 | [Multi GPU Programming Model](https://github.com/gpuhackathons-org/gpubootcamp/tree/master/hpc/multi_gpu_nways)   | This bootcamp will cover scaling applications to multiple GPUs across multiple nodes. Moreover, understanding of the underlying technologies and communication topology will help us utilize high-performance NVIDIA libraries to extract more performance out of the system     |
 
